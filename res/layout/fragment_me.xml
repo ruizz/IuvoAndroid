@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
+    android:paddingTop="16dp"
+    android:background="@drawable/me_background"
+     >
+    	<Button
+    	    android:id="@id/me_edit"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:layout_alignParentTop="true"
+    	    android:layout_alignParentRight="true"
+    	    android:text="Edit" />
+    	
+        <TextView
+            android:id="@+id/me_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/me_school"
+            android:text="@string/me_name"
+            android:textColor="#fff"
+            android:textSize="40sp" 
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="8" />
+        
+        <TextView
+            android:id="@+id/me_school"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/me_major"
+            android:text="@string/me_school"
+            android:textColor="#fff"
+            android:textSize="25sp"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="8" />
+        
+        <TextView
+            android:id="@+id/me_major"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/me_classification"
+            android:text="@string/me_major"
+            android:textColor="#fff"
+            android:textSize="25sp"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="8" />
+    
+		<TextView
+		    android:id="@+id/me_classification"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentBottom="true"
+		    android:text="@string/me_classification"
+		    android:textColor="#fff"
+		    android:textSize="25sp"
+		    android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="8" />
+
+    </RelativeLayout>
+</FrameLayout>
