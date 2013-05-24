@@ -2,11 +2,18 @@
 <resources>
 
     <string name="app_name">Iuvo</string>
-    <string name="menu_settings">Settings</string>
+    <string name="menu_edit_profile">Edit Profile</string><string name="menu_manage_groups">Manage Groups</string><string name="menu_settings">Settings</string>
     <string name="me_name">No Name</string>
     <string name="me_school">No School</string>
     <string name="me_major">No Major</string>
     <string name="me_classification">No Classification</string>
     <string name="me_background_description">Background Image</string>
+    
+    
+    <string name="dialog_name">Name</string>
+    <string name="dialog_school">School</string>
+    <string name="dialog_major">Major</string>
+    <string name="dialog_classification">Classification</string>
+    <string name="coming_soon">Under Development</string>
 
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <RelativeLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="fill_parent"
+    	android:paddingLeft="16dp"
+    	android:paddingRight="16dp"
+    	android:paddingBottom="16dp"
+    	android:paddingTop="16dp"
+    	android:background="@drawable/me_background" >
+    
+        <TextView
+            android:id="@+id/plan_coming_soon"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/coming_soon"
+            android:textColor="#fff"
+            android:textSize="25sp" 
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="8" />
+        
+    </RelativeLayout>
+</FrameLayout>
