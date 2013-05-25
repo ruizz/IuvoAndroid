@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -208,6 +209,23 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
     
     /**
+     * More section fragment. (Dummy for now.)
+     */
+    public static class MoreSectionFragment extends Fragment {
+    	
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_more, container, false);
+
+            GridView gridView = (GridView) rootView.findViewById(R.id.more_grid_view);
+            gridView.setAdapter(new ImageAdapter(rootView.getContext()));
+            
+            return rootView;
+        }
+    }
+    
+    /**
      * Plan section fragment. (Dummy for now.)
      */
     public static class PlanSectionFragment extends Fragment {
@@ -216,19 +234,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_plan, container, false);
-            return rootView;
-        }
-    }
-    
-    /**
-     * More section fragment. (Dummy for now.)
-     */
-    public static class MoreSectionFragment extends Fragment {
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_more, container, false);
             return rootView;
         }
     }
@@ -330,7 +335,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Handle Cancel. Don't really have to do anything...
+				// Handle Cancel. Don't really have to do anything...
 			}
 		};
 
