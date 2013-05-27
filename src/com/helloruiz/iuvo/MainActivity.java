@@ -1,10 +1,15 @@
 package com.helloruiz.iuvo;
 
+import java.util.List;
+
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -16,11 +21,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -48,6 +53,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * Application preferences
      */
     static SharedPreferences iuvoSettings;
+    
+    /**
+     * We'll use this do display any dialogs. All the heavy lifting done in DialogManager.java
+     */
+    static DialogDatabase dialogDatabase = new DialogDatabase();
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,7 +169,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * Me section fragment.
      */
     public static class MeSectionFragment extends Fragment {
-
+    	
     	View rootView;
     	
         @Override
@@ -214,14 +224,71 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static class MoreSectionFragment extends Fragment {
     	
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_more, container, false);
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            
+        	View rootView = inflater.inflate(R.layout.fragment_more, container, false);
 
             GridView gridView = (GridView) rootView.findViewById(R.id.more_grid_view);
             gridView.setAdapter(new ImageAdapter(rootView.getContext()));
             
             return rootView;
+        }
+        
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+        	
+            View rootView = getView();
+            GridView gridView = (GridView) rootView.findViewById(R.id.more_grid_view);
+            // Declared as final so that it can be used in the class defined in the
+            // gridView.setItemClickListener method.
+        	final Activity activity = getActivity();
+        	
+        	gridView.setOnItemClickListener(
+        		new OnItemClickListener() {
+        			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {             	
+                	
+        				Intent webIntent;
+        				List<ResolveInfo> activities;
+        				Toast noWebApp = Toast.makeText(activity.getApplicationContext(), "No web apps found.", Toast.LENGTH_SHORT);
+        				
+        				switch(position) {
+        				case 0: // About Iuvo
+        					
+        					// Display 'About' dialog
+        					dialogDatabase.aboutIuvo(activity, activity.getLayoutInflater());
+        					
+        					break;
+        				case 1: // View Source code
+        					
+        					webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ruizz/Iuvo/"));
+
+        					// Verify that there is at least one compatible app to open a web page
+        					activities = activity.getPackageManager().queryIntentActivities(webIntent, 0);
+        					if(activities.size() > 0)
+        						startActivity(webIntent);
+        					else
+        						noWebApp.show();
+        					
+        					break;
+        				case 2: // Visit my website
+        					
+        					webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://helloruiz.com"));
+
+        					// Verify that there is at least one compatible app to open a web page
+        					activities = activity.getPackageManager().queryIntentActivities(webIntent, 0);
+        					if(activities.size() > 0)
+        						startActivity(webIntent);
+        					else
+        						noWebApp.show();
+        					
+        					break;
+        				default:
+        					break;
+        				}
+        					
+        			}
+            });
         }
     }
     
@@ -243,23 +310,25 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_home, menu);
 		
-		MenuItem menuEditProfile = menu.findItem(R.id.menu_edit_profile);
-		MenuItem menuManageGroups = menu.findItem(R.id.menu_manage_groups);
+		MenuItem mEditProfile = menu.findItem(R.id.menu_edit_profile);
+		MenuItem mManageGroups = menu.findItem(R.id.menu_manage_groups);
+		MenuItem mManageSemesters = menu.findItem(R.id.menu_manage_semesters);
+		MenuItem mAddCourse = menu.findItem(R.id.menu_add_course);
 		
 		switch(currentTabIndex) {
 		case 0:
-			menuManageGroups.setVisible(false);
+			mManageGroups.setVisible(false);
+			mManageSemesters.setVisible(false);
+			mAddCourse.setVisible(false);
 			break;
 		case 1:
-			menuEditProfile.setVisible(false);
-			break;
-		case 2:
-			menuEditProfile.setVisible(false);
-			menuManageGroups.setVisible(false);
+			mEditProfile.setVisible(false);
 			break;
 		default:
-			menuEditProfile.setVisible(false);
-			menuManageGroups.setVisible(false);
+			mEditProfile.setVisible(false);
+			mManageGroups.setVisible(false);
+			mManageSemesters.setVisible(false);
+			mAddCourse.setVisible(false);
 			break;
 		}
 		
@@ -275,6 +344,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            menuEditProfile();
 	            return true;
 	        case R.id.menu_manage_groups:
+	        	menuManageGroups();
+	        	return true;
+	        case R.id.menu_manage_semesters:
+	        	menuManageSemesters();
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -285,70 +358,31 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * Pops up with a dialog so that user can edit their profile.
      */
     public void menuEditProfile() {
-    	
-		// Get the layout inflater, so we can grab our custom dialog view
-		LayoutInflater inflater = this.getLayoutInflater();
-		
-		// Grab the view that contains the EditTexts and Spinner so that we can access it.
-		View dialogView = inflater.inflate(R.layout.dialog_edit_profile, null);
-		
-		// Access the dialog items in the view
-		final EditText editTextName = (EditText) dialogView.findViewById(R.id.dialog_name);
-		final EditText editTextSchool = (EditText) dialogView.findViewById(R.id.dialog_school);
-		final EditText editTextMajor = (EditText) dialogView.findViewById(R.id.dialog_major);
-		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.dialog_spinner_classification);
-		
-		// Create an ArrayAdapter using the string array and a default spinner layout
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-		        R.array.classification_array, android.R.layout.simple_spinner_item);
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
-		spinner.setAdapter(adapter);
-		
-		// Populate the input fields with existing values
-		editTextName.setText((CharSequence) iuvoSettings.getString("name", ""));
-		editTextSchool.setText((CharSequence) iuvoSettings.getString("school", ""));
-		editTextMajor.setText((CharSequence) iuvoSettings.getString("major", ""));
-		spinner.setSelection(adapter.getPosition(iuvoSettings.getString("classification", "Select Classification")));
-		
-		// Listener for the 'Save' button
-		DialogInterface.OnClickListener saveClickListener = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// Saves all changes to the app.
-				saveProfileChanges(editTextName.getText().toString(), 
-						editTextSchool.getText().toString(), 
-						editTextMajor.getText().toString(), 
-						spinner.getSelectedItem().toString());
-				
-				// Refresh the 'me' fragment. Wasn't easy to figure out because of FragmentPageAdapter, but found a solution.
-		    	// http://stackoverflow.com/questions/10022179/fragmentpageradapter-with-viewpager-and-two-fragments-go-to-the-first-from-the
-		    	// Remember this tagging convention...
-		    	MeSectionFragment meSectionFragment = (MeSectionFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":"+0);
-		    	meSectionFragment.displayProfile();
-			}
-		};
-		
-		// Listener for the 'Cancel' button
-		DialogInterface.OnClickListener cancelClickListener = new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// Handle Cancel. Don't really have to do anything...
-			}
-		};
-
-		// Create a builder for the dialog
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-		dialogBuilder.setTitle("Edit Profile");
-		dialogBuilder.setView(dialogView);
-		dialogBuilder.setPositiveButton("Save", saveClickListener).setNegativeButton("Cancel", cancelClickListener);
+    	AlertDialog.Builder dialogBuilder = dialogDatabase.editProfile(this, this.getLayoutInflater(), iuvoSettings);
 		dialogBuilder.show();
     }
     
     /**
+     * Starts the group manager activity.
+     */
+    public void menuManageGroups() {
+    	
+    	Intent intent = new Intent(this, GroupsActivity.class);
+		startActivity(intent);
+    }
+    
+    /**
+     * Starts the semester manager activity
+     */
+    public void menuManageSemesters() {
+    	
+    	Intent intent = new Intent(this, SemestersActivity.class);
+		startActivity(intent);
+    }
+    
+    /**
      * Start the preferences editor and commit the new changes.
+     * Called by the 'Save' buton displayed by the 'Edit Profile' dialog.
      */
     public void saveProfileChanges(String name, String school, String major, String classification) {
     	

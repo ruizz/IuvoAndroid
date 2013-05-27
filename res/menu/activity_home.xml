@@ -2,20 +2,26 @@
 
     <item
         android:id="@+id/menu_edit_profile"
-        android:orderInCategory="99"
+        android:orderInCategory="10"
         android:showAsAction="ifRoom"
         android:title="@string/menu_edit_profile"/>
     
     <item
-        android:id="@+id/menu_manage_groups"
-        android:orderInCategory="99"
+        android:id="@+id/menu_manage_semesters"
+        android:orderInCategory="40"
         android:showAsAction="ifRoom"
-        android:title="@string/menu_manage_groups"/>
+        android:title="@string/menu_manage_semesters"/>
     
     <item
-        android:id="@+id/menu_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/menu_settings"/>
+        android:id="@+id/menu_manage_groups"
+        android:orderInCategory="41"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_manage_groups"/>
 
+    <item
+        android:id="@+id/menu_add_course"
+        android:orderInCategory="42"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_add_course"/>
+    
 </menu>
