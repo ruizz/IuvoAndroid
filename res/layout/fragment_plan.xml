@@ -10,7 +10,7 @@
     	android:paddingRight="16dp"
     	android:paddingBottom="16dp"
     	android:paddingTop="16dp"
-    	android:background="@drawable/me_background" >
+    	android:background="@drawable/background_home" >
     
         <TextView
             android:id="@+id/plan_coming_soon"

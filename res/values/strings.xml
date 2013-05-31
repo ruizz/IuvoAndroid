@@ -2,12 +2,16 @@
 <resources>
 
     <string name="app_name">Iuvo</string>
+    <string name="title_activity_groups">Groups</string>
+    <string name="title_activity_semesters">Semesters</string>
     <string name="menu_edit_profile">Edit Profile</string>
     <string name="menu_manage_groups">Groups</string>
     <string name="menu_manage_semesters">Semesters</string>
     <string name="menu_add_course">Course</string>
     <string name="menu_help">Help</string>
     <string name="menu_settings">Settings</string>
+    <string name="menu_add">Add</string>
+    <string name="menu_delete">Delete</string>
     <string name="me_name">No Name</string>
     <string name="me_school">No School</string>
     <string name="me_major">No Major</string>
@@ -22,9 +26,15 @@
     <string name="about_link2">http://appicontemplate.com/</string>
     <string name="about_link3">http://www.colourlovers.com/palette/559067/</string>
     <string name="about_link4">http://www.impallari.com/lobster/</string>
-    <string name="title_activity_groups">GroupsActivity</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_semesters">SemestersActivity</string>
-
+    
+    <string-array name="test_array">
+      <item>Brad Mehldau</item>
+      <item>Joshua Redman</item>
+      <item>Chick Corea</item>
+      <item>Kurt Rosenwinkel</item>
+      <item>Miles Davis</item>
+    </string-array>
+    
 </resources>

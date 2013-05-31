@@ -28,7 +28,9 @@
         <activity
             android:name="com.helloruiz.iuvo.GroupsActivity"
             android:label="@string/title_activity_groups"
-            android:parentActivityName="com.helloruiz.iuvo.MainActivity" >
+            android:parentActivityName="com.helloruiz.iuvo.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.helloruiz.iuvo.MainActivity" />
@@ -36,7 +38,9 @@
         <activity
             android:name="com.helloruiz.iuvo.SemestersActivity"
             android:label="@string/title_activity_semesters"
-            android:parentActivityName="com.helloruiz.iuvo.MainActivity" >
+            android:parentActivityName="com.helloruiz.iuvo.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.helloruiz.iuvo.MainActivity" />

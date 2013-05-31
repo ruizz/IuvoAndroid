@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.helloruiz.iuvo.MainActivity.MeSectionFragment;
+import com.helloruiz.iuvo.database.DatabaseHandler;
 
 /**
  * Stores all dialogs. Lots of lines just do display dialogs, but I'm sure that it's cleaner
@@ -23,9 +24,8 @@ public class DialogDatabase {
 	
 	/** 
 	 * Dialog for 'About' grid item in the 'more' tab
-	 * The dialog displays here instead of being returned to the activity, since no user interaction is needed.
 	 */
-	public void aboutIuvo(Activity activity, LayoutInflater inflater) {
+	public void aboutIuvo(Activity activity) {
 		
 		// Took hours of looking for solutions, but found one that makes clickable links in dialogs
 		// without having to create a new layout and inflate it, or any other tedious task.
@@ -60,7 +60,7 @@ public class DialogDatabase {
 	 * Dialog for the 'Edit Profile' menu setting that is shown when the 'me' tab is in focus.
 	 * @return This one returns the dialog back to activity because the user may need to save some changes.
 	 */
-	public AlertDialog.Builder editProfile(final Activity activity, LayoutInflater inflater, SharedPreferences iuvoSettings) {
+	public static AlertDialog.Builder editProfile(final Activity activity, LayoutInflater inflater, SharedPreferences iuvoSettings) {
 				
 				// Grab the view that contains the EditTexts and Spinner so that we can access it.
 				View dialogView = inflater.inflate(R.layout.dialog_edit_profile, null);
@@ -103,19 +103,43 @@ public class DialogDatabase {
 					}
 				};
 				
-				// Listener for the 'Cancel' button
-				DialogInterface.OnClickListener cancelClickListener = new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// Handle Cancel. Don't really have to do anything...
-					}
-				};
-				
 				AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 				dialogBuilder.setTitle("Edit Profile");
 				dialogBuilder.setView(dialogView);
-				dialogBuilder.setPositiveButton("Save", saveClickListener).setNegativeButton("Cancel", cancelClickListener);
+				dialogBuilder.setPositiveButton("Save", saveClickListener).setNegativeButton("Cancel", null);
 				return dialogBuilder;
+	}
+	
+	/** 
+	 * Dialog for 'add' menu option in the group manager activity.
+	 */
+	public static void addGroup(final Activity activity) {
+		
+		// Took hours of looking for solutions, but found one that makes clickable links in dialogs
+		// without having to create a new layout and inflate it, or any other tedious task.
+		// http://stackoverflow.com/questions/7479813/android-linkify-text-in-dialog
+		
+		String dialogAddTitle = "Add Group";
+		String dialogName = activity.getString(R.string.dialog_name);
+		
+		final EditText editText = new EditText(activity);
+		editText.setHint((CharSequence) dialogName);
+		
+		// Listener for the 'Save' button
+		DialogInterface.OnClickListener addClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// Adds group to the database
+				((GroupsActivity) activity).addGroup(editText.getText().toString());
+			}
+		};
+	    
+		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
+			.setPositiveButton("Add", addClickListener)
+			.setNegativeButton("Cancel", null)
+			.setTitle(dialogAddTitle)
+			.setView(editText);
+		
+		dialog.show();
 	}
 }

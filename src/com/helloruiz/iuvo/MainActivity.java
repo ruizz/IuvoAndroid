@@ -256,7 +256,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         				case 0: // About Iuvo
         					
         					// Display 'About' dialog
-        					dialogDatabase.aboutIuvo(activity, activity.getLayoutInflater());
+        					dialogDatabase.aboutIuvo(activity);
         					
         					break;
         				case 1: // View Source code
@@ -358,8 +358,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * Pops up with a dialog so that user can edit their profile.
      */
     public void menuEditProfile() {
-    	AlertDialog.Builder dialogBuilder = dialogDatabase.editProfile(this, this.getLayoutInflater(), iuvoSettings);
-		dialogBuilder.show();
+    	DialogDatabase.editProfile(this, this.getLayoutInflater(), iuvoSettings).show();
     }
     
     /**
