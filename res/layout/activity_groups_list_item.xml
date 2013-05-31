@@ -4,17 +4,14 @@
   android:layout_width="fill_parent"
   android:layout_height="wrap_content"
   android:orientation="horizontal"
-  android:background="@color/theme_gray" >
+  android:background="@color/theme_blue" >
   
   <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_weight="1"
     android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="5dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp" >
+    android:padding="16sp" >
     
     <TextView
       android:id="@+id/group_name_textview"
@@ -22,11 +19,15 @@
       android:layout_height="fill_parent"
       android:text="@string/coming_soon"
       android:textColor="@color/white"
-      android:textSize="20sp" 
-      android:shadowColor="@color/black"
-      android:shadowDx="0"
-      android:shadowDy="0"
-      android:shadowRadius="8" />
+      android:textSize="18sp" />
+    
+    <TextView
+      android:id="@+id/group_class_count_textview"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:text="@string/course_count_dummy"
+      android:textColor="@color/theme_white"
+      android:textSize="14sp" />
 
   </LinearLayout>
   

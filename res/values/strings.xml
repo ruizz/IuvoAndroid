@@ -22,6 +22,7 @@
     <string name="dialog_major">Major</string>
     <string name="dialog_classification">Classification</string>
     <string name="coming_soon">Under Development</string>
+    <string name="course_count_dummy">0 Courses</string>
     <string name="about_link1">http://jgilfelt.github.io/android-actionbarstylegenerator/</string>
     <string name="about_link2">http://appicontemplate.com/</string>
     <string name="about_link3">http://www.colourlovers.com/palette/559067/</string>
