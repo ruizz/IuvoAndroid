@@ -9,7 +9,7 @@ public class Group {
 	
 	// private variables
 	int _id; // unique
-	String name; // unique
+	String name;
 	
 	@Override
     public String toString() {

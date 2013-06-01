@@ -8,43 +8,52 @@ package com.helloruiz.iuvo.database;
 public class Semester {
 	
 	// private variables
-	int term;
-	int year;
-	int color; // unique
+	int _id;
+	String name;
+	String color;
+	
+	@Override
+    public String toString() {
+      return name;
+    }
 	
 	// empty constructor
 	public Semester() { }
 	
-	public Semester(int term, int year, int color) {
-		this.term = term;
-		this.year = year;
+	// Constructor
+	public Semester(int id, String name, String color) {
+		this._id = id;
+		this.name = name;
 		this.color = color;
 	}
 	
-	public int getTerm() {
-		return this.term;
+	// get id
+	public int getID() {
+		return this._id;
 	}
 	
-	public void setTerm(int term) {
-		this.term = term;
+	// set id
+	public void setID(int id) {
+		this._id = id;
 	}
 	
-	public int getYear() {
-		return this.year;
+	// get name
+	public String getName() {
+		return this.name;
 	}
 	
-	public void setYear(int year) {
-		this.year = year;
+	// set name
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	public int getColor() {
+	// get color
+	public String getColor() {
 		return this.color;
 	}
 	
-	public void setColor (int color) {
+	// set color
+	public void setColor (String color) {
 		this.color = color;
 	}
-	
-	
-	
 }

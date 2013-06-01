@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Iuvo" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+    <style name="Theme.Iuvo" parent="@android:style/Theme.Holo">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_iuvo</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Iuvo</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Iuvo</item>
@@ -40,11 +40,17 @@
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_iuvo</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_iuvo</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Iuvo</item>
+        <item name="android:titleTextStyle">@style/ActionBar.TitleTextColor.Iuvo</item>
     </style>
 
     <style name="ActionBar.Transparent.Iuvo" parent="@android:style/Widget.Holo.ActionBar">
         <item name="android:background">@drawable/ab_transparent_iuvo</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Iuvo</item>
+        <item name="android:titleTextStyle">@style/ActionBar.TitleTextColor.Iuvo</item>
+    </style>
+    
+    <style name="ActionBar.TitleTextColor.Iuvo" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="PopupMenu.Iuvo" parent="@android:style/Widget.Holo.ListPopupWindow">

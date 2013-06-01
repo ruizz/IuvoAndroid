@@ -4,11 +4,12 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -57,7 +58,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     /**
      * We'll use this do display any dialogs. All the heavy lifting done in DialogManager.java
      */
-    static DialogDatabase dialogDatabase = new DialogDatabase();
+    static Dialogs dialogDatabase = new Dialogs();
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,6 +191,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             
             // Assign name according to application settings.
             textView = (TextView) rootView.findViewById(R.id.me_name);
+            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
+            textView.setTypeface(typeFace);
             if(!userName.equals(""))
             	textView.setText((CharSequence) userName);
             else
@@ -301,6 +304,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_plan, container, false);
+            
+            TextView textView = (TextView) rootView.findViewById(R.id.plan_coming_soon);
+            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
+            textView.setTypeface(typeFace);
+            
             return rootView;
         }
     }
@@ -358,7 +366,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * Pops up with a dialog so that user can edit their profile.
      */
     public void menuEditProfile() {
-    	DialogDatabase.editProfile(this, this.getLayoutInflater(), iuvoSettings).show();
+    	Dialogs.editProfile(this, this.getLayoutInflater(), iuvoSettings).show();
     }
     
     /**

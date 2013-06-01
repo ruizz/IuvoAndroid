@@ -10,7 +10,7 @@
     android:paddingRight="16dp"
     android:paddingBottom="16dp"
     android:paddingTop="16dp"
-    android:background="@drawable/background_home"
+    android:background="@color/theme_white"
      >
     	
         <TextView
@@ -19,12 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/me_school"
             android:text="@string/me_name"
-            android:textColor="@color/white"
-            android:textSize="40sp" 
-            android:shadowColor="@color/black"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="8" />
+            android:textColor="@color/theme_gray"
+            android:textSize="50sp"  />
         
         <TextView
             android:id="@+id/me_school"
@@ -32,12 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/me_major"
             android:text="@string/me_school"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:shadowColor="@color/black"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="8" />
+            android:textColor="@color/theme_gray"
+            android:textSize="22sp" />
         
         <TextView
             android:id="@+id/me_major"
@@ -45,12 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/me_classification"
             android:text="@string/me_major"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:shadowColor="@color/black"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="8" />
+            android:textColor="@color/theme_gray"
+            android:textSize="22sp" />
     
 		<TextView
 		    android:id="@+id/me_classification"
@@ -58,12 +46,8 @@
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentBottom="true"
 		    android:text="@string/me_classification"
-		    android:textColor="@color/white"
-		    android:textSize="25sp"
-		    android:shadowColor="@color/black"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="8" />
+		    android:textColor="@color/theme_gray"
+		    android:textSize="22sp" />
 
     </RelativeLayout>
 </FrameLayout>

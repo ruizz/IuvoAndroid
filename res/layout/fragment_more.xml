@@ -16,7 +16,7 @@
 		android:horizontalSpacing="10dp"
 		android:stretchMode="columnWidth"
 		android:gravity="center"
-    	android:background="@drawable/background_home"
+    	android:background="@color/theme_white"
 	/>
 	
 </FrameLayout>

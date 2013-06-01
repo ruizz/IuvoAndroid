@@ -26,4 +26,30 @@
     <color name="theme_light_gray">#7a8585</color>
     
     <color name="transparent">#00000000</color>
+    
+    <color name="android_dark_blue">#0099CC</color>
+	<color name="android_dark_purple">#9933CC</color>
+	<color name="android_dark_green">#669900</color>
+	<color name="android_dark_yellow">#FF8800</color>
+	<color name="android_dark_red ">#CC0000</color>
+	<color name="cloudy_day">#53777A</color>
+	<color name="plum">#542437</color>
+	<color name="wild_berry">#AB526B</color>
+	<color name="purple">#6a5acd</color>
+	<color name="crimson">#C02942</color>
+	<color name="maroon">#800000</color>
+	<color name="rust">#8C2318</color>
+	<color name="brick">#D95B43</color>
+	<color name="watermelon">#FF6B6B</color>
+	<color name="goldfish">#FA6900</color>
+	<color name="construction_zone">#FA2A00</color>
+	<color name="mustard">#DAB338</color>
+	<color name="forest">#228b22</color>
+	<color name="sea_green">#3cb371</color>
+	<color name="split_pea_soup">#8F9924</color>
+	<color name="cappuccino">#F2D694</color>
+	<color name="peru">#cd853f</color>
+	<color name="milk_chocolate">#774F38</color>
+	<color name="dark_chocolate">#1b0a03</color>
+	<color name="gray">#53777A</color>
 </resources>

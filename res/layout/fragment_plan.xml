@@ -10,7 +10,7 @@
     	android:paddingRight="16dp"
     	android:paddingBottom="16dp"
     	android:paddingTop="16dp"
-    	android:background="@drawable/background_home" >
+    	android:background="@color/theme_white" >
     
         <TextView
             android:id="@+id/plan_coming_soon"
@@ -18,12 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:text="@string/coming_soon"
-            android:textColor="#fff"
-            android:textSize="25sp" 
-            android:shadowColor="#000"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="8" />
+            android:textColor="@color/theme_gray"
+            android:textSize="35sp" />
         
     </RelativeLayout>
 </FrameLayout>

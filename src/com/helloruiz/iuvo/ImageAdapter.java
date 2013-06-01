@@ -1,12 +1,14 @@
 package com.helloruiz.iuvo;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -34,25 +36,32 @@ public class ImageAdapter extends BaseAdapter {
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
     	View rootView;
-        ImageView imageView;
+        //ImageView imageView;
         TextView textView;
         if (convertView == null) {  // if it's not recycled, initialize some attributes
         	LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         	rootView = li.inflate(R.layout.fragment_more_grid_item, null);
         	
-            imageView = (ImageView) rootView.findViewById(R.id.more_item_image);
-            imageView.setImageResource(mImageIds[position]);
+        	// No longer needed, since we're not using bitmaps for the more grid items anymore.
+        	// GridView item has been changed from RelativeLayout to LinearLayout anyways.
+            //imageView = (ImageView) rootView.findViewById(R.id.more_item_image);
+            //imageView.setImageResource(mImageIds[position]);
             
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 50);
-            params.height = 250;
-            imageView.setLayoutParams(params);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50);
+            //params.height = 150;
+            //imageView.setLayoutParams(params);
+            //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             
             textView = (TextView) rootView.findViewById(R.id.more_item_title);
             textView.setText(mTitleIds[position]);
+            textView.setBackgroundColor(Color.parseColor(mContext.getString(mImageIds[position])));
+            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
+            textView.setTypeface(typeFace);
             
             textView = (TextView) rootView.findViewById(R.id.more_item_description);
             textView.setText(mDescriptionIds[position]);
+            textView.setBackgroundColor(Color.parseColor(mContext.getString(mImageIds[position])));
+            
         } else {
             rootView = convertView;
         }
@@ -62,8 +71,8 @@ public class ImageAdapter extends BaseAdapter {
 
     // references to our images
     private Integer[] mImageIds = {
-            R.drawable.more_drawable_01, R.drawable.more_drawable_02,
-            R.drawable.more_drawable_03
+            R.color.theme_gray, R.color.theme_blue,
+            R.color.theme_teal
     };
     
     private CharSequence[] mTitleIds = {
