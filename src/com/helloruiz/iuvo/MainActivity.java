@@ -1,5 +1,7 @@
 package com.helloruiz.iuvo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.app.ActionBar;
@@ -16,6 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,7 +27,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -222,6 +228,173 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
     
     /**
+	 * Plan section fragment. (Dummy for now.)
+	 */
+	public static class PlanSectionFragment extends ListFragment {
+	    
+		public static final int HDR_POS1 = 0;
+	    public static final int HDR_POS2 = 4;
+	    public static final int HDR_POS3 = 6;
+	    public static final String[] LIST = { "Computer Science", "CSCE 181",
+	        "CSCE 121", "CSCE 221", "Humanities", "ENGR 482",
+	        "Math & Stat", "MATH 151", "MATH 152", "STAT 211" };
+	    public static final String[] SUBTEXTS = { null, "1 Credit, No Semester Assigned",
+	        "4 Credits, No Semester Assigned", "4 Credits, No Semester Assigned", null, "3 Credits, No Semester Assigned",
+	        null, "4 Credits, No Semester Assigned", "4 Credits, No Semester Assigned", "3 Credits, No Semester Assigned" };
+
+	    private static final Integer LIST_HEADER = 0;
+	    private static final Integer LIST_ITEM = 1;
+		
+	    ArrayAdapter<String> adapter;
+
+	    private String[] array;
+	    private ArrayList<String> list;
+
+	    protected int getLayout() {
+	        return R.layout.fragment_plan;
+	    }
+	    
+	    /**
+	     * Return list item layout resource passed to the ArrayAdapter.
+	     */
+	    protected int getItemLayout() {
+	    	return R.layout.activity_semesters_list_item;
+	    }
+
+	    private ListView mDslv;
+
+	    public static PlanSectionFragment newInstance(int headers, int footers) {
+	        PlanSectionFragment f = new PlanSectionFragment();
+
+	        Bundle args = new Bundle();
+	        args.putInt("headers", headers);
+	        args.putInt("footers", footers);
+	        f.setArguments(args);
+
+	        return f;
+	    }
+
+	    /**
+	     * Called from DSLVFragment.onActivityCreated(). Override to
+	     * set a different adapter.
+	     */
+	    public void setListAdapter() {
+	        array = getResources().getStringArray(R.array.color_array);
+	        list = new ArrayList<String>(Arrays.asList(array));
+
+	        adapter = new ArrayAdapter<String>(getActivity(), getItemLayout(), R.id.plan_item_title, list);
+	        setListAdapter(new MyListAdapter(getActivity()));
+	    }
+
+	    /** Called when the activity is first created. */
+	    @Override
+	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	            Bundle savedInstanceState) {
+	        mDslv = (ListView) inflater.inflate(getLayout(), container, false);
+
+	        return mDslv;
+	    }
+
+	    @Override
+	    public void onActivityCreated(Bundle savedInstanceState) {
+	        super.onActivityCreated(savedInstanceState);
+
+	        mDslv = getListView(); 
+
+	        setListAdapter();
+	    }
+	    
+	    private class MyListAdapter extends BaseAdapter {
+	        public MyListAdapter(Context context) {
+	            mContext = context;
+	        }
+
+	        @Override
+	        public int getCount() {
+	            return LIST.length;
+	        }
+
+	        @Override
+	        public boolean areAllItemsEnabled() {
+	            return true;
+	        }
+
+	        @Override
+	        public boolean isEnabled(int position) {
+	            return true;
+	        }
+
+	        @Override
+	        public Object getItem(int position) {
+	            return position;
+	        }
+
+	        @Override
+	        public long getItemId(int position) {
+	            return position;
+	        }
+
+	        @Override
+	        public View getView(int position, View convertView, ViewGroup parent) {
+
+	            String headerText = getHeader(position);
+	            if(headerText != null) {
+
+	                View rootView = convertView;
+	                if(convertView == null || convertView.getTag() == LIST_ITEM) {
+
+	                    rootView = LayoutInflater.from(mContext).inflate(
+	                            R.layout.fragment_plan_list_header, parent, false);
+	                    rootView.setTag(LIST_HEADER);
+
+	                }
+
+	                TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
+	                Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
+	                headerTextView.setTypeface(typeFace);
+	                headerTextView.setText(headerText);
+	                return rootView;
+	            }
+
+	            View rootView = convertView;
+	            if(convertView == null || convertView.getTag() == LIST_HEADER) {
+	                rootView = LayoutInflater.from(mContext).inflate(
+	                        R.layout.fragment_plan_list_item, parent, false);
+	                rootView.setTag(LIST_ITEM);
+	            }
+
+	            TextView header = (TextView)rootView.findViewById(R.id.plan_item_title);
+	            header.setText(LIST[position % LIST.length]);
+
+	            TextView subtext = (TextView)rootView.findViewById(R.id.plan_item_description);
+	            subtext.setText(SUBTEXTS[position % SUBTEXTS.length]);
+
+	            //Set last divider in a sublist invisible
+	            View divider = rootView.findViewById(R.id.item_separator);
+	            if(position == HDR_POS2 -1) {
+	                //divider.setVisibility(View.INVISIBLE);
+	            }
+
+
+	            return rootView;
+	        }
+
+	        private String getHeader(int position) {
+
+	            if(position == HDR_POS1  || position == HDR_POS2 || position == HDR_POS3) {
+	                return LIST[position];
+	            }
+
+	            return null;
+	        }
+
+	        private final Context mContext;
+	    }
+	    
+	    
+	}
+
+	/**
      * More section fragment. (Dummy for now.)
      */
     public static class MoreSectionFragment extends Fragment {
@@ -292,24 +465,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         					
         			}
             });
-        }
-    }
-    
-    /**
-     * Plan section fragment. (Dummy for now.)
-     */
-    public static class PlanSectionFragment extends Fragment {
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_plan, container, false);
-            
-            TextView textView = (TextView) rootView.findViewById(R.id.plan_coming_soon);
-            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
-            textView.setTypeface(typeFace);
-            
-            return rootView;
         }
     }
     
