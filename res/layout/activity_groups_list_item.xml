@@ -19,7 +19,7 @@
       android:layout_height="fill_parent"
       android:text="@string/coming_soon"
       android:textColor="@color/white"
-      android:textSize="18sp" />
+      android:textSize="26sp" />
     
     <TextView
       android:id="@+id/group_class_count_textview"

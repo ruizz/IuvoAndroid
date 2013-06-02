@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Semester;
@@ -30,9 +32,17 @@ public class SemestersActivity extends ListActivity {
 	          R.id.semester_name_textview, semesters);
 	      }
 
-	      public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(int position, View convertView, ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
-
+	        
+	        DatabaseHandler databaseHandler = new DatabaseHandler(SemestersActivity.this);
+	        Semester semester = databaseHandler.getSemester(position);
+	        
+	        TextView textView = (TextView) v.findViewById(R.id.semester_name_textview);
+	        Typeface typeFace=Typeface.createFromAsset(v.getContext().getAssets(),"fonts/lobster.otf");
+            textView.setTypeface(typeFace);
+	        
+	        v.setBackgroundColor(ColorHandler.getColor(SemestersActivity.this, semester.getColor()));
 	        return v;
 	      }
 	    }
@@ -146,18 +156,25 @@ public class SemestersActivity extends ListActivity {
 		
 		// This should be correct, since new max id is current number of available semesters.
 		int max = databaseHandler.getSemesterCount(db);
-		System.out.println("Before add, max: " + max);
-		databaseHandler.addSemester(new Semester(max, name, color));
+		int maxReferenceKey;
+		
+		if (max > 0)
+			maxReferenceKey = databaseHandler.getMaxSemesterReferenceKey();
+		else
+			maxReferenceKey = -1;
+		
+		databaseHandler.addSemester(new Semester(max, maxReferenceKey + 1, name, color));
 
 		refreshListAdapter();
 		db.close();
 	}
 	
 	// Called after a user has confirmed that they want to edit a semester
-	public void editSemester(String newName, Semester item) {
+	public void editSemester(String newName, String newColor, Semester item) {
 		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 		
 		item.setName(newName);
+		item.setColor(newColor);
 		databaseHandler.updateSemesterName(item);
 		
 		refreshListAdapter();
@@ -184,7 +201,7 @@ public class SemestersActivity extends ListActivity {
 		Log.d("Semester: ", "Updating ListAdapter...");
 		mSemesters = new ArrayList<Semester>();
 		for (Semester g : semestersInDatabase) {
-			Log.d("Semester: ", "ID: " + g.getID() + ", Name: " + g.getName());
+			Log.d("Semester: ", "ID: " + g.getID() + ", Name: " + g.getName() + ", Color: " + g.getColor() + ", ReferenceKey: " + g.getReferenceKey());
 			mSemesters.add(g);
 		}
 		

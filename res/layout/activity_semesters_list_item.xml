@@ -19,13 +19,13 @@
       android:layout_height="fill_parent"
       android:text="@string/coming_soon"
       android:textColor="@color/white"
-      android:textSize="18sp" />
+      android:textSize="26sp" />
     
     <TextView
       android:id="@+id/semester_class_count_textview"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
-      android:text="@string/course_count_dummy"
+      android:text="@string/course_count_dummy_2"
       android:textColor="@color/theme_white"
       android:textSize="14sp" />
 

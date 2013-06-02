@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -257,7 +258,7 @@ public class Dialogs {
 		
 		String dialogAboutTitle = "Semesters Help";
 		String dialogAbout = 
-				"Not all degree plans are created the same. Some categorize your classes by subject (e.g. Math, Science, History, etc.) while others categorize them by classification (e.g. Freshman, Junior, etc.). Iuvo allows you to create semesters in order to match your degree plan as closely as possible. You need to make at least one semester before adding a course.\n\n" +
+				"Iuvo allows you to create semesters in order to match your college career path as closely as possible. You can name your semesters whatever you want (e.g. \"Fall 2010\". \"SU 11\" or \"May Minimester 2012\") and order them however you like. In addition, you can pick a color for your semester. Classes assigned to a semester will be displayed in the semester’s color on your degree plan.\n\n" +
 				"Add a semester from the menu at the top\n\n" +
 				"Delete a semester by swiping it left or right. This will delete any classes that are in that semester.\n\n" +
 				"Re-arrange your semesters by dragging their handles on the right side.\n\n" +
@@ -286,16 +287,32 @@ public class Dialogs {
 		String dialogAddTitle = "Add Semester";
 		String dialogName = activity.getString(R.string.dialog_name);
 		
+
 		final EditText editText = new EditText(activity);
-		editText.setPadding(15, 15, 15, 15);
+		final Spinner spinner = (Spinner) new Spinner(activity);
+		LinearLayout linearLayout = new LinearLayout(activity);
+		
 		editText.setHint((CharSequence) dialogName);
+		
+		// Create an ArrayAdapter using the string array and a default spinner layout
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,
+		        R.array.color_array, android.R.layout.simple_spinner_item);
+		// Specify the layout to use when the list of choices appears
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		// Apply the adapter to the spinner
+		spinner.setAdapter(adapter);
+		spinner.setSelection(adapter.getPosition("Select Color"));
+		
+		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		linearLayout.addView(editText);
+		linearLayout.addView(spinner);
 		
 		// Listener for the 'Save' button
 		DialogInterface.OnClickListener addClickListener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// Adds semester to the database
-				((SemestersActivity) activity).addSemester(editText.getText().toString(), "0");
+				((SemestersActivity) activity).addSemester(editText.getText().toString(), spinner.getSelectedItem().toString());
 			}
 		};
 	    
@@ -303,7 +320,7 @@ public class Dialogs {
 			.setPositiveButton("Add", addClickListener)
 			.setNegativeButton("Cancel", null)
 			.setTitle(dialogAddTitle)
-			.setView(editText);
+			.setView(linearLayout);
 		
 		dialog.show();
 	}
@@ -316,17 +333,33 @@ public class Dialogs {
 		String dialogAddTitle = "Edit Semester";
 		String dialogName = activity.getString(R.string.dialog_name);
 		
+
 		final EditText editText = new EditText(activity);
-		editText.setPadding(15, 15, 15, 15);
+		final Spinner spinner = (Spinner) new Spinner(activity);
+		LinearLayout linearLayout = new LinearLayout(activity);
+		
 		editText.setHint((CharSequence) dialogName);
 		editText.setText((CharSequence) item.getName());
+		
+		// Create an ArrayAdapter using the string array and a default spinner layout
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,
+		        R.array.color_array, android.R.layout.simple_spinner_item);
+		// Specify the layout to use when the list of choices appears
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		// Apply the adapter to the spinner
+		spinner.setAdapter(adapter);
+		spinner.setSelection(adapter.getPosition(item.getColor()));
+		
+		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		linearLayout.addView(editText);
+		linearLayout.addView(spinner);
 		
 		// Listener for the 'Save' button
 		DialogInterface.OnClickListener editClickListener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// Adds semester to the database
-				((SemestersActivity) activity).editSemester(editText.getText().toString(), item);
+				((SemestersActivity) activity).editSemester(editText.getText().toString(), spinner.getSelectedItem().toString(), item);
 			}
 		};
 	    
@@ -334,7 +367,7 @@ public class Dialogs {
 			.setPositiveButton("Save", editClickListener)
 			.setNegativeButton("Cancel", null)
 			.setTitle(dialogAddTitle)
-			.setView(editText);
+			.setView(linearLayout);
 		
 		dialog.show();
 	}

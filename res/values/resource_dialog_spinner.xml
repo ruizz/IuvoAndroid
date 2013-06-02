@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="classification_array">
+        <item>Select Classification</item>
+        <item>Freshman</item>
+        <item>Sophomore</item>
+        <item>Junior</item>
+        <item>Senior</item>
+    </string-array>
+    
+    <string-array name="color_array">
+        <item>Select Color</item>
+        <item>Android Dark Blue</item>
+        <item>Android Dark Purple</item>
+        <item>Android Dark Green</item>
+        <item>Android Dark Yellow</item>
+		<item>Android Dark Red </item>
+		<item>Plum</item>
+		<item>Wild Berry</item>
+		<item>Purple</item>
+		<item>Crimson</item>
+		<item>Maroon</item>
+		<item>Rust</item>
+		<item>Brick</item>
+		<item>Watermelon</item>
+		<item>Goldfish</item>
+		<item>Construction Zone</item>
+		<item>Mustard</item>
+		<item>Forest</item>
+		<item>Sea Green</item>
+		<item>Split Pea Soup</item>
+		<item>Peru</item>
+		<item>Milk Chocolate</item>
+		<item>Dark Chocolate</item>
+    </string-array>
+</resources>

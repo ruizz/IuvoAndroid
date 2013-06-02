@@ -9,6 +9,7 @@ public class Semester {
 	
 	// private variables
 	int _id;
+	int referenceKey;
 	String name;
 	String color;
 	
@@ -21,8 +22,9 @@ public class Semester {
 	public Semester() { }
 	
 	// Constructor
-	public Semester(int id, String name, String color) {
+	public Semester(int id, int referenceKey, String name, String color) {
 		this._id = id;
+		this.referenceKey = referenceKey;
 		this.name = name;
 		this.color = color;
 	}
@@ -35,6 +37,11 @@ public class Semester {
 	// set id
 	public void setID(int id) {
 		this._id = id;
+	}
+	
+	// get reference key
+	public int getReferenceKey() {
+		return this.referenceKey;
 	}
 	
 	// get name

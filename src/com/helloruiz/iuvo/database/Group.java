@@ -9,6 +9,7 @@ public class Group {
 	
 	// private variables
 	int _id; // unique
+	int referenceKey; // can never change
 	String name;
 	
 	@Override
@@ -25,8 +26,9 @@ public class Group {
 	}
 	
 	// constructor with id
-	public Group(int id, String name) {
+	public Group(int id, int referenceKey, String name) {
 		this._id = id;
+		this.referenceKey = referenceKey;
 		this.name = name;
 	}
 	
@@ -39,6 +41,11 @@ public class Group {
 	public void setID(int id) {
 		this._id = id;
 	}	
+	
+	// get reference key
+	public int getReferenceKey() {
+		return this.referenceKey;
+	}
 	
 	// get name
 	public String getName() {

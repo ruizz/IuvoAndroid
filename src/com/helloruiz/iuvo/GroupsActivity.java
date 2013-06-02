@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Group;
@@ -33,6 +35,10 @@ public class GroupsActivity extends ListActivity {
 	      public View getView(int position, View convertView, ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
 
+	        TextView textView = (TextView) v.findViewById(R.id.group_name_textview);
+	        Typeface typeFace=Typeface.createFromAsset(v.getContext().getAssets(),"fonts/lobster.otf");
+            textView.setTypeface(typeFace);
+	        
 	        return v;
 	      }
 	    }
@@ -146,8 +152,14 @@ public class GroupsActivity extends ListActivity {
 
 		// This should be correct, since new max id is current number of available groups.
 		int max = databaseHandler.getGroupCount(db);
-		System.out.println("Before add, max: " + max);
-		databaseHandler.addGroup(new Group(max, name));
+		int maxReferenceKey;
+		
+		if (max > 0)
+			maxReferenceKey = databaseHandler.getMaxGroupReferenceKey();
+		else
+			maxReferenceKey = -1;
+		
+		databaseHandler.addGroup(new Group(max, maxReferenceKey + 1,  name));
 
 		refreshListAdapter();
 		db.close();
@@ -184,7 +196,7 @@ public class GroupsActivity extends ListActivity {
 		Log.d("Group: ", "Updating ListAdapter...");
 		mGroups = new ArrayList<Group>();
 		for (Group g : groupsInDatabase) {
-			Log.d("Group: ", "ID: " + g.getID() + ", Name: " + g.getName());
+			Log.d("Group: ", "ID: " + g.getID() + ", Name: " + g.getName() + ", ReferenceKey: " + g.getReferenceKey());
 			mGroups.add(g);
 		}
 		
