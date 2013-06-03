@@ -241,7 +241,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    public static final String[] SUBTEXTS = { null, "1 Credit, No Semester Assigned",
 	        "4 Credits, No Semester Assigned", "4 Credits, No Semester Assigned", null, "3 Credits, No Semester Assigned",
 	        null, "4 Credits, No Semester Assigned", "4 Credits, No Semester Assigned", "3 Credits, No Semester Assigned" };
-
+	    public static final String[] GRADETEXTS = {null, "A", "A", "B", null, "B", null, "C", "C", "B"};
+	    
+	    
 	    private static final Integer LIST_HEADER = 0;
 	    private static final Integer LIST_ITEM = 1;
 		
@@ -261,7 +263,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    	return R.layout.activity_semesters_list_item;
 	    }
 
-	    private ListView mDslv;
+	    private ListView listView;
 
 	    public static PlanSectionFragment newInstance(int headers, int footers) {
 	        PlanSectionFragment f = new PlanSectionFragment();
@@ -290,16 +292,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
-	        mDslv = (ListView) inflater.inflate(getLayout(), container, false);
+	        listView = (ListView) inflater.inflate(getLayout(), container, false);
 
-	        return mDslv;
+	        return listView;
 	    }
 
 	    @Override
 	    public void onActivityCreated(Bundle savedInstanceState) {
 	        super.onActivityCreated(savedInstanceState);
 
-	        mDslv = getListView(); 
+	        listView = getListView(); 
 
 	        setListAdapter();
 	    }
@@ -368,6 +370,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	            TextView subtext = (TextView)rootView.findViewById(R.id.plan_item_description);
 	            subtext.setText(SUBTEXTS[position % SUBTEXTS.length]);
+	            
+	            TextView gradeText = (TextView)rootView.findViewById(R.id.plan_item_grade);
+	            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
+                gradeText.setTypeface(typeFace);
+	            gradeText.setText(GRADETEXTS[position % GRADETEXTS.length]);
 
 	            //Set last divider in a sublist invisible
 	            View divider = rootView.findViewById(R.id.item_separator);

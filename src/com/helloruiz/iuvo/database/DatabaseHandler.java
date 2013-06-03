@@ -12,7 +12,7 @@ import android.util.Log;
 
 /**
  * Database Handler for all group, semester, and class databases. Based on:
- * http://www.androidhive.info/2011/11/android-sqlite-com.helloruiz.iuvo.database-tutorial/
+ * http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/
  * 
  * Handler operations assume that the all of the IDs for either group or semester sequential from 0 with no gaps.
  * ex. 0, 1, 2 or 0 1, 2, 3, 4, 5, 6
@@ -31,13 +31,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Group table name
     private static final String TABLE_GROUP = "groups";
     private static final String TABLE_SEMESTER = "semesters";
+    private static final String TABLE_COURSE = "courses";
  
     // Group Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
-    private static final String KEY_REFERENCEKEY = "referenceKey";
+    private static final String KEY_REFERENCE_KEY = "referenceKey";
     private static final String KEY_COLOR = "color";
- 
+    private static final String KEY_GROUP_ID = "groupID";
+    private static final String KEY_SEMESTER_REFERENCE_KEY = "semesterReferenceKey";
+    private static final String KEY_GROUP_REFERENCE_KEY = "groupReferenceKey";
+    private static final String KEY_HOURS = "hours";
+    private static final String KEY_GRADE = "grade";
+    private static final String KEY_EXCLUDED_FROM_GPA = "excludedFromGPA";
+
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -52,18 +59,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	// Group
         String CREATE_GROUP_TABLE = "create table " + TABLE_GROUP + "("
         		+ KEY_ID + " INTEGER PRIMARY KEY,"
-        		+ KEY_REFERENCEKEY + " INTEGER,"
+        		+ KEY_REFERENCE_KEY + " INTEGER,"
                 + KEY_NAME + " TEXT" + ")";
         
         // Table
         String CREATE_SEMESTER_TABLE = "create table " + TABLE_SEMESTER + "("
         		+ KEY_ID + " INTEGER PRIMARY KEY,"
-        		+ KEY_REFERENCEKEY + " INTEGER,"
+        		+ KEY_REFERENCE_KEY + " INTEGER,"
                 + KEY_NAME + " TEXT," 
         		+ KEY_COLOR + " TEXT" + ")";
         
+        // Course
+        String CREATE_COURSE_TABLE = "create table " + TABLE_COURSE + "("
+        		+ KEY_ID + " INTEGER PRIMARY KEY,"
+        		+ KEY_GROUP_ID + " INTEGER,"
+        		+ KEY_SEMESTER_REFERENCE_KEY + " INTEGER,"
+        		+ KEY_GROUP_REFERENCE_KEY + " INTEGER,"
+        		+ KEY_NAME + " TEXT,"
+        		+ KEY_HOURS + " INTEGER,"
+        		+ KEY_GRADE + " TEXT,"
+        		+ KEY_EXCLUDED_FROM_GPA + " INTEGER" + ")";
+        
         db.execSQL(CREATE_GROUP_TABLE);
         db.execSQL(CREATE_SEMESTER_TABLE);
+        db.execSQL(CREATE_COURSE_TABLE);
     }
  
     // I'll worry about this if I ever have to upgrade the database. Leave clear for now.
@@ -79,7 +98,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      
         ContentValues values = new ContentValues();
         values.put(KEY_ID, group.getID());
-        values.put(KEY_REFERENCEKEY, group.getReferenceKey());
+        values.put(KEY_REFERENCE_KEY, group.getReferenceKey());
         values.put(KEY_NAME, group.getName());
      
         // Adding Row
@@ -93,7 +112,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	
     	ContentValues values = new ContentValues();
         values.put(KEY_ID, group.getID());
-        values.put(KEY_REFERENCEKEY, group.getReferenceKey());
+        values.put(KEY_REFERENCE_KEY, group.getReferenceKey());
         values.put(KEY_NAME, group.getName());
 		
         // Increments all of the groups below the group to insert.
@@ -110,7 +129,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public Group getGroup(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
      
-        Cursor cursor = db.query(TABLE_GROUP, new String[] {KEY_ID, KEY_REFERENCEKEY, KEY_NAME}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
+        Cursor cursor = db.query(TABLE_GROUP, new String[] {KEY_ID, KEY_REFERENCE_KEY, KEY_NAME}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
         		null, null, null, null);
         
         if (cursor != null)
@@ -156,7 +175,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      
         ContentValues values = new ContentValues();
         values.put(KEY_ID, group.getID());
-        values.put(KEY_REFERENCEKEY, group.getReferenceKey());
+        values.put(KEY_REFERENCE_KEY, group.getReferenceKey());
         values.put(KEY_NAME, group.getName());
      
         // updating row
@@ -172,7 +191,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         	values.put(KEY_ID, group.getID() + 1);
         else
         	values.put(KEY_ID, group.getID() - 1);
-        values.put(KEY_REFERENCEKEY, group.getReferenceKey());
+        values.put(KEY_REFERENCE_KEY, group.getReferenceKey());
         values.put(KEY_NAME, group.getName());
      
         // updating row
@@ -213,7 +232,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		// Get max group referenceKey from database.
-        String selectQuery = "SELECT MAX(" + KEY_REFERENCEKEY + ") AS maxGroupReferenceKey FROM " + TABLE_GROUP;
+        String selectQuery = "SELECT MAX(" + KEY_REFERENCE_KEY + ") AS maxGroupReferenceKey FROM " + TABLE_GROUP;
         Cursor cursor = db.rawQuery(selectQuery, null);
         
         if (cursor != null)
@@ -235,7 +254,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      
         ContentValues values = new ContentValues();
         values.put(KEY_ID, semester.getID());
-        values.put(KEY_REFERENCEKEY, semester.getReferenceKey());
+        values.put(KEY_REFERENCE_KEY, semester.getReferenceKey());
         values.put(KEY_NAME, semester.getName());
 		values.put(KEY_COLOR, semester.getColor());
      
@@ -250,7 +269,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	
     	ContentValues values = new ContentValues();
         values.put(KEY_ID, semester.getID());
-        values.put(KEY_REFERENCEKEY, semester.getReferenceKey());
+        values.put(KEY_REFERENCE_KEY, semester.getReferenceKey());
         values.put(KEY_NAME, semester.getName());
         values.put(KEY_COLOR, semester.getColor());
 		
@@ -268,7 +287,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public Semester getSemester(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
      
-        Cursor cursor = db.query(TABLE_SEMESTER, new String[] {KEY_ID, KEY_REFERENCEKEY, KEY_NAME, KEY_COLOR}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
+        Cursor cursor = db.query(TABLE_SEMESTER, new String[] {KEY_ID, KEY_REFERENCE_KEY, KEY_NAME, KEY_COLOR}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
         		null, null, null, null);
         
         if (cursor != null)
@@ -314,7 +333,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      
         ContentValues values = new ContentValues();
         values.put(KEY_ID, semester.getID());
-        values.put(KEY_REFERENCEKEY, semester.getReferenceKey());
+        values.put(KEY_REFERENCE_KEY, semester.getReferenceKey());
         values.put(KEY_NAME, semester.getName());
 		values.put(KEY_COLOR, semester.getColor());
      
@@ -331,7 +350,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         	values.put(KEY_ID, semester.getID() + 1);
         else
         	values.put(KEY_ID, semester.getID() - 1);
-        values.put(KEY_REFERENCEKEY, semester.getReferenceKey());
+        values.put(KEY_REFERENCE_KEY, semester.getReferenceKey());
         values.put(KEY_NAME, semester.getName());
 		values.put(KEY_COLOR, semester.getColor());
      
@@ -373,7 +392,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 			
 		// Get max group referenceKey from database.
-	    String selectQuery = "SELECT MAX(" + KEY_REFERENCEKEY + ") AS maxSemesterReferenceKey FROM " + TABLE_SEMESTER;
+	    String selectQuery = "SELECT MAX(" + KEY_REFERENCE_KEY + ") AS maxSemesterReferenceKey FROM " + TABLE_SEMESTER;
 	    Cursor cursor = db.rawQuery(selectQuery, null);
 	        
 	    if (cursor != null)
