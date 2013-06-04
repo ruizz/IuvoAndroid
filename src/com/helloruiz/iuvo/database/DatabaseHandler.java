@@ -328,7 +328,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     
     // Update single semester name and color.
-    public void updateSemesterName(Semester semester) {
+    public void updateSemester(Semester semester) {
         SQLiteDatabase db = this.getWritableDatabase();
      
         ContentValues values = new ContentValues();
@@ -409,12 +409,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void addCourse(Course course) {
         SQLiteDatabase db = this.getWritableDatabase();
      
-        int excludedFromGPA;
-        
-        if (course.getExcludedFromGPA())
-        	excludedFromGPA = 1;
-        else
-        	excludedFromGPA = 0;
+        int excludedFromGPA = translateGPAOption(course.getExcludedFromGPA());
         
         ContentValues values = new ContentValues();
         values.put(KEY_ID, course.getID());
@@ -431,16 +426,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
     
-    // Insert group at a specified location.
+    // Insert course at a specified location.
     public void insertCourse(Course course) {
     	SQLiteDatabase db = this.getWritableDatabase();
     	
-    	int excludedFromGPA;
-        
-        if (course.getExcludedFromGPA())
-        	excludedFromGPA = 1;
-        else
-        	excludedFromGPA = 0;
+    	int excludedFromGPA = translateGPAOption(course.getExcludedFromGPA());
     	
     	ContentValues values = new ContentValues();
         values.put(KEY_ID, course.getID());
@@ -461,5 +451,268 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Inserting Row
         db.insert(TABLE_GROUP, null, values);
         db.close(); 
+    }
+    
+    // Get single course, not sure if needed honestly...
+    public Course getCourse(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+     
+        Cursor cursor = db.query(TABLE_COURSE, new String[] {
+        		KEY_ID, 
+        		KEY_GROUP_ID, 
+        		KEY_GROUP_REFERENCE_KEY, 
+        		KEY_SEMESTER_REFERENCE_KEY, 
+        		KEY_NAME,
+        		KEY_HOURS,
+        		KEY_GRADE,
+        		KEY_EXCLUDED_FROM_GPA }, KEY_ID + "=?", new String[] { String.valueOf( id ) },
+        		null, null, null, null);
+        
+        if (cursor != null)
+            cursor.moveToFirst();
+     
+        boolean excludedFromGPA = translateGPAOption(Integer.parseInt(cursor.getString(7)));
+        
+        Course course = new Course(
+        		Integer.parseInt(cursor.getString(0)), 
+        		Integer.parseInt(cursor.getString(1)), 
+        		Integer.parseInt(cursor.getString(2)),
+        		Integer.parseInt(cursor.getString(3)),
+        		cursor.getString(4),
+        		Integer.parseInt(cursor.getString(5)),
+        		cursor.getString(6),
+        		excludedFromGPA
+        		);
+        
+        cursor.close();
+        
+        // return group
+        return course;
+    }
+    
+    // Get all courses
+    public List<Course> getAllCourses() {
+        List<Course> courseList= new ArrayList<Course>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_COURSE;
+     
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+     
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+            	
+            	boolean excludedFromGPA = translateGPAOption(Integer.parseInt(cursor.getString(7)));
+                
+                Course course = new Course(
+                		Integer.parseInt(cursor.getString(0)), 
+                		Integer.parseInt(cursor.getString(1)), 
+                		Integer.parseInt(cursor.getString(2)),
+                		Integer.parseInt(cursor.getString(3)),
+                		cursor.getString(4),
+                		Integer.parseInt(cursor.getString(5)),
+                		cursor.getString(6),
+                		excludedFromGPA
+                		);
+                
+                // Adding group to list
+                courseList.add(course);
+            } while (cursor.moveToNext());
+        }
+        
+        cursor.close();
+        db.close();
+     
+        // return group list
+        return courseList;
+    }
+    
+    // Get all courses by group
+    public List<Course> getAllCourses(Group group) {
+        List<Course> courseList= new ArrayList<Course>();
+     
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_COURSE, new String[] {
+        		KEY_ID, 
+        		KEY_GROUP_ID, 
+        		KEY_GROUP_REFERENCE_KEY, 
+        		KEY_SEMESTER_REFERENCE_KEY, 
+        		KEY_NAME,
+        		KEY_HOURS,
+        		KEY_GRADE,
+        		KEY_EXCLUDED_FROM_GPA }, KEY_GROUP_REFERENCE_KEY + "=?", new String[] { String.valueOf( group.getReferenceKey() ) },
+        		null, null, null, null);
+     
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+            	
+            	boolean excludedFromGPA = translateGPAOption(Integer.parseInt(cursor.getString(7)));
+                
+                Course course = new Course(
+                		Integer.parseInt(cursor.getString(0)), 
+                		Integer.parseInt(cursor.getString(1)), 
+                		Integer.parseInt(cursor.getString(2)),
+                		Integer.parseInt(cursor.getString(3)),
+                		cursor.getString(4),
+                		Integer.parseInt(cursor.getString(5)),
+                		cursor.getString(6),
+                		excludedFromGPA
+                		);
+                
+                // Adding group to list
+                courseList.add(course);
+            } while (cursor.moveToNext());
+        }
+        
+        cursor.close();
+        db.close();
+     
+        // return group list
+        return courseList;
+    }
+    
+    // Get all courses by semester
+    public List<Course> getAllCourses(Semester semester) {
+        List<Course> courseList= new ArrayList<Course>();
+     
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_COURSE, new String[] {
+        		KEY_ID, 
+        		KEY_GROUP_ID, 
+        		KEY_GROUP_REFERENCE_KEY, 
+        		KEY_SEMESTER_REFERENCE_KEY, 
+        		KEY_NAME,
+        		KEY_HOURS,
+        		KEY_GRADE,
+        		KEY_EXCLUDED_FROM_GPA }, KEY_SEMESTER_REFERENCE_KEY + "=?", new String[] { String.valueOf( semester.getReferenceKey() ) },
+        		null, null, null, null);
+     
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+            	
+            	boolean excludedFromGPA = translateGPAOption(Integer.parseInt(cursor.getString(7)));
+                
+                Course course = new Course(
+                		Integer.parseInt(cursor.getString(0)), 
+                		Integer.parseInt(cursor.getString(1)), 
+                		Integer.parseInt(cursor.getString(2)),
+                		Integer.parseInt(cursor.getString(3)),
+                		cursor.getString(4),
+                		Integer.parseInt(cursor.getString(5)),
+                		cursor.getString(6),
+                		excludedFromGPA
+                		);
+                
+                // Adding group to list
+                courseList.add(course);
+            } while (cursor.moveToNext());
+        }
+        
+        cursor.close();
+        db.close();
+     
+        // return group list
+        return courseList;
+    }
+    
+    // TODO
+    public void updateCourseGroupID(SQLiteDatabase db, Course course, boolean incrementID) {
+    	
+    }
+    
+    // TODO
+    public void updateCourse(Course course) { 
+    	
+    }
+    
+    // TODO
+    public void deleteCourse(Course course) {
+    	
+    }
+    
+    // TODO
+    public int getMaxCourseID() {
+    	int result = 0;
+    	
+    	return result;
+    }
+    
+    // Get course count
+ 	public int getCourseCount(SQLiteDatabase db) {
+ 	    String countQuery = "SELECT * FROM " + TABLE_COURSE;
+ 	    Cursor cursor = db.rawQuery(countQuery, null);
+ 	    
+ 	    int count = cursor.getCount();
+ 	    cursor.close();
+ 	    
+ 	    // return count
+ 	    return count;
+ 	}
+ 	
+ 	// Get semester count by group
+  	public int getCourseCount(SQLiteDatabase db, Group group) {
+  		Cursor cursor = db.query(TABLE_COURSE, new String[] {
+        		KEY_ID, 
+        		KEY_GROUP_ID, 
+        		KEY_GROUP_REFERENCE_KEY, 
+        		KEY_SEMESTER_REFERENCE_KEY, 
+        		KEY_NAME,
+        		KEY_HOURS,
+        		KEY_GRADE,
+        		KEY_EXCLUDED_FROM_GPA }, KEY_GROUP_REFERENCE_KEY + "=?", new String[] { String.valueOf( group.getReferenceKey() ) },
+        		null, null, null, null);
+  	    
+  	    int count = cursor.getCount();
+  	    cursor.close();
+  	    
+  	    // return count
+  	    return count;
+  	}
+  	
+  	// Get course count by semester
+   	public int getCourseCount(SQLiteDatabase db, Semester semester) {
+   		Cursor cursor = db.query(TABLE_COURSE, new String[] {
+         		KEY_ID, 
+         		KEY_GROUP_ID, 
+         		KEY_GROUP_REFERENCE_KEY, 
+         		KEY_SEMESTER_REFERENCE_KEY, 
+         		KEY_NAME,
+         		KEY_HOURS,
+         		KEY_GRADE,
+         		KEY_EXCLUDED_FROM_GPA }, KEY_SEMESTER_REFERENCE_KEY + "=?", new String[] { String.valueOf( semester.getReferenceKey() ) },
+         		null, null, null, null);
+   	    
+   	    int count = cursor.getCount();
+   	    cursor.close();
+   	    
+   	    // return count
+   	    return count;
+   	}
+   	
+    // Translates GPA option from database to a course instance boolean value
+    public boolean translateGPAOption(int value) {
+        boolean result;
+        
+        if (value == 1)
+        	result = true;
+        else
+        	result = false;
+        
+        return result;
+    }
+    
+    // Translates GPA option from course instance to a database int value
+    public int translateGPAOption(boolean value) {
+    	int result;
+    	
+    	if (value)
+    		result = 1;
+    	else
+    		result = 0;
+    	
+    	return result;
     }
 }

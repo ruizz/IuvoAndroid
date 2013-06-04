@@ -175,7 +175,7 @@ public class SemestersActivity extends ListActivity {
 		
 		item.setName(newName);
 		item.setColor(newColor);
-		databaseHandler.updateSemesterName(item);
+		databaseHandler.updateSemester(item);
 		
 		refreshListAdapter();
 	}
