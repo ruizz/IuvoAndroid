@@ -391,7 +391,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public int getMaxSemesterReferenceKey() {
 		SQLiteDatabase db = this.getWritableDatabase();
 			
-		// Get max group referenceKey from database.
+		// Get max semester referenceKey from database.
 	    String selectQuery = "SELECT MAX(" + KEY_REFERENCE_KEY + ") AS maxSemesterReferenceKey FROM " + TABLE_SEMESTER;
 	    Cursor cursor = db.rawQuery(selectQuery, null);
 	        
@@ -404,4 +404,62 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	        
 	    return result;
 	}
+	
+	// Add new course
+    public void addCourse(Course course) {
+        SQLiteDatabase db = this.getWritableDatabase();
+     
+        int excludedFromGPA;
+        
+        if (course.getExcludedFromGPA())
+        	excludedFromGPA = 1;
+        else
+        	excludedFromGPA = 0;
+        
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID, course.getID());
+        values.put(KEY_GROUP_ID, course.getGroupID());
+        values.put(KEY_GROUP_REFERENCE_KEY, course.getGroupReferenceKey());
+        values.put(KEY_SEMESTER_REFERENCE_KEY, course.getSemesterReferenceKey());
+        values.put(KEY_NAME, course.getName());
+        values.put(KEY_HOURS, course.getHours());
+        values.put(KEY_GRADE, course.getGrade());
+        values.put(KEY_EXCLUDED_FROM_GPA, excludedFromGPA);
+     
+        // Adding Row
+        db.insert(TABLE_GROUP, null, values);
+        db.close();
+    }
+    
+    // Insert group at a specified location.
+    public void insertCourse(Course course) {
+    	SQLiteDatabase db = this.getWritableDatabase();
+    	
+    	int excludedFromGPA;
+        
+        if (course.getExcludedFromGPA())
+        	excludedFromGPA = 1;
+        else
+        	excludedFromGPA = 0;
+    	
+    	ContentValues values = new ContentValues();
+        values.put(KEY_ID, course.getID());
+        values.put(KEY_GROUP_ID, course.getGroupID());
+        values.put(KEY_GROUP_REFERENCE_KEY, course.getGroupReferenceKey());
+        values.put(KEY_SEMESTER_REFERENCE_KEY, course.getSemesterReferenceKey());
+        values.put(KEY_NAME, course.getName());
+        values.put(KEY_HOURS, course.getHours());
+        values.put(KEY_GRADE, course.getGrade());
+        values.put(KEY_EXCLUDED_FROM_GPA, excludedFromGPA);
+		
+        // CONTINUE
+        // Increments all of the groups below the group to insert.
+        for (int i = getGroupCount(db) - 1; i > course.getID() - 1; i--) {
+        	updateGroupID(db, getGroup(i), true);
+        }
+        
+        // Inserting Row
+        db.insert(TABLE_GROUP, null, values);
+        db.close(); 
+    }
 }
