@@ -43,7 +43,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_GROUP_REFERENCE_KEY = "groupReferenceKey";
     private static final String KEY_HOURS = "hours";
     private static final String KEY_GRADE = "grade";
+    private static final String KEY_IS_COMPLETED = "isCompleted";
     private static final String KEY_EXCLUDED_FROM_GPA = "excludedFromGPA";
+    private static final String KEY_EXCLUDED_FROM_DEGREE_PLAN = "excludedFromDegreePlan";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -78,7 +80,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         		+ KEY_NAME + " TEXT,"
         		+ KEY_HOURS + " INTEGER,"
         		+ KEY_GRADE + " TEXT,"
-        		+ KEY_EXCLUDED_FROM_GPA + " INTEGER" + ")";
+        		+ KEY_IS_COMPLETED + " INTEGER,"
+        		+ KEY_EXCLUDED_FROM_GPA + " INTEGER,"
+        		+ KEY_EXCLUDED_FROM_DEGREE_PLAN + " INTEGER" + ")";
         
         db.execSQL(CREATE_GROUP_TABLE);
         db.execSQL(CREATE_SEMESTER_TABLE);
@@ -405,24 +409,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    return result;
 	}
 	
+	/**
+	 * Course Operations
+	 */
+	
 	// Add new course
     public void addCourse(Course course) {
         SQLiteDatabase db = this.getWritableDatabase();
-     
-        int excludedFromGPA = translateGPAOption(course.getExcludedFromGPA());
         
         ContentValues values = new ContentValues();
         values.put(KEY_ID, course.getID());
         values.put(KEY_GROUP_ID, course.getGroupID());
-        values.put(KEY_GROUP_REFERENCE_KEY, course.getGroupReferenceKey());
         values.put(KEY_SEMESTER_REFERENCE_KEY, course.getSemesterReferenceKey());
+        values.put(KEY_GROUP_REFERENCE_KEY, course.getGroupReferenceKey());
         values.put(KEY_NAME, course.getName());
         values.put(KEY_HOURS, course.getHours());
         values.put(KEY_GRADE, course.getGrade());
-        values.put(KEY_EXCLUDED_FROM_GPA, excludedFromGPA);
+        values.put(KEY_IS_COMPLETED, course.getIsCompleted());
+        values.put(KEY_EXCLUDED_FROM_GPA, course.getExcludedFromGPA());
+        values.put(KEY_EXCLUDED_FROM_DEGREE_PLAN, course.getExcludedFromDegreePlan());
      
         // Adding Row
-        db.insert(TABLE_GROUP, null, values);
+        db.insert(TABLE_COURSE, null, values);
         db.close();
     }
     
@@ -430,49 +438,49 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void insertCourse(Course course) {
     	SQLiteDatabase db = this.getWritableDatabase();
     	
-    	int excludedFromGPA = translateGPAOption(course.getExcludedFromGPA());
-    	
-    	ContentValues values = new ContentValues();
+        ContentValues values = new ContentValues();
         values.put(KEY_ID, course.getID());
         values.put(KEY_GROUP_ID, course.getGroupID());
-        values.put(KEY_GROUP_REFERENCE_KEY, course.getGroupReferenceKey());
         values.put(KEY_SEMESTER_REFERENCE_KEY, course.getSemesterReferenceKey());
+        values.put(KEY_GROUP_REFERENCE_KEY, course.getGroupReferenceKey());
         values.put(KEY_NAME, course.getName());
         values.put(KEY_HOURS, course.getHours());
         values.put(KEY_GRADE, course.getGrade());
-        values.put(KEY_EXCLUDED_FROM_GPA, excludedFromGPA);
+        values.put(KEY_IS_COMPLETED, course.getIsCompleted());
+        values.put(KEY_EXCLUDED_FROM_GPA, course.getExcludedFromGPA());
+        values.put(KEY_EXCLUDED_FROM_DEGREE_PLAN, course.getExcludedFromDegreePlan());
 		
         // CONTINUE
         // Increments all of the groups below the group to insert.
-        for (int i = getGroupCount(db) - 1; i > course.getID() - 1; i--) {
-        	updateGroupID(db, getGroup(i), true);
+        for (int i = getGroupCount(db) - 1; i >= course.getGroupID(); i--) {
+        	//updateCourseGroupID(db, getCourseByGroupID(i), true);
         }
         
         // Inserting Row
-        db.insert(TABLE_GROUP, null, values);
+        db.insert(TABLE_COURSE, null, values);
         db.close(); 
     }
     
-    // Get single course, not sure if needed honestly...
-    public Course getCourse(int id) {
+    // Get single course
+    public Course getCourseByID(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
      
         Cursor cursor = db.query(TABLE_COURSE, new String[] {
         		KEY_ID, 
         		KEY_GROUP_ID, 
-        		KEY_GROUP_REFERENCE_KEY, 
         		KEY_SEMESTER_REFERENCE_KEY, 
+        		KEY_GROUP_REFERENCE_KEY, 
         		KEY_NAME,
         		KEY_HOURS,
         		KEY_GRADE,
-        		KEY_EXCLUDED_FROM_GPA }, KEY_ID + "=?", new String[] { String.valueOf( id ) },
+        		KEY_IS_COMPLETED,
+        		KEY_EXCLUDED_FROM_GPA,
+        		KEY_EXCLUDED_FROM_DEGREE_PLAN }, KEY_ID + "=?", new String[] { String.valueOf( id ) },
         		null, null, null, null);
         
         if (cursor != null)
             cursor.moveToFirst();
      
-        boolean excludedFromGPA = translateGPAOption(Integer.parseInt(cursor.getString(7)));
-        
         Course course = new Course(
         		Integer.parseInt(cursor.getString(0)), 
         		Integer.parseInt(cursor.getString(1)), 
@@ -481,7 +489,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         		cursor.getString(4),
         		Integer.parseInt(cursor.getString(5)),
         		cursor.getString(6),
-        		excludedFromGPA
+        		Integer.parseInt(cursor.getString(7)),
+        		Integer.parseInt(cursor.getString(8)),
+        		Integer.parseInt(cursor.getString(9))
         		);
         
         cursor.close();
@@ -502,19 +512,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-            	
-            	boolean excludedFromGPA = translateGPAOption(Integer.parseInt(cursor.getString(7)));
                 
-                Course course = new Course(
-                		Integer.parseInt(cursor.getString(0)), 
-                		Integer.parseInt(cursor.getString(1)), 
-                		Integer.parseInt(cursor.getString(2)),
-                		Integer.parseInt(cursor.getString(3)),
-                		cursor.getString(4),
-                		Integer.parseInt(cursor.getString(5)),
-                		cursor.getString(6),
-                		excludedFromGPA
-                		);
+            	Course course = new Course(
+                	Integer.parseInt(cursor.getString(0)), 
+                	Integer.parseInt(cursor.getString(1)), 
+                	Integer.parseInt(cursor.getString(2)),
+                	Integer.parseInt(cursor.getString(3)),
+                	cursor.getString(4),
+                	Integer.parseInt(cursor.getString(5)),
+                	cursor.getString(6),
+                	Integer.parseInt(cursor.getString(7)),
+                	Integer.parseInt(cursor.getString(8)),
+                	Integer.parseInt(cursor.getString(9))
+                	);
                 
                 // Adding group to list
                 courseList.add(course);
@@ -541,25 +551,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         		KEY_NAME,
         		KEY_HOURS,
         		KEY_GRADE,
-        		KEY_EXCLUDED_FROM_GPA }, KEY_GROUP_REFERENCE_KEY + "=?", new String[] { String.valueOf( group.getReferenceKey() ) },
+        		KEY_IS_COMPLETED,
+        		KEY_EXCLUDED_FROM_GPA,
+        		KEY_EXCLUDED_FROM_DEGREE_PLAN }, KEY_GROUP_REFERENCE_KEY + "=?", new String[] { String.valueOf( group.getReferenceKey() ) },
         		null, null, null, null);
      
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-            	
-            	boolean excludedFromGPA = translateGPAOption(Integer.parseInt(cursor.getString(7)));
                 
-                Course course = new Course(
-                		Integer.parseInt(cursor.getString(0)), 
-                		Integer.parseInt(cursor.getString(1)), 
-                		Integer.parseInt(cursor.getString(2)),
-                		Integer.parseInt(cursor.getString(3)),
-                		cursor.getString(4),
-                		Integer.parseInt(cursor.getString(5)),
-                		cursor.getString(6),
-                		excludedFromGPA
-                		);
+            	Course course = new Course(
+                    	Integer.parseInt(cursor.getString(0)), 
+                    	Integer.parseInt(cursor.getString(1)), 
+                    	Integer.parseInt(cursor.getString(2)),
+                    	Integer.parseInt(cursor.getString(3)),
+                    	cursor.getString(4),
+                    	Integer.parseInt(cursor.getString(5)),
+                    	cursor.getString(6),
+                    	Integer.parseInt(cursor.getString(7)),
+                    	Integer.parseInt(cursor.getString(8)),
+                    	Integer.parseInt(cursor.getString(9))
+                    	);
                 
                 // Adding group to list
                 courseList.add(course);
@@ -586,25 +598,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         		KEY_NAME,
         		KEY_HOURS,
         		KEY_GRADE,
-        		KEY_EXCLUDED_FROM_GPA }, KEY_SEMESTER_REFERENCE_KEY + "=?", new String[] { String.valueOf( semester.getReferenceKey() ) },
+        		KEY_IS_COMPLETED,
+        		KEY_EXCLUDED_FROM_GPA,
+        		KEY_EXCLUDED_FROM_DEGREE_PLAN }, KEY_SEMESTER_REFERENCE_KEY + "=?", new String[] { String.valueOf( semester.getReferenceKey() ) },
         		null, null, null, null);
      
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-            	
-            	boolean excludedFromGPA = translateGPAOption(Integer.parseInt(cursor.getString(7)));
                 
-                Course course = new Course(
-                		Integer.parseInt(cursor.getString(0)), 
-                		Integer.parseInt(cursor.getString(1)), 
-                		Integer.parseInt(cursor.getString(2)),
-                		Integer.parseInt(cursor.getString(3)),
-                		cursor.getString(4),
-                		Integer.parseInt(cursor.getString(5)),
-                		cursor.getString(6),
-                		excludedFromGPA
-                		);
+            	Course course = new Course(
+                    Integer.parseInt(cursor.getString(0)), 
+                   	Integer.parseInt(cursor.getString(1)), 
+                   	Integer.parseInt(cursor.getString(2)),
+                   	Integer.parseInt(cursor.getString(3)),
+                   	cursor.getString(4),
+                   	Integer.parseInt(cursor.getString(5)),
+                   	cursor.getString(6),
+                   	Integer.parseInt(cursor.getString(7)),
+                   	Integer.parseInt(cursor.getString(8)),
+                   	Integer.parseInt(cursor.getString(9))
+                   	);
                 
                 // Adding group to list
                 courseList.add(course);
@@ -621,8 +635,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Update course group ID. Maybe done.
     public void updateCourse(SQLiteDatabase db, Course course, boolean incrementID) {
     	ContentValues values = new ContentValues();
-        
-    	int excludedFromGPA = translateGPAOption(course.getExcludedFromGPA());
     	
     	values.put(KEY_ID, course.getID());
     	if (incrementID)
@@ -634,7 +646,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, course.getName());
         values.put(KEY_HOURS, course.getHours());
         values.put(KEY_GRADE, course.getGrade());
-        values.put(KEY_EXCLUDED_FROM_GPA, excludedFromGPA);
+        values.put(KEY_IS_COMPLETED, course.getIsCompleted());
+        values.put(KEY_EXCLUDED_FROM_GPA, course.getExcludedFromGPA());
+        values.put(KEY_EXCLUDED_FROM_DEGREE_PLAN, course.getExcludedFromDegreePlan());
      
         // updating row
         db.update(TABLE_COURSE, values, KEY_ID + " = ?", new String[] { String.valueOf(course.getID()) });
@@ -679,7 +693,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         		KEY_NAME,
         		KEY_HOURS,
         		KEY_GRADE,
-        		KEY_EXCLUDED_FROM_GPA }, KEY_GROUP_REFERENCE_KEY + "=?", new String[] { String.valueOf( group.getReferenceKey() ) },
+        		KEY_IS_COMPLETED,
+        		KEY_EXCLUDED_FROM_GPA,
+        		KEY_EXCLUDED_FROM_DEGREE_PLAN }, KEY_GROUP_REFERENCE_KEY + "=?", new String[] { String.valueOf( group.getReferenceKey() ) },
         		null, null, null, null);
   	    
   	    int count = cursor.getCount();
@@ -699,7 +715,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
          		KEY_NAME,
          		KEY_HOURS,
          		KEY_GRADE,
-         		KEY_EXCLUDED_FROM_GPA }, KEY_SEMESTER_REFERENCE_KEY + "=?", new String[] { String.valueOf( semester.getReferenceKey() ) },
+         		KEY_IS_COMPLETED,
+        		KEY_EXCLUDED_FROM_GPA,
+        		KEY_EXCLUDED_FROM_DEGREE_PLAN }, KEY_SEMESTER_REFERENCE_KEY + "=?", new String[] { String.valueOf( semester.getReferenceKey() ) },
          		null, null, null, null);
    	    
    	    int count = cursor.getCount();
@@ -708,28 +726,4 @@ public class DatabaseHandler extends SQLiteOpenHelper {
    	    // return count
    	    return count;
    	}
-   	
-    // Translates GPA option from database to a course instance boolean value
-    public boolean translateGPAOption(int value) {
-        boolean result;
-        
-        if (value == 1)
-        	result = true;
-        else
-        	result = false;
-        
-        return result;
-    }
-    
-    // Translates GPA option from course instance to a database int value
-    public int translateGPAOption(boolean value) {
-    	int result;
-    	
-    	if (value)
-    		result = 1;
-    	else
-    		result = 0;
-    	
-    	return result;
-    }
 }

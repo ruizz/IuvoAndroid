@@ -8,9 +8,9 @@ package com.helloruiz.iuvo.database;
 public class Group {
 	
 	// private variables
-	int _id; // unique
-	int referenceKey; // can never change
-	String name;
+	private int _id; // unique
+	private int referenceKey; // can never change
+	private String name;
 	
 	@Override
     public String toString() {

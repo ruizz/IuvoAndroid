@@ -8,21 +8,35 @@ package com.helloruiz.iuvo.database;
 public class Course {
 	
 	// private variables
-	int _id; // unique, unlike group and semester, this will probably never change.
-	int groupID; // used for course order within group.
-	int semesterReferenceKey; // -1 for none
-	int groupReferenceKey;
-	String name;
-	int hours;
-	String grade;
-	boolean excludedFromGPA; // stored as int in database, 0 for false, 1 for true
+	
+	// unique, unlike group and semester, this will probably never change.
+	// Essentially the same as 'referenceKey' in Group and Semester, except
+	// that it doesn't need to be referenced by this.
+	private int _id;
+	
+	// Used for course order within group. Only way to reference a course.
+	private int groupID; 
+	
+	// Indicates what Group and/or Semester the course is tied to
+	private int semesterReferenceKey; // -1 for none
+	private int groupReferenceKey;
+	
+	private String name;
+	private int hours;
+	private String grade;
+	
+	// stored as int in database, 0 for false, 1 for true
+	private int isCompleted;
+	private int excludedFromGPA;
+	private int excludedFromDegreePlan;
 	
 	// empty constructor
 	public Course() { };
 	
 	// Constructor
 	public Course(int id, int groupID, int semesterReferenceKey, int groupReferenceKey, 
-			String name, int hours, String grade, boolean excludedFromGPA) {
+			String name, int hours, String grade, int isCompleted,
+			int excludedFromGPA, int excludedFromDegreePlan) {
 		this._id = id;
 		this.groupID = groupID;
 		this.semesterReferenceKey = semesterReferenceKey;
@@ -30,17 +44,14 @@ public class Course {
 		this.name = name;
 		this.hours = hours;
 		this.grade = grade;
+		this.isCompleted = isCompleted;
 		this.excludedFromGPA = excludedFromGPA;
+		this.excludedFromDegreePlan = excludedFromDegreePlan;
 	}
 	
 	// get id
-		public int getID() {
-			return this._id;
-		}
-		
-	// set id, this shouldn't be needed. remove later if so.
-	public void setID(int id) {
-		this._id = id;
+	public int getID() {
+		return this._id;
 	}
 	
 	// get group ID
@@ -103,13 +114,33 @@ public class Course {
 		this.grade = grade;
 	}
 	
+	// get isCompleted
+	public int getIsCompleted() {
+		return this.isCompleted;
+	}
+	
+	// set isCompleted
+	public void setIsCompleted(int isCompleted) {
+		this.isCompleted = isCompleted;
+	}	
+	
 	// get excluded from GPA
-	public boolean getExcludedFromGPA() {
+	public int getExcludedFromGPA() {
 		return this.excludedFromGPA;
 	}
 	
 	// set excluded from GPA
-	public void setExcludedFromGPA(boolean excludedFromGPA) {
+	public void setExcludedFromGPA(int excludedFromGPA) {
 		this.excludedFromGPA = excludedFromGPA;
 	}
+	
+	// get excluded from GPA
+	public int getExcludedFromDegreePlan() {
+		return this.excludedFromDegreePlan;
+	}
+	
+	// set excluded from GPA
+	public void setExcludedFromDegreePlan(int excludedFromDegreePlan) {
+		this.excludedFromDegreePlan = excludedFromDegreePlan;
+	}	
 }

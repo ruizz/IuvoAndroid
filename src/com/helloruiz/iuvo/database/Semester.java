@@ -8,10 +8,10 @@ package com.helloruiz.iuvo.database;
 public class Semester {
 	
 	// private variables
-	int _id;
-	int referenceKey;
-	String name;
-	String color;
+	private int _id;
+	private int referenceKey;
+	private String name;
+	private String color;
 	
 	@Override
     public String toString() {
