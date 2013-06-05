@@ -618,12 +618,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return courseList;
     }
     
-    // TODO
-    public void updateCourseGroupID(SQLiteDatabase db, Course course, boolean incrementID) {
+    // Update course group ID. Maybe done.
+    public void updateCourse(SQLiteDatabase db, Course course, boolean incrementID) {
+    	ContentValues values = new ContentValues();
+        
+    	int excludedFromGPA = translateGPAOption(course.getExcludedFromGPA());
     	
+    	values.put(KEY_ID, course.getID());
+    	if (incrementID)
+        	values.put(KEY_GROUP_ID, course.getGroupID() + 1);
+        else
+        	values.put(KEY_GROUP_ID, course.getGroupID() - 1);
+        values.put(KEY_GROUP_REFERENCE_KEY, course.getGroupReferenceKey());
+        values.put(KEY_SEMESTER_REFERENCE_KEY, course.getSemesterReferenceKey());
+        values.put(KEY_NAME, course.getName());
+        values.put(KEY_HOURS, course.getHours());
+        values.put(KEY_GRADE, course.getGrade());
+        values.put(KEY_EXCLUDED_FROM_GPA, excludedFromGPA);
+     
+        // updating row
+        db.update(TABLE_COURSE, values, KEY_ID + " = ?", new String[] { String.valueOf(course.getID()) });
     }
     
-    // TODO
+    //
     public void updateCourse(Course course) { 
     	
     }
