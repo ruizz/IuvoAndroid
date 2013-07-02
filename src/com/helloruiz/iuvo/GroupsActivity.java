@@ -39,6 +39,9 @@ public class GroupsActivity extends ListActivity {
 	        Typeface typeFace=Typeface.createFromAsset(v.getContext().getAssets(),"fonts/lobster.otf");
             textView.setTypeface(typeFace);
 	        
+            // Background color would change after messing with semesters. Band-Aid fix.
+            v.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+            
 	        return v;
 	      }
 	    }

@@ -27,9 +27,9 @@
         </activity>
         <activity
             android:name="com.helloruiz.iuvo.GroupsActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_groups"
             android:parentActivityName="com.helloruiz.iuvo.MainActivity"
-            android:configChanges="orientation"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -37,10 +37,18 @@
         </activity>
         <activity
             android:name="com.helloruiz.iuvo.SemestersActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_semesters"
             android:parentActivityName="com.helloruiz.iuvo.MainActivity"
-            android:configChanges="orientation"
             android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.helloruiz.iuvo.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.helloruiz.iuvo.CourseActivity"
+            android:label="@string/title_activity_course"
+            android:parentActivityName="com.helloruiz.iuvo.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.helloruiz.iuvo.MainActivity" />

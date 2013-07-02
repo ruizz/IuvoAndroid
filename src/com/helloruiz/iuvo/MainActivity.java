@@ -519,6 +519,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	        case R.id.menu_manage_semesters:
 	        	menuManageSemesters();
 	        	return true;
+	        case R.id.menu_add_course:
+	        	menuAddCourse();
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -547,6 +550,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     	
     	Intent intent = new Intent(this, SemestersActivity.class);
 		startActivity(intent);
+    }
+    
+    /**
+     * Starts the course editor activity
+     */
+    public void menuAddCourse() {
+    	
+    	Intent intent = new Intent(this, CourseActivity.class);
+    	startActivity(intent);
     }
     
     /**

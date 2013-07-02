@@ -1,0 +1,179 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_white"
+    android:clipToPadding="false"
+    android:padding="10dp"
+    android:scrollbars="none"
+    tools:context=".CourseActivity" >
+
+    <!-- Name Row -->
+    <LinearLayout
+        android:id="@+id/course_name_linear_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_blue"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:padding="10sp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_name"
+            android:textColor="@color/white" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- Hours and Grade Row -->
+    <LinearLayout
+        android:id="@+id/course_hours_grade_linear_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/course_name_linear_layout"
+        android:orientation="horizontal"
+        android:paddingTop="10dp" >
+    	
+        <!-- Hours -->
+    	<LinearLayout
+			android:id="@+id/course_hours_linear_layout"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_marginRight="5dp"
+			android:clickable="true"
+			android:background="@color/theme_blue"
+			android:baselineAligned="false"
+			android:orientation="vertical"
+			android:padding="10sp" >
+	
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/dialog_hours"
+				android:textColor="@color/white" />
+	
+			<TextView
+				android:id="@+id/course_hours_textview"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:text="@string/dialog_none"
+				android:textColor="@color/white"
+				android:textSize="26sp" />
+    	</LinearLayout>
+		
+    	<!-- Grade -->
+		<LinearLayout
+			android:id="@+id/course_grade_linear_layout"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_marginLeft="5dp"
+			android:clickable="true"
+			android:background="@color/theme_blue"
+			android:baselineAligned="false"
+			android:orientation="vertical"
+			android:padding="10sp" >
+	
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/dialog_grade"
+				android:textColor="@color/white" />
+	
+			<TextView
+				android:id="@+id/course_grade_textview"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:text="@string/dialog_none"
+				android:textColor="@color/white"
+				android:textSize="26sp" />
+		</LinearLayout>
+    </LinearLayout>
+    
+    <!-- Exclude From GPA Row -->
+    <LinearLayout
+        android:id="@+id/course_exclude_from_gpa_linear_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/course_hours_grade_linear_layout"
+        android:layout_marginTop="10dp"
+        android:background="@color/theme_blue"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_exclude_from_gpa"
+            android:textColor="@color/white" />
+
+        <TextView
+			android:id="@+id/course_exclude_from_gpa_textview"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:text="@string/coming_soon"
+			android:textColor="@color/white"
+			android:textSize="26sp" />
+    </LinearLayout>
+    
+    <!-- Group Row -->
+    <LinearLayout
+        android:id="@+id/course_group_linear_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/course_exclude_from_gpa_linear_layout"
+        android:layout_marginTop="10dp"
+        android:background="@color/theme_blue"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:padding="10sp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_group"
+            android:textColor="@color/white" />
+
+        <TextView
+			android:id="@+id/course_group_textview"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:text="@string/coming_soon"
+			android:textColor="@color/white"
+			android:textSize="26sp" />
+    </LinearLayout>
+	
+	<!-- Semester Row -->
+    <LinearLayout
+        android:id="@+id/course_semester_linear_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/course_group_linear_layout"
+        android:layout_marginTop="10dp"
+        android:background="@color/theme_blue"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:padding="10sp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_semester"
+            android:textColor="@color/white" />
+
+        <TextView
+			android:id="@+id/course_semester_textview"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:text="@string/coming_soon"
+			android:textColor="@color/white"
+			android:textSize="26sp" />
+    </LinearLayout>
+
+</RelativeLayout>
