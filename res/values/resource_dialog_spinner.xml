@@ -33,4 +33,11 @@
 		<item>Milk Chocolate</item>
 		<item>Dark Chocolate</item>
     </string-array>
+    
+    <string-array name="hours_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 </resources>

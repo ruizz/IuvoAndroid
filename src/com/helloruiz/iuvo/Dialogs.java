@@ -19,11 +19,10 @@ import com.helloruiz.iuvo.database.Group;
 import com.helloruiz.iuvo.database.Semester;
 
 /**
- * Stores all dialogs. Lots of lines just do display dialogs, but I'm sure that it's cleaner
+ * Stores all dialogs. Lots of lines just to display dialogs, but I'm sure that it's cleaner
  * to isolate them all and do the heavy lifting here than to pollute all of the other code.
  */
 public class Dialogs {
-	
 	/** 
 	 * Dialog for 'About' grid item in the 'more' tab
 	 */
@@ -116,10 +115,6 @@ public class Dialogs {
 	 * Dialog for 'About' grid item in the 'more' tab
 	 */
 	public static void groupsHelp(Activity activity) {
-		
-		// Took hours of looking for solutions, but found one that makes clickable links in dialogs
-		// without having to create a new layout and inflate it, or any other tedious task.
-		// http://stackoverflow.com/questions/7479813/android-linkify-text-in-dialog
 		
 		String dialogAboutTitle = "Groups Help";
 		String dialogAbout = 

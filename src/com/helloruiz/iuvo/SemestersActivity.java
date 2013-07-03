@@ -27,11 +27,11 @@ public class SemestersActivity extends ListActivity {
 	 */
 	private class SemesterAdapter extends ArrayAdapter<Semester> {
 	      
-	      public SemesterAdapter(List<Semester> semesters) {
-	        super(SemestersActivity.this, R.layout.activity_semesters_list_item,
-	          R.id.semester_name_textview, semesters);
-	      }
-
+	    public SemesterAdapter(List<Semester> semesters) {
+	    	super(SemestersActivity.this, R.layout.activity_semesters_list_item,
+	    			R.id.semester_name_textview, semesters);
+	    }
+	    
 		public View getView(int position, View convertView, ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
 	        

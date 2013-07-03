@@ -16,7 +16,8 @@
         android:background="@color/theme_blue"
         android:baselineAligned="false"
         android:orientation="vertical"
-        android:padding="10sp" >
+        android:padding="10sp"
+        android:paddingBottom="5sp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -25,18 +26,21 @@
             android:textColor="@color/white" />
 
         <EditText
+            android:id="@+id/course_name_edittext"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="26sp" />
     </LinearLayout>
 
     <!-- Hours and Grade Row -->
     <LinearLayout
-        android:id="@+id/course_hours_grade_linear_layout"
+        android:id="@+id/course_hours_grade_gpa_linear_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/course_name_linear_layout"
         android:orientation="horizontal"
-        android:paddingTop="10dp" >
+        android:paddingTop="10dp"
+        android:baselineAligned="false" >
     	
         <!-- Hours -->
     	<LinearLayout
@@ -45,11 +49,12 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:layout_marginRight="5dp"
-			android:clickable="true"
 			android:background="@color/theme_blue"
 			android:baselineAligned="false"
 			android:orientation="vertical"
-			android:padding="10sp" >
+			android:padding="10sp"
+			android:clickable="true"
+			android:onClick="editHours" >
 	
 			<TextView
 				android:layout_width="wrap_content"
@@ -73,6 +78,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
 			android:clickable="true"
 			android:background="@color/theme_blue"
 			android:baselineAligned="false"
@@ -93,33 +99,33 @@
 				android:textColor="@color/white"
 				android:textSize="26sp" />
 		</LinearLayout>
-    </LinearLayout>
-    
-    <!-- Exclude From GPA Row -->
-    <LinearLayout
-        android:id="@+id/course_exclude_from_gpa_linear_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/course_hours_grade_linear_layout"
-        android:layout_marginTop="10dp"
-        android:background="@color/theme_blue"
-        android:baselineAligned="false"
-        android:orientation="vertical"
-        android:padding="10dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_exclude_from_gpa"
-            android:textColor="@color/white" />
-
-        <TextView
-			android:id="@+id/course_exclude_from_gpa_textview"
-			android:layout_width="fill_parent"
+		
+		<!-- Exclude From GPA -->
+		<LinearLayout
+			android:id="@+id/course_exclude_from_gpa_linear_layout"
+			android:layout_width="wrap_content"
 			android:layout_height="fill_parent"
-			android:text="@string/coming_soon"
-			android:textColor="@color/white"
-			android:textSize="26sp" />
+			android:layout_weight="1"
+			android:layout_marginLeft="5dp"
+			android:background="@color/theme_blue"
+			android:baselineAligned="false"
+			android:orientation="vertical"
+			android:padding="10dp" >
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/dialog_exclude_from_gpa"
+				android:textColor="@color/white" />
+	
+			<TextView
+				android:id="@+id/course_exclude_from_gpa_textview"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:text="@string/coming_soon"
+				android:textColor="@color/white"
+				android:textSize="26sp" />
+		</LinearLayout>
     </LinearLayout>
     
     <!-- Group Row -->
@@ -127,7 +133,7 @@
         android:id="@+id/course_group_linear_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/course_exclude_from_gpa_linear_layout"
+        android:layout_below="@+id/course_hours_grade_gpa_linear_layout"
         android:layout_marginTop="10dp"
         android:background="@color/theme_blue"
         android:baselineAligned="false"

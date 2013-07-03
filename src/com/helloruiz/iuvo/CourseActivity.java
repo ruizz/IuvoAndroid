@@ -1,12 +1,20 @@
 package com.helloruiz.iuvo;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class CourseActivity extends Activity {
+	
+	static int hours = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -14,6 +22,19 @@ public class CourseActivity extends Activity {
 		setContentView(R.layout.activity_course);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		Typeface typeFace=Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
+		
+		EditText editText = (EditText) findViewById(R.id.course_name_edittext); editText.setTypeface(typeFace);
+		
+		TextView textView;
+		textView = (TextView) findViewById(R.id.course_hours_textview); textView.setTypeface(typeFace);
+        textView = (TextView) findViewById(R.id.course_grade_textview); textView.setTypeface(typeFace);
+        textView = (TextView) findViewById(R.id.course_exclude_from_gpa_textview); textView.setTypeface(typeFace);
+        textView = (TextView) findViewById(R.id.course_group_textview); textView.setTypeface(typeFace);
+        textView = (TextView) findViewById(R.id.course_semester_textview); textView.setTypeface(typeFace);
+        
+        
 	}
 
 	/**
@@ -23,6 +44,36 @@ public class CourseActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
+	}
+	
+	public void editHours(View view) {
+		String dialogTitle = getString(R.string.dialog_hours);
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle(dialogTitle)
+	           .setItems(R.array.hours_array, new DialogInterface.OnClickListener() {
+	               public void onClick(DialogInterface dialog, int which) {
+	               hours = which + 1;
+	           }
+	    });
+	    
+	    builder.show();
+	}
+	
+	public void editGrade(View view) {
+		
+	}
+	
+	public void editExcludedFromGPA(View view) {
+		
+	}
+	
+	public void editGroup(View view) {
+		
+	}
+	
+	public void editSemester(View view) {
+		
 	}
 
 	@Override
