@@ -79,11 +79,12 @@
 			android:layout_weight="1"
 			android:layout_marginLeft="5dp"
 			android:layout_marginRight="5dp"
-			android:clickable="true"
 			android:background="@color/theme_blue"
 			android:baselineAligned="false"
 			android:orientation="vertical"
-			android:padding="10sp" >
+			android:padding="10sp"
+			android:clickable="true"
+			android:onClick="editGrade" >
 	
 			<TextView
 				android:layout_width="wrap_content"
@@ -110,7 +111,9 @@
 			android:background="@color/theme_blue"
 			android:baselineAligned="false"
 			android:orientation="vertical"
-			android:padding="10dp" >
+			android:padding="10dp"
+			android:clickable="true"
+			android:onClick="editExcludeFromGPA" >
 
 			<TextView
 				android:layout_width="wrap_content"
@@ -138,7 +141,9 @@
         android:background="@color/theme_blue"
         android:baselineAligned="false"
         android:orientation="vertical"
-        android:padding="10sp" >
+        android:padding="10sp"
+        android:clickable="true"
+        android:onClick="editGroup" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -165,7 +170,9 @@
         android:background="@color/theme_blue"
         android:baselineAligned="false"
         android:orientation="vertical"
-        android:padding="10sp" >
+        android:padding="10sp"
+        android:clickable="true"
+        android:onClick="editSemester" >
 
         <TextView
             android:layout_width="wrap_content"

@@ -141,6 +141,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return group;
     }
     
+    public Group getGroupByReferenceKey(int referenceKey) {
+    	if (referenceKey == -1)
+    		return null;
+    	
+    	SQLiteDatabase db = this.getReadableDatabase();
+        
+        Cursor cursor = db.query(TABLE_GROUP, new String[] {KEY_ID, KEY_REFERENCE_KEY, KEY_NAME}, KEY_REFERENCE_KEY + "=?", new String[] { String.valueOf( referenceKey ) },
+        		null, null, null, null);
+        
+        if (cursor != null)
+            cursor.moveToFirst();
+     
+        Group group = new Group(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2));
+        
+        cursor.close();
+        
+        // return group
+        return group;
+    }
+    
     // Get all groups
     public List<Group> getAllGroups() {
         List<Group> groupList = new ArrayList<Group>();
@@ -299,6 +319,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return semester;
     }
     
+ // Get single semester
+    public Semester getSemesterByReferenceKey(int referenceKey) {
+    	if (referenceKey == -1)
+    		return null;
+    	
+        SQLiteDatabase db = this.getReadableDatabase();
+     
+        Cursor cursor = db.query(TABLE_SEMESTER, new String[] {KEY_ID, KEY_REFERENCE_KEY, KEY_NAME, KEY_COLOR}, KEY_REFERENCE_KEY + "=?", new String[] { String.valueOf( referenceKey ) },
+        		null, null, null, null);
+        
+        if (cursor != null)
+            cursor.moveToFirst();
+     
+        Semester semester = new Semester(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3));
+        
+        cursor.close();
+        
+        // return semester
+        return semester;
+    }
+    
     // Get all semesters
     public List<Semester> getAllSemesters() {
         List<Semester> semesterList = new ArrayList<Semester>();
@@ -439,7 +480,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_EXCLUDED_FROM_GPA, course.getExcludedFromGPA());
 		
         // Need to update ids of other groups, etc.
-        List<Course> courses = getAllCourses(getGroup(course.getGroupReferenceKey()));
+        List<Course> courses = getAllCoursesByGroupReferenceKey(course.getGroupReferenceKey());
         
         // Increments all of the groups below the group to insert.
         for (int i = courses.size() - 1; i > course.getID() - 1; i--) {
@@ -527,18 +568,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     
     // Get all courses by group
-    public List<Course> getAllCourses(Group group) {
+    public List<Course> getAllCoursesByGroupReferenceKey(int groupReferenceKey) {
+    	
         List<Course> courseList= new ArrayList<Course>();
      
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TABLE_COURSE, new String[] {
         		KEY_ID, 
-        		KEY_GROUP_REFERENCE_KEY, 
         		KEY_SEMESTER_REFERENCE_KEY, 
+        		KEY_GROUP_REFERENCE_KEY,
         		KEY_NAME,
         		KEY_HOURS,
         		KEY_GRADE,
-        		KEY_EXCLUDED_FROM_GPA }, KEY_GROUP_REFERENCE_KEY + "=?", new String[] { String.valueOf( group.getReferenceKey() ) },
+        		KEY_EXCLUDED_FROM_GPA }, KEY_GROUP_REFERENCE_KEY + "=?", new String[] { String.valueOf(groupReferenceKey) },
         		null, null, null, null);
      
         // looping through all rows and adding to list
@@ -568,18 +610,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     
     // Get all courses by semester. This may not be needed...
-    public List<Course> getAllCourses(Semester semester) {
+    public List<Course> getAllCoursesBySemesterReferenceKey(int semesterReferenceKey) {
         List<Course> courseList= new ArrayList<Course>();
      
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TABLE_COURSE, new String[] {
         		KEY_ID, 
-        		KEY_GROUP_REFERENCE_KEY, 
         		KEY_SEMESTER_REFERENCE_KEY, 
+        		KEY_GROUP_REFERENCE_KEY,
         		KEY_NAME,
         		KEY_HOURS,
         		KEY_GRADE,
-        		KEY_EXCLUDED_FROM_GPA }, KEY_SEMESTER_REFERENCE_KEY + "=?", new String[] { String.valueOf( semester.getReferenceKey() ) },
+        		KEY_EXCLUDED_FROM_GPA }, KEY_SEMESTER_REFERENCE_KEY + "=?", new String[] { String.valueOf(semesterReferenceKey) },
         		null, null, null, null);
      
         // looping through all rows and adding to list
@@ -638,7 +680,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         	new String[] { String.valueOf( course.getID() ), String.valueOf( course.getGroupReferenceKey() ) });
         
         // Need to update ids of other groups, etc.
-        List<Course> courses = getAllCourses(getGroup(course.getGroupReferenceKey()));
+        List<Course> courses = getAllCoursesByGroupReferenceKey(course.getGroupReferenceKey());
         
         // Decrements all of the semesters below the semester to delete.
         for (int i = course.getID() + 1; i < courses.size() + 1; i++) {
@@ -648,16 +690,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     
     // Get the highest course ID within a group.
-    public int getMaxCourseID(Group group) {
-    	
-    	int result = 0;
-    	
-    	List<Course> courses = getAllCourses(group);
-    	
-    	if (courses.size() > 0)
-    		result = courses.size() - 1;
-    	
-    	return result;
+    public int getMaxCourseID(int groupReferenceKey) {
+    	SQLiteDatabase db = this.getWritableDatabase();
+		
+		// Get max group referenceKey from database.
+        String selectQuery = "SELECT MAX(" + KEY_ID + ") AS maxCourseID FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_REFERENCE_KEY + "=" + groupReferenceKey;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        
+        if (cursor != null)
+            cursor.moveToFirst();
+        
+        int result = cursor.getInt(0);
+        Log.d("MaxCourseID: ", "Result: " + result + ", GroupReferenceKey: " + groupReferenceKey);
+        cursor.close();
+        
+		return result;
     }
     
     // Get course count

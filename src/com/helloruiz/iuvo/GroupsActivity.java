@@ -193,7 +193,7 @@ public class GroupsActivity extends ListActivity {
 	// Called whenever the Drag Sort ListView needs to be updated to reflect database changes
 	public void refreshListAdapter() {
 		// Refresh the ListAdapter to reflect the new changes in the database.
-		DatabaseHandler databaseHandler = new DatabaseHandler(GroupsActivity.this);
+		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 		List<Group> groupsInDatabase = databaseHandler.getAllGroups();
 		
 		Log.d("Group: ", "Updating ListAdapter...");

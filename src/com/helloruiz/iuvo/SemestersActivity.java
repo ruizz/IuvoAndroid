@@ -195,7 +195,7 @@ public class SemestersActivity extends ListActivity {
 	// Called whenever the Drag Sort ListView needs to be updated to reflect database changes
 	public void refreshListAdapter() {
 		// Refresh the ListAdapter to reflect the new changes in the database.
-		DatabaseHandler databaseHandler = new DatabaseHandler(SemestersActivity.this);
+		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 		List<Semester> semestersInDatabase = databaseHandler.getAllSemesters();
 		
 		Log.d("Semester: ", "Updating ListAdapter...");
