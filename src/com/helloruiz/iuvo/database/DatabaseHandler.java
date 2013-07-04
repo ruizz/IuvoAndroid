@@ -220,6 +220,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteGroup(Group group) {
         SQLiteDatabase db = this.getWritableDatabase();
         
+        // Delete all courses assigned with this group
+        db.delete(TABLE_COURSE, KEY_GROUP_REFERENCE_KEY + " = ?", new String[] {String.valueOf(group.getReferenceKey())});
+        
         // Group count before deletion
         int groupCount = getGroupCount(db);
         
@@ -400,6 +403,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Delete single semester 
     public void deleteSemester(Semester semester) {
         SQLiteDatabase db = this.getWritableDatabase();
+        
+        // Update all courses assigned with this semester
+        ContentValues values = new ContentValues();
+        values.put(KEY_SEMESTER_REFERENCE_KEY, "-1");
+        db.update(TABLE_COURSE, values, KEY_SEMESTER_REFERENCE_KEY + " = ?", new String[] {String.valueOf(semester.getReferenceKey())});
         
         // Semester count before deletion
         int semesterCount = getSemesterCount(db);

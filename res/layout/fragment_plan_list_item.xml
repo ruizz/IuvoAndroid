@@ -26,7 +26,7 @@
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
       android:text="@string/course_count_dummy"
-      android:textColor="@color/theme_white"
+      android:textColor="@color/white"
       android:textSize="12sp" />
 
   </LinearLayout>
@@ -35,8 +35,7 @@
     android:id="@+id/plan_item_grade"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingRight="12dp"
-    android:background="@color/gray"
+    android:layout_marginRight="12dp"
     android:textColor="@color/white"
     android:textSize="36sp"
     android:layout_weight="0"

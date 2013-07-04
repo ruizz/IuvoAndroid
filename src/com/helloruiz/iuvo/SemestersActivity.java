@@ -42,7 +42,7 @@ public class SemestersActivity extends ListActivity {
 	        Typeface typeFace=Typeface.createFromAsset(v.getContext().getAssets(),"fonts/lobster.otf");
             textView.setTypeface(typeFace);
 	        
-	        v.setBackgroundColor(ColorHandler.getColor(SemestersActivity.this, semester.getColor()));
+	        v.setBackgroundColor(ColorHandler.getColor(getContext(), semester.getColor()));
 	        return v;
 	      }
 	    }

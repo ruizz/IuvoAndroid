@@ -1,7 +1,6 @@
 package com.helloruiz.iuvo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.app.ActionBar;
@@ -20,6 +19,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +33,11 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.helloruiz.iuvo.database.Course;
+import com.helloruiz.iuvo.database.DatabaseHandler;
+import com.helloruiz.iuvo.database.Group;
+import com.helloruiz.iuvo.database.Semester;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -235,75 +240,135 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		public static final int HDR_POS1 = 0;
 	    public static final int HDR_POS2 = 4;
 	    public static final int HDR_POS3 = 6;
-	    public static final String[] LIST = { "Computer Science", "CSCE 181",
-	        "CSCE 121", "CSCE 221", "Humanities", "ENGR 482",
-	        "Math & Stat", "MATH 151", "MATH 152", "STAT 211" };
-	    public static final String[] SUBTEXTS = { null, "1 Credit, No Semester Assigned",
-	        "4 Credits, No Semester Assigned", "4 Credits, No Semester Assigned", null, "3 Credits, No Semester Assigned",
-	        null, "4 Credits, No Semester Assigned", "4 Credits, No Semester Assigned", "3 Credits, No Semester Assigned" };
-	    public static final String[] GRADETEXTS = {null, "A", "A", "B", null, "B", null, "C", "C", "B"};
-	    
+	    public static final List<String> courseHeaders = new ArrayList<String>();
+	    public static final List<String> courseTitles = new ArrayList<String>();
+	    public static final List<String> courseSemesters = new ArrayList<String>();
+	    public static final List<String> courseSemesterColors = new ArrayList<String>();
+	    public static final List<String> courseGrades = new ArrayList<String>();
 	    
 	    private static final Integer LIST_HEADER = 0;
 	    private static final Integer LIST_ITEM = 1;
 		
 	    ArrayAdapter<String> adapter;
 
-	    private String[] array;
-	    private ArrayList<String> list;
-
-	    protected int getLayout() {
-	        return R.layout.fragment_plan;
-	    }
-	    
-	    /**
-	     * Return list item layout resource passed to the ArrayAdapter.
-	     */
-	    protected int getItemLayout() {
-	    	return R.layout.activity_semesters_list_item;
-	    }
-
 	    private ListView listView;
-
-	    public static PlanSectionFragment newInstance(int headers, int footers) {
-	        PlanSectionFragment f = new PlanSectionFragment();
-
-	        Bundle args = new Bundle();
-	        args.putInt("headers", headers);
-	        args.putInt("footers", footers);
-	        f.setArguments(args);
-
-	        return f;
-	    }
-
-	    /**
-	     * Called from DSLVFragment.onActivityCreated(). Override to
-	     * set a different adapter.
-	     */
-	    public void setListAdapter() {
-	        array = getResources().getStringArray(R.array.color_array);
-	        list = new ArrayList<String>(Arrays.asList(array));
-
-	        adapter = new ArrayAdapter<String>(getActivity(), getItemLayout(), R.id.plan_item_title, list);
-	        setListAdapter(new MyListAdapter(getActivity()));
-	    }
 
 	    /** Called when the activity is first created. */
 	    @Override
-	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	            Bundle savedInstanceState) {
-	        listView = (ListView) inflater.inflate(getLayout(), container, false);
-
+	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	        
+	    	listView = (ListView) inflater.inflate(R.layout.fragment_plan, container, false);
 	        return listView;
 	    }
 
 	    @Override
 	    public void onActivityCreated(Bundle savedInstanceState) {
 	        super.onActivityCreated(savedInstanceState);
+	    }
+	    
+	    @Override
+	    public void onResume() {
+	    	super.onResume();
+	    	
+	    	courseHeaders.clear();
+	    	courseTitles.clear();
+	    	courseSemesters.clear();
+	    	courseSemesterColors.clear();
+	    	courseGrades.clear();
 
-	        listView = getListView(); 
+	    	DatabaseHandler db = new DatabaseHandler(getActivity());
+	    	List<Group> groups = db.getAllGroups();
+	    	
+	    	if (groups.size() == 0) {
+	    		courseHeaders.add(getString(R.string.plan_getting_started_header));
+	    		courseHeaders.add(getString(R.string.plan_getting_started_note1));
+	    		courseHeaders.add(getString(R.string.plan_getting_started_note2));
+	    		
+	    		listView = getListView(); 
+		        setListAdapter(new getStartedListAdapter(getActivity()));
+	    	} else {
+		    	for (Group g : groups) {
+		    		courseHeaders.add(g.getName());
+		    		courseTitles.add(null);
+		    		courseSemesters.add(null);
+		    		courseSemesterColors.add(null);
+		    		courseGrades.add(null);
+		    		List<Course> courses = db.getAllCoursesByGroupReferenceKey(g.getReferenceKey());
+		    		for (Course c : courses) {
+		    			courseHeaders.add(null);
+			    		courseTitles.add(c.getName() + " (" + c.getHours() + ")");
+			    		
+			    		if (c.getSemesterReferenceKey() == -1) {
+			    			courseSemesters.add("No Semester Assigned");
+			    			courseSemesterColors.add("Gray");
+			    		} else {
+			    			Semester semester = db.getSemesterByReferenceKey(c.getSemesterReferenceKey());
+			    			courseSemesters.add(semester.getName());
+			    			courseSemesterColors.add(semester.getColor());
+			    		}
+			    			
+			    		if (c.getGrade().equals("None"))
+			    			courseGrades.add("");
+			    		else
+			    			courseGrades.add(c.getGrade());
+		    		}
+		    	}
+		    	listView = getListView(); 
+		        setListAdapter(new MyListAdapter(getActivity()));
+	    	}
+	    }
+	    
+	    private class getStartedListAdapter extends BaseAdapter {
+	        public getStartedListAdapter(Context context) {
+	            mContext = context;
+	        }
 
-	        setListAdapter();
+	        @Override
+	        public int getCount() {
+	            return courseHeaders.size();
+	        }
+
+	        @Override
+	        public Object getItem(int position) {
+	            return position;
+	        }
+
+	        @Override
+	        public long getItemId(int position) {
+	            return position;
+	        }
+
+	        @Override
+	        public View getView(int position, View convertView, ViewGroup parent) {
+
+	            String headerText = courseHeaders.get(position);
+	            View rootView = convertView;
+	            
+                if (convertView == null || convertView.getTag() == LIST_ITEM) {
+                    rootView = LayoutInflater.from(mContext).inflate(
+                            R.layout.fragment_plan_list_header, parent, false);
+                    rootView.setTag(LIST_HEADER);
+                }
+                
+                TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
+                headerTextView.setText(headerText);
+                headerTextView.setGravity(Gravity.CENTER);
+                
+                if (position == 0) {
+	                Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
+	                headerTextView.setTypeface(typeFace);
+	                headerTextView.setTextSize(30);
+	                headerTextView.setPadding(0, 0, 0, 5);
+                } else {
+                	headerTextView.setTextSize(18);
+                	View dividerView = rootView.findViewById(R.id.item_separator);
+                	dividerView.setVisibility(View.INVISIBLE);
+                }
+                
+                return rootView;
+	        }
+
+	        private final Context mContext;
 	    }
 	    
 	    private class MyListAdapter extends BaseAdapter {
@@ -313,7 +378,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	        @Override
 	        public int getCount() {
-	            return LIST.length;
+	            return courseHeaders.size();
 	        }
 
 	        @Override
@@ -339,16 +404,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	        @Override
 	        public View getView(int position, View convertView, ViewGroup parent) {
 
-	            String headerText = getHeader(position);
+	            String headerText = courseHeaders.get(position);
+	            View rootView = convertView;
+	            
 	            if(headerText != null) {
-
-	                View rootView = convertView;
 	                if(convertView == null || convertView.getTag() == LIST_ITEM) {
-
 	                    rootView = LayoutInflater.from(mContext).inflate(
 	                            R.layout.fragment_plan_list_header, parent, false);
 	                    rootView.setTag(LIST_HEADER);
-
 	                }
 
 	                TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
@@ -356,43 +419,29 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	                headerTextView.setTypeface(typeFace);
 	                headerTextView.setText(headerText);
 	                return rootView;
-	            }
-
-	            View rootView = convertView;
-	            if(convertView == null || convertView.getTag() == LIST_HEADER) {
-	                rootView = LayoutInflater.from(mContext).inflate(
-	                        R.layout.fragment_plan_list_item, parent, false);
-	                rootView.setTag(LIST_ITEM);
-	            }
-
-	            TextView header = (TextView)rootView.findViewById(R.id.plan_item_title);
-	            header.setText(LIST[position % LIST.length]);
-
-	            TextView subtext = (TextView)rootView.findViewById(R.id.plan_item_description);
-	            subtext.setText(SUBTEXTS[position % SUBTEXTS.length]);
 	            
-	            TextView gradeText = (TextView)rootView.findViewById(R.id.plan_item_grade);
-	            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
-                gradeText.setTypeface(typeFace);
-	            gradeText.setText(GRADETEXTS[position % GRADETEXTS.length]);
+	            } else {
+		            if(convertView == null || convertView.getTag() == LIST_HEADER) {
+		                rootView = LayoutInflater.from(mContext).inflate(
+		                        R.layout.fragment_plan_list_item, parent, false);
+		                rootView.setTag(LIST_ITEM);
+		            }
+		            
+		            TextView header = (TextView)rootView.findViewById(R.id.plan_item_title);
+		            header.setText(courseTitles.get(position));
+	
+		            TextView subtext = (TextView)rootView.findViewById(R.id.plan_item_description);
+		            subtext.setText(courseSemesters.get(position));
 
-	            //Set last divider in a sublist invisible
-	            View divider = rootView.findViewById(R.id.item_separator);
-	            if(position == HDR_POS2 -1) {
-	                //divider.setVisibility(View.INVISIBLE);
+		            rootView.setBackgroundColor(ColorHandler.getColor(mContext, courseSemesterColors.get(position)));
+		            
+		            TextView gradeText = (TextView)rootView.findViewById(R.id.plan_item_grade);
+		            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
+	                gradeText.setTypeface(typeFace);
+		            gradeText.setText(courseGrades.get(position));
+	
+		            return rootView;
 	            }
-
-
-	            return rootView;
-	        }
-
-	        private String getHeader(int position) {
-
-	            if(position == HDR_POS1  || position == HDR_POS2 || position == HDR_POS3) {
-	                return LIST[position];
-	            }
-
-	            return null;
 	        }
 
 	        private final Context mContext;
