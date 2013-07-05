@@ -27,7 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
@@ -233,13 +232,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
     
     /**
-	 * Plan section fragment. (Dummy for now.)
+	 * Plan section fragment.
 	 */
 	public static class PlanSectionFragment extends ListFragment {
 	    
-		public static final int HDR_POS1 = 0;
-	    public static final int HDR_POS2 = 4;
-	    public static final int HDR_POS3 = 6;
+		/**
+		 * Plan section fragment. Static variables.
+		 */
 	    public static final List<String> courseHeaders = new ArrayList<String>();
 	    public static final List<String> courseTitles = new ArrayList<String>();
 	    public static final List<String> courseSemesters = new ArrayList<String>();
@@ -248,8 +247,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    
 	    private static final Integer LIST_HEADER = 0;
 	    private static final Integer LIST_ITEM = 1;
-		
-	    ArrayAdapter<String> adapter;
 
 	    private ListView listView;
 
@@ -260,12 +257,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    	listView = (ListView) inflater.inflate(R.layout.fragment_plan, container, false);
 	        return listView;
 	    }
-
-	    @Override
-	    public void onActivityCreated(Bundle savedInstanceState) {
-	        super.onActivityCreated(savedInstanceState);
-	    }
 	    
+	    // Refreshes the fragment every time it comes back into focus.
 	    @Override
 	    public void onResume() {
 	    	super.onResume();
@@ -279,30 +272,38 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    	DatabaseHandler db = new DatabaseHandler(getActivity());
 	    	List<Group> groups = db.getAllGroups();
 	    	
+	    	// If user didn't create any groups, populate "Let's get started" dialogue into the headers and display.
 	    	if (groups.size() == 0) {
+	    		
 	    		courseHeaders.add(getString(R.string.plan_getting_started_header));
 	    		courseHeaders.add(getString(R.string.plan_getting_started_note1));
 	    		courseHeaders.add(getString(R.string.plan_getting_started_note2));
 	    		
 	    		listView = getListView(); 
+	    		//listView.setSelector(android.R.color.transparent);
 		        setListAdapter(new getStartedListAdapter(getActivity()));
-	    	} else {
+		        
+	    	} else { // User created groups, populate the appropriate headers, titles, etc and display them.
+	    		
 		    	for (Group g : groups) {
+		    		
 		    		courseHeaders.add(g.getName());
 		    		courseTitles.add(null);
 		    		courseSemesters.add(null);
 		    		courseSemesterColors.add(null);
 		    		courseGrades.add(null);
-		    		List<Course> courses = db.getAllCoursesByGroupReferenceKey(g.getReferenceKey());
+		    		
+		    		List<Course> courses = db.getAllCoursesByGroup(g.getID());
 		    		for (Course c : courses) {
+		    			
 		    			courseHeaders.add(null);
 			    		courseTitles.add(c.getName() + " (" + c.getHours() + ")");
 			    		
-			    		if (c.getSemesterReferenceKey() == -1) {
-			    			courseSemesters.add("No Semester Assigned");
+			    		if (c.getSemesterID() == -1) {
+			    			courseSemesters.add(getString(R.string.plan_no_semester_assigned));
 			    			courseSemesterColors.add("Gray");
 			    		} else {
-			    			Semester semester = db.getSemesterByReferenceKey(c.getSemesterReferenceKey());
+			    			Semester semester = db.getSemester(c.getSemesterID());
 			    			courseSemesters.add(semester.getName());
 			    			courseSemesterColors.add(semester.getColor());
 			    		}
@@ -313,29 +314,35 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			    			courseGrades.add(c.getGrade());
 		    		}
 		    	}
-		    	listView = getListView(); 
-		        setListAdapter(new MyListAdapter(getActivity()));
+		    	
+		    	listView = getListView();
+		        setListAdapter(new DegreePlanListAdapter(getActivity()));
 	    	}
 	    }
 	    
+	    /**
+		 * Plan section fragment. BaseAdapter explicitly designed to show the "Let's get started" dialogue
+		 * and make it look pretty. Uses a few header list items and modifies them for a unique look different
+		 * from how the list would normally look.
+		 */
 	    private class getStartedListAdapter extends BaseAdapter {
 	        public getStartedListAdapter(Context context) {
 	            mContext = context;
 	        }
 
 	        @Override
-	        public int getCount() {
-	            return courseHeaders.size();
-	        }
+	        public int getCount() { return courseHeaders.size(); }
 
 	        @Override
-	        public Object getItem(int position) {
-	            return position;
-	        }
+	        public Object getItem(int position) {return position;}
 
 	        @Override
-	        public long getItemId(int position) {
-	            return position;
+	        public long getItemId(int position) { return position; }
+
+	        // Disables the highlight selection that appears when selecting a list item.
+	        @Override
+	        public boolean isEnabled(int position) {
+	        	return false;
 	        }
 
 	        @Override
@@ -354,12 +361,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 headerTextView.setText(headerText);
                 headerTextView.setGravity(Gravity.CENTER);
                 
+                // Title text
                 if (position == 0) {
 	                Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
 	                headerTextView.setTypeface(typeFace);
 	                headerTextView.setTextSize(30);
 	                headerTextView.setPadding(0, 0, 0, 5);
-                } else {
+                } else { // Instructions text
                 	headerTextView.setTextSize(18);
                 	View dividerView = rootView.findViewById(R.id.item_separator);
                 	dividerView.setVisibility(View.INVISIBLE);
@@ -371,8 +379,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	        private final Context mContext;
 	    }
 	    
-	    private class MyListAdapter extends BaseAdapter {
-	        public MyListAdapter(Context context) {
+	    /**
+		 * Plan section fragment. Designed to show the degree plan as a list with headers.
+		 */
+	    private class DegreePlanListAdapter extends BaseAdapter {
+	        public DegreePlanListAdapter(Context context) {
 	            mContext = context;
 	        }
 
@@ -451,7 +462,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 
 	/**
-     * More section fragment. (Dummy for now.)
+     * More section fragment.
      */
     public static class MoreSectionFragment extends Fragment {
     	

@@ -8,36 +8,28 @@ package com.helloruiz.iuvo.database;
 public class Course {
 	
 	// private variables
-	
-	// Same function as Semester and Group, but with two key differences.
-	// - NOT Unique
-	// - Used to indicate the order within a GROUP.
-	private int _id;
-	
-	// Indicates what Group and/or Semester the course is tied to
-	private int semesterReferenceKey; // -1 for none
-	private int groupReferenceKey; // -1 to hide from degree plan
-	
+	private int _id; // unique, can never change
+	private int position; // applies to position within the GROUP that it's assigned to.
+
 	private String name;
 	private int hours;
 	private String grade;
+	private int excludedFromGPA; // stored as int in database, 0 for false, 1 for true
 	
-	// stored as int in database, 0 for false, 1 for true
-	private int excludedFromGPA;
-	
-	// empty constructor
-	public Course() { };
+	// Indicates what Group and/or Semester the course is tied to
+	private int semesterID; // -1 for none
+	private int groupID; // -1 to hide from degree plan
 	
 	// Constructor
-	public Course(int id, int semesterReferenceKey, int groupReferenceKey, 
-			String name, int hours, String grade, int excludedFromGPA) {
+	public Course(int id, int position, String name, int hours, String grade, int excludedFromGPA, int semesterID, int groupID) {
 		this._id = id;
-		this.semesterReferenceKey = semesterReferenceKey;
-		this.groupReferenceKey = groupReferenceKey;
+		this.position = position;
 		this.name = name;
 		this.hours = hours;
 		this.grade = grade;
 		this.excludedFromGPA = excludedFromGPA;
+		this.semesterID = semesterID;
+		this.groupID = groupID;
 
 	}
 	
@@ -46,29 +38,34 @@ public class Course {
 		return this._id;
 	}
 	
-	// set id
-	public void setGroupID(int id) {
-		this._id = id;
+	// get position
+	public int getPosition() {
+		return this.position;
 	}
 	
-	// get semester reference key
-	public int getSemesterReferenceKey() {
-		return this.semesterReferenceKey;
+	// set position
+	public void setPosition(int position) {
+		this.position = position;
 	}
 	
-	// set semester reference key
-	public void setSemesterReferenceKey(int semesterReferenceKey) {
-		this.semesterReferenceKey = semesterReferenceKey;
+	// get semester ID
+	public int getSemesterID() {
+		return this.semesterID;
 	}
 	
-	// get group reference key
-	public int getGroupReferenceKey() {
-		return this.groupReferenceKey;
+	// set semester ID
+	public void setSemesterID(int semesterID) {
+		this.semesterID = semesterID;
 	}
 	
-	// set group reference key
-	public void setGroupReferenceKey(int groupReferenceKey) {
-		this.groupReferenceKey = groupReferenceKey;
+	// get group ID
+	public int getGroupID() {
+		return this.groupID;
+	}
+	
+	// set group ID
+	public void setGroupID(int groupID) {
+		this.groupID = groupID;
 	}
 	
 	// get name

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,8 +46,10 @@ public class GroupsActivity extends ListActivity {
 	    }
 	
 	/**
-	 * -- Static Variables --
+	 * -- Variables --
 	 */
+	private DatabaseHandler databaseHandler;
+	
 	private GroupAdapter groupAdapter;
 
     private ArrayList<Group> mGroups;
@@ -57,20 +58,12 @@ public class GroupsActivity extends ListActivity {
                 
     	@Override
     	public void drop(int from, int to) {
-    		if (from != to) {
-    		Group item = groupAdapter.getItem(from);
-    		
-			// Remove group from database
-			DatabaseHandler databaseHandler = new DatabaseHandler(GroupsActivity.this);
-			databaseHandler.deleteGroup(item);
-			
-			// Change ID to new position before inserting into database
-			item.setID(to);
-			databaseHandler.insertGroup(item);      
+
+			databaseHandler.moveGroup(from, to);     
     		
 			refreshListAdapter();
 			getListView().setSelection(to);
-    		}
+
     	}
     };
 	
@@ -92,6 +85,8 @@ public class GroupsActivity extends ListActivity {
 		setContentView(R.layout.activity_groups);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		databaseHandler = new DatabaseHandler(this);
 		
 		// Set up our drag sort ListView
 		DragSortListView dragSortListView = (DragSortListView) getListView();
@@ -150,56 +145,36 @@ public class GroupsActivity extends ListActivity {
 
     // Executes after user adds a group from addMenuGroup
 	public void addGroup(String name) {
-		DatabaseHandler databaseHandler = new DatabaseHandler(this);
-		SQLiteDatabase db = databaseHandler.getWritableDatabase();
-
-		// This should be correct, since new max id is current number of available groups.
-		int max = databaseHandler.getGroupCount(db);
-		int maxReferenceKey;
-		
-		if (max > 0)
-			maxReferenceKey = databaseHandler.getMaxGroupReferenceKey();
-		else
-			maxReferenceKey = -1;
-		
-		databaseHandler.addGroup(new Group(max, maxReferenceKey + 1,  name));
-
+		databaseHandler.addGroup(name);
 		refreshListAdapter();
-		db.close();
 	}
 	
-	// Called after a user has confirmed that they want to edit a group
-	public void editGroup(String newName, Group item) {
-		DatabaseHandler databaseHandler = new DatabaseHandler(this);
-		
-		item.setName(newName);
-		databaseHandler.updateGroupName(item);
+	// Called after a user has submitted an update for a group
+	public void editGroup(String newName, Group group) {
+		group.setName(newName);
+		databaseHandler.updateGroup(group);
 		
 		refreshListAdapter();
 	}
 	
 	// Executes after user has confirmed that they want to delete a group
 	public void deleteGroup(int which) {
-		DatabaseHandler databaseHandler = new DatabaseHandler(this);
-
-		Group item = databaseHandler.getGroup(which);
+		Group item = databaseHandler.getGroupByPosition(which);
 		
 		// Remove group from database
-		databaseHandler.deleteGroup(item);
-					
+		databaseHandler.deleteGroup(item);		
 		refreshListAdapter();
 	}	
 	
 	// Called whenever the Drag Sort ListView needs to be updated to reflect database changes
 	public void refreshListAdapter() {
 		// Refresh the ListAdapter to reflect the new changes in the database.
-		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 		List<Group> groupsInDatabase = databaseHandler.getAllGroups();
 		
 		Log.d("Group: ", "Updating ListAdapter...");
 		mGroups = new ArrayList<Group>();
 		for (Group g : groupsInDatabase) {
-			Log.d("Group: ", "ID: " + g.getID() + ", Name: " + g.getName() + ", ReferenceKey: " + g.getReferenceKey());
+			Log.d("Group: ", "Position: " + g.getPosition() + ", ID: " + g.getID() + ", Name: " + g.getName());
 			mGroups.add(g);
 		}
 		

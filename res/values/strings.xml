@@ -21,6 +21,7 @@
     <string name="plan_getting_started_header">Let\'s get started.</string>
     <string name="plan_getting_started_note1">Begin populating your degree plan by adding semesters and groups.</string>
     <string name="plan_getting_started_note2">You can then add courses, which will display their semester color and appear under their assigned group.</string>
+    <string name="plan_no_semester_assigned">No Semester Assigned.</string>
     <string name="dialog_name">Name</string>
     <string name="dialog_school">School</string>
     <string name="dialog_major">Major</string>
@@ -31,8 +32,9 @@
     <string name="dialog_group">Group</string>
     <string name="dialog_semester">Semester</string>
     <string name="dialog_classification">Classification</string>
-    <string name="dialog_delete_confirm_title">You sure, boss?</string>
-    <string name="dialog_delete_confirm_text">Are you sure that you want to delete this?</string>
+    <string name="dialog_delete_confirm_title">Delete Confirm</string>
+    <string name="dialog_delete_group_confirm_text">Are you sure that you want to delete this group? ANY COURSES UNDER THIS GROUP WILL ALSO BE DELETED. This cannot be undone.</string>
+    <string name="dialog_delete_semester_confirm_text">Are you sure that you want to delete this semester? This cannot be undone.</string>
     <string name="coming_soon">Under Development</string>
     <string name="course_count_dummy">0 Courses</string>
     <string name="course_count_dummy_2">0 Courses, No GPA</string>

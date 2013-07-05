@@ -205,12 +205,8 @@ public class Dialogs {
 	 */
 	public static void deleteGroupConfirm(final Activity activity, final int _which) {
 		
-		// Took hours of looking for solutions, but found one that makes clickable links in dialogs
-		// without having to create a new layout and inflate it, or any other tedious task.
-		// http://stackoverflow.com/questions/7479813/android-linkify-text-in-dialog
-		
 		String dialogAddTitle = activity.getString(R.string.dialog_delete_confirm_title);
-		String dialogText = activity.getString(R.string.dialog_delete_confirm_text);
+		String dialogText = activity.getString(R.string.dialog_delete_group_confirm_text);
 		
 		TextView textView = new TextView(activity);
 		textView.setText(dialogText);
@@ -232,10 +228,19 @@ public class Dialogs {
 				((GroupsActivity) activity).refreshListAdapter();
 			}
 		};
+		
+		// If the dialog is dismissed any other way. (Such as through the back button.)
+		DialogInterface.OnCancelListener backClickListener = new DialogInterface.OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				((GroupsActivity) activity).refreshListAdapter();	
+			}
+		};
 	    
 		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
 			.setPositiveButton("Delete", deleteClickListener)
 			.setNegativeButton("Cancel", cancelClickListener)
+			.setOnCancelListener(backClickListener)
 			.setTitle(dialogAddTitle)
 			.setView(textView);
 		
@@ -377,7 +382,7 @@ public class Dialogs {
 		// http://stackoverflow.com/questions/7479813/android-linkify-text-in-dialog
 		
 		String dialogAddTitle = activity.getString(R.string.dialog_delete_confirm_title);
-		String dialogText = activity.getString(R.string.dialog_delete_confirm_text);
+		String dialogText = activity.getString(R.string.dialog_delete_semester_confirm_text);
 		
 		TextView textView = new TextView(activity);
 		textView.setText(dialogText);
@@ -399,10 +404,19 @@ public class Dialogs {
 				((SemestersActivity) activity).refreshListAdapter();
 			}
 		};
+		
+		// If the dialog is dismissed any other way. (Such as through the back button.)
+		DialogInterface.OnCancelListener backClickListener = new DialogInterface.OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				((SemestersActivity) activity).refreshListAdapter();	
+			}
+		};
 	    
 		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
 			.setPositiveButton("Delete", deleteClickListener)
 			.setNegativeButton("Cancel", cancelClickListener)
+			.setOnCancelListener(backClickListener)
 			.setTitle(dialogAddTitle)
 			.setView(textView);
 		

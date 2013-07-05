@@ -36,10 +36,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Group Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
-    private static final String KEY_REFERENCE_KEY = "referenceKey";
+    private static final String KEY_POSITION = "position";
     private static final String KEY_COLOR = "color";
-    private static final String KEY_SEMESTER_REFERENCE_KEY = "semesterReferenceKey";
-    private static final String KEY_GROUP_REFERENCE_KEY = "groupReferenceKey";
+    private static final String KEY_SEMESTER_ID = "semesterID";
+    private static final String KEY_GROUP_ID = "groupID";
     private static final String KEY_HOURS = "hours";
     private static final String KEY_GRADE = "grade";
     private static final String KEY_EXCLUDED_FROM_GPA = "excludedFromGPA";
@@ -58,76 +58,94 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	// Group
         String CREATE_GROUP_TABLE = "create table " + TABLE_GROUP + "("
         		+ KEY_ID + " INTEGER PRIMARY KEY,"
-        		+ KEY_REFERENCE_KEY + " INTEGER,"
+        		+ KEY_POSITION + " INTEGER,"
                 + KEY_NAME + " TEXT" + ")";
         
         // Table
         String CREATE_SEMESTER_TABLE = "create table " + TABLE_SEMESTER + "("
         		+ KEY_ID + " INTEGER PRIMARY KEY,"
-        		+ KEY_REFERENCE_KEY + " INTEGER,"
+        		+ KEY_POSITION + " INTEGER,"
                 + KEY_NAME + " TEXT," 
         		+ KEY_COLOR + " TEXT" + ")";
         
         // Course
         String CREATE_COURSE_TABLE = "create table " + TABLE_COURSE + "("
         		+ KEY_ID + " INTEGER,"
-        		+ KEY_SEMESTER_REFERENCE_KEY + " INTEGER,"
-        		+ KEY_GROUP_REFERENCE_KEY + " INTEGER,"
+        		+ KEY_POSITION + " INTEGER,"
         		+ KEY_NAME + " TEXT,"
         		+ KEY_HOURS + " INTEGER,"
         		+ KEY_GRADE + " TEXT,"
-        		+ KEY_EXCLUDED_FROM_GPA + " INTEGER" + ")";
+        		+ KEY_EXCLUDED_FROM_GPA + " INTEGER,"
+        		+ KEY_SEMESTER_ID + " INTEGER,"
+        		+ KEY_GROUP_ID + " INTEGER" + ")";
         
         db.execSQL(CREATE_GROUP_TABLE);
         db.execSQL(CREATE_SEMESTER_TABLE);
         db.execSQL(CREATE_COURSE_TABLE);
+        
+        ;
     }
  
     // I'll worry about this if I ever have to upgrade the database. Leave clear for now.
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { }
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { ; }
     
     /**
 	 * -- Group Operations --
 	 */
     // Add new group
-    public void addGroup(Group group) {
-        SQLiteDatabase db = this.getWritableDatabase();
-     
+    public void addGroup(String groupName) {
         ContentValues values = new ContentValues();
-        values.put(KEY_ID, group.getID());
-        values.put(KEY_REFERENCE_KEY, group.getReferenceKey());
-        values.put(KEY_NAME, group.getName());
+        values.put(KEY_ID, getMaxGroupID() + 1);
+        values.put(KEY_POSITION, getGroupCount());
+        values.put(KEY_NAME, groupName);
      
         // Adding Row
+        SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_GROUP, null, values);
-        db.close();
+        ;
     }
     
-    // Insert group at a specified location.
-    public void insertGroup(Group group) {
+    // Move group position in list.
+    public void moveGroup(int from, int to) {
     	SQLiteDatabase db = this.getWritableDatabase();
+    	ContentValues values;
     	
-    	ContentValues values = new ContentValues();
-        values.put(KEY_ID, group.getID());
-        values.put(KEY_REFERENCE_KEY, group.getReferenceKey());
-        values.put(KEY_NAME, group.getName());
-		
-        // Increments all of the groups below the group to insert.
-        for (int i = getGroupCount(db) - 1; i > group.getID() - 1; i--) {
-        	updateGroupID(db, getGroup(i), true);
-        }
-        
-        // Inserting Row
-        db.insert(TABLE_GROUP, null, values);
-        db.close(); 
+    	if (from != to) {
+    		
+    		// Temporarily set moving group position to -1
+    		values = new ContentValues();
+    		values.put(KEY_POSITION, -1);
+    		db.update(TABLE_GROUP, values, KEY_POSITION + "=?", new String[] {String.valueOf(from)} );
+    		
+    		if (from > to) {
+    			// Increment other groups
+        		for (int i = from - 1; i >= to; i--) {
+        			values = new ContentValues();
+        			values.put(KEY_POSITION, i + 1);
+        			db.update(TABLE_GROUP, values, KEY_POSITION + "=?", new String[] {String.valueOf(i)});
+        		}
+    		} else if (to > from) {
+    			// Decrement other groups
+        		for (int i = from + 1; i <= to; i++) {
+        			values = new ContentValues();
+        			values.put(KEY_POSITION, i - 1);
+        			db.update(TABLE_GROUP, values, KEY_POSITION + "=?", new String[] {String.valueOf(i)});
+        		}
+    		}
+
+    		// Set moving group to destination position
+    		values = new ContentValues();
+    		values.put(KEY_POSITION, to);
+    		db.update(TABLE_GROUP, values, KEY_POSITION + "=?", new String[] {String.valueOf(-1)} );
+    	}
     }
     
     // Get single group
     public Group getGroup(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
      
-        Cursor cursor = db.query(TABLE_GROUP, new String[] {KEY_ID, KEY_REFERENCE_KEY, KEY_NAME}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
+        Cursor cursor = db.query(TABLE_GROUP, new String[] {KEY_ID, KEY_POSITION, KEY_NAME}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
         		null, null, null, null);
         
         if (cursor != null)
@@ -141,13 +159,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return group;
     }
     
-    public Group getGroupByReferenceKey(int referenceKey) {
-    	if (referenceKey == -1)
-    		return null;
-    	
-    	SQLiteDatabase db = this.getReadableDatabase();
-        
-        Cursor cursor = db.query(TABLE_GROUP, new String[] {KEY_ID, KEY_REFERENCE_KEY, KEY_NAME}, KEY_REFERENCE_KEY + "=?", new String[] { String.valueOf( referenceKey ) },
+    // Get single group
+    public Group getGroupByPosition(int position) {
+        SQLiteDatabase db = this.getReadableDatabase();
+     
+        Cursor cursor = db.query(TABLE_GROUP, new String[] {KEY_ID, KEY_POSITION, KEY_NAME}, KEY_POSITION + "=?", new String[] { String.valueOf( position ) },
         		null, null, null, null);
         
         if (cursor != null)
@@ -156,16 +172,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Group group = new Group(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2));
         
         cursor.close();
-        
+                
         // return group
         return group;
     }
     
-    // Get all groups
+    // Get all groups. Ordered by position.
     public List<Group> getAllGroups() {
         List<Group> groupList = new ArrayList<Group>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_GROUP;
+        String selectQuery = "SELECT  * FROM " + TABLE_GROUP + " ORDER BY " + KEY_POSITION;
      
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -181,63 +197,49 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         
         cursor.close();
-        db.close();
      
         // return group list
         return groupList;
     }
     
-    // Update single group name
-    public void updateGroupName(Group group) {
+    // Update single group name.
+    public void updateGroup(Group group) {
         SQLiteDatabase db = this.getWritableDatabase();
      
         ContentValues values = new ContentValues();
-        values.put(KEY_ID, group.getID());
-        values.put(KEY_REFERENCE_KEY, group.getReferenceKey());
         values.put(KEY_NAME, group.getName());
      
         // updating row
         db.update(TABLE_GROUP, values, KEY_ID + " = ?", new String[] { String.valueOf(group.getID()) });
-        db.close();
-    }
-    
-    // Increment or decrement group ID.
-    public void updateGroupID(SQLiteDatabase db, Group group, boolean incrementID) {
-     
-        ContentValues values = new ContentValues();
-        if (incrementID)
-        	values.put(KEY_ID, group.getID() + 1);
-        else
-        	values.put(KEY_ID, group.getID() - 1);
-        values.put(KEY_REFERENCE_KEY, group.getReferenceKey());
-        values.put(KEY_NAME, group.getName());
-     
-        // updating row
-        db.update(TABLE_GROUP, values, KEY_ID + " = ?", new String[] { String.valueOf(group.getID()) });
+        ;
     }
     
     // Delete single group 
     public void deleteGroup(Group group) {
+    	
+    	// Group size after deletion of the group.
+    	int groupCount = getGroupCount() - 1;
+    	
         SQLiteDatabase db = this.getWritableDatabase();
         
-        // Delete all courses assigned with this group
-        db.delete(TABLE_COURSE, KEY_GROUP_REFERENCE_KEY + " = ?", new String[] {String.valueOf(group.getReferenceKey())});
+        // Delete all courses associated with this group
+        db.delete(TABLE_COURSE, KEY_GROUP_ID + " = ?", new String[] { String.valueOf(group.getID()) });
         
-        // Group count before deletion
-        int groupCount = getGroupCount(db);
+        // Delete the group
+        db.delete(TABLE_GROUP, KEY_ID + " = ?",new String[] { String.valueOf(group.getID()) });
         
-        db.delete(TABLE_GROUP, KEY_ID + " = ?",
-                new String[] { String.valueOf(group.getID()) });
-        
-        // Decrements all of the groups below the group to delete.
-        for (int i = group.getID() + 1; i < groupCount; i++) {
-        	updateGroupID(db, getGroup(i), false);
-        }
-        db.close();
+        // Decrement all of the groups below the group that was deleted
+        for (int i = group.getPosition() + 1; i <= groupCount; i++) {
+			ContentValues values = new ContentValues();
+			values.put(KEY_POSITION, i - 1);
+			db.update(TABLE_GROUP, values, KEY_POSITION + "=?", new String[] {String.valueOf(i)});
+		}
     }
 
 	// Get group count
-	public int getGroupCount(SQLiteDatabase db) {
+	public int getGroupCount() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
 	    String countQuery = "SELECT * FROM " + TABLE_GROUP;
 	    Cursor cursor = db.rawQuery(countQuery, null);
 	    
@@ -248,19 +250,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    return count;
 	}
 	
-	// Get max group reference key. Make sure the group counter is > 0 !!
-	public int getMaxGroupReferenceKey() {
-		SQLiteDatabase db = this.getWritableDatabase();
+	// Get max group ID.
+	public int getMaxGroupID() {
+		if (getGroupCount() == 0)
+			return -1;
 		
-		// Get max group referenceKey from database.
-        String selectQuery = "SELECT MAX(" + KEY_REFERENCE_KEY + ") AS maxGroupReferenceKey FROM " + TABLE_GROUP;
-        Cursor cursor = db.rawQuery(selectQuery, null);
+		// Get max group ID from database.
+        String maxGroupIDQuery = "SELECT MAX(" + KEY_ID + ") AS maxGroupID FROM " + TABLE_GROUP;
+        
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(maxGroupIDQuery, null);
         
         if (cursor != null)
             cursor.moveToFirst();
         
         int result = cursor.getInt(0);
         Log.d("MaxReferenceKey: ", "Result: " + result);
+        
         cursor.close();
         
 		return result;
@@ -270,45 +276,59 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 * -- Semester Operations --
 	 */
     // Add new semester
-    public void addSemester(Semester semester) {
-        SQLiteDatabase db = this.getWritableDatabase();
-     
+    public void addSemester(String semesterName, String semesterColor) {
         ContentValues values = new ContentValues();
-        values.put(KEY_ID, semester.getID());
-        values.put(KEY_REFERENCE_KEY, semester.getReferenceKey());
-        values.put(KEY_NAME, semester.getName());
-		values.put(KEY_COLOR, semester.getColor());
+        values.put(KEY_ID, getMaxSemesterID() + 1);
+        values.put(KEY_POSITION, getSemesterCount());
+        values.put(KEY_NAME, semesterName);
+		values.put(KEY_COLOR, semesterColor);
      
         // Adding Row
+		SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_SEMESTER, null, values);
-        db.close();
+        ;
     }
     
-    // Insert semester at a specified location.
-    public void insertSemester(Semester semester) {
+    // Move semester position in list.
+    public void moveSemester(int from, int to) {
     	SQLiteDatabase db = this.getWritableDatabase();
+    	ContentValues values;
     	
-    	ContentValues values = new ContentValues();
-        values.put(KEY_ID, semester.getID());
-        values.put(KEY_REFERENCE_KEY, semester.getReferenceKey());
-        values.put(KEY_NAME, semester.getName());
-        values.put(KEY_COLOR, semester.getColor());
-		
-        // Increments all of the semesters below the semester to insert.
-        for (int i = getSemesterCount(db) - 1; i > semester.getID() - 1; i--) {
-        	updateSemesterID(db, getSemester(i), true);
-        }
-        
-        // Inserting Row
-        db.insert(TABLE_SEMESTER, null, values);
-        db.close(); 
+    	if (from != to) {
+    		
+    		// Temporarily set moving semester position to -1
+    		values = new ContentValues();
+    		values.put(KEY_POSITION, -1);
+    		db.update(TABLE_SEMESTER, values, KEY_POSITION + "=?", new String[] {String.valueOf(from)} );
+    		
+    		if (from > to) {
+    			// Increment other semesters
+        		for (int i = from - 1; i >= to; i--) {
+        			values = new ContentValues();
+        			values.put(KEY_POSITION, i + 1);
+        			db.update(TABLE_SEMESTER, values, KEY_POSITION + "=?", new String[] {String.valueOf(i)});
+        		}
+    		} else if (to > from) {
+    			// Decrement other semesters
+        		for (int i = from + 1; i <= to; i++) {
+        			values = new ContentValues();
+        			values.put(KEY_POSITION, i - 1);
+        			db.update(TABLE_SEMESTER, values, KEY_POSITION + "=?", new String[] {String.valueOf(i)});
+        		}
+    		}
+
+    		// Set moving semester to destination position
+    		values = new ContentValues();
+    		values.put(KEY_POSITION, to);
+    		db.update(TABLE_SEMESTER, values, KEY_POSITION + "=?", new String[] {String.valueOf(-1)} );
+    	}
     }
     
     // Get single semester
     public Semester getSemester(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
      
-        Cursor cursor = db.query(TABLE_SEMESTER, new String[] {KEY_ID, KEY_REFERENCE_KEY, KEY_NAME, KEY_COLOR}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
+        Cursor cursor = db.query(TABLE_SEMESTER, new String[] {KEY_ID, KEY_POSITION, KEY_NAME, KEY_COLOR}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
         		null, null, null, null);
         
         if (cursor != null)
@@ -322,14 +342,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return semester;
     }
     
- // Get single semester
-    public Semester getSemesterByReferenceKey(int referenceKey) {
-    	if (referenceKey == -1)
-    		return null;
-    	
+    // Get single semester by position
+    public Semester getSemesterByPosition(int position) {
         SQLiteDatabase db = this.getReadableDatabase();
      
-        Cursor cursor = db.query(TABLE_SEMESTER, new String[] {KEY_ID, KEY_REFERENCE_KEY, KEY_NAME, KEY_COLOR}, KEY_REFERENCE_KEY + "=?", new String[] { String.valueOf( referenceKey ) },
+        Cursor cursor = db.query(TABLE_SEMESTER, new String[] {KEY_ID, KEY_POSITION, KEY_NAME, KEY_COLOR}, KEY_POSITION + "=?", new String[] { String.valueOf( position ) },
         		null, null, null, null);
         
         if (cursor != null)
@@ -343,11 +360,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return semester;
     }
     
-    // Get all semesters
+    // Get all semesters. Ordered by position.
     public List<Semester> getAllSemesters() {
         List<Semester> semesterList = new ArrayList<Semester>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_SEMESTER;
+        String selectQuery = "SELECT  * FROM " + TABLE_SEMESTER + " ORDER BY " + KEY_POSITION;
      
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -363,67 +380,52 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         
         cursor.close();
-        db.close();
      
         // return semester list
         return semesterList;
     }
     
-    // Update single semester name and color.
+    // Update single semester name and/or color.
     public void updateSemester(Semester semester) {
         SQLiteDatabase db = this.getWritableDatabase();
-     
+	 
         ContentValues values = new ContentValues();
-        values.put(KEY_ID, semester.getID());
-        values.put(KEY_REFERENCE_KEY, semester.getReferenceKey());
-        values.put(KEY_NAME, semester.getName());
+        
+		values.put(KEY_NAME, semester.getName());
 		values.put(KEY_COLOR, semester.getColor());
      
         // updating row
         db.update(TABLE_SEMESTER, values, KEY_ID + " = ?", new String[] { String.valueOf(semester.getID()) });
-        db.close();
-    }
-    
-    // Increment or decrement semester ID.
-    public void updateSemesterID(SQLiteDatabase db, Semester semester, boolean incrementID) {
-     
-        ContentValues values = new ContentValues();
-        if (incrementID)
-        	values.put(KEY_ID, semester.getID() + 1);
-        else
-        	values.put(KEY_ID, semester.getID() - 1);
-        values.put(KEY_REFERENCE_KEY, semester.getReferenceKey());
-        values.put(KEY_NAME, semester.getName());
-		values.put(KEY_COLOR, semester.getColor());
-     
-        // updating row
-        db.update(TABLE_SEMESTER, values, KEY_ID + " = ?", new String[] { String.valueOf(semester.getID()) });
+        ;
     }
     
     // Delete single semester 
     public void deleteSemester(Semester semester) {
+    	
+    	int semesterCount = getSemesterCount() - 1;
+    	
         SQLiteDatabase db = this.getWritableDatabase();
         
-        // Update all courses assigned with this semester
-        ContentValues values = new ContentValues();
-        values.put(KEY_SEMESTER_REFERENCE_KEY, "-1");
-        db.update(TABLE_COURSE, values, KEY_SEMESTER_REFERENCE_KEY + " = ?", new String[] {String.valueOf(semester.getReferenceKey())});
+        // Update all courses associated with this semester
+		ContentValues values = new ContentValues();
+		values.put(KEY_SEMESTER_ID, "-1");
+        db.update(TABLE_COURSE, values, KEY_SEMESTER_ID + " = ?", new String[] {String.valueOf(semester.getID())});
         
-        // Semester count before deletion
-        int semesterCount = getSemesterCount(db);
+        // Delete the semester
+        db.delete(TABLE_SEMESTER, KEY_ID + " = ?",new String[] { String.valueOf(semester.getID()) });
         
-        db.delete(TABLE_SEMESTER, KEY_ID + " = ?",
-                new String[] { String.valueOf(semester.getID()) });
-        
-        // Decrements all of the semesters below the semester to delete.
-        for (int i = semester.getID() + 1; i < semesterCount; i++) {
-        	updateSemesterID(db, getSemester(i), false);
-        }
-        db.close();
+        // Decrement all of the semesters below the semester that was deleted
+        for (int i = semester.getPosition() + 1; i <= semesterCount; i++) {
+			values = new ContentValues();
+			values.put(KEY_POSITION, i - 1);
+			db.update(TABLE_SEMESTER, values, KEY_POSITION + "=?", new String[] {String.valueOf(i)});
+		}
     }
 
 	// Get semester count
-	public int getSemesterCount(SQLiteDatabase db) {
+	public int getSemesterCount() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
 	    String countQuery = "SELECT * FROM " + TABLE_SEMESTER;
 	    Cursor cursor = db.rawQuery(countQuery, null);
 	    
@@ -434,117 +436,142 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    return count;
 	}
 	
-	// Get max semester reference key. Make sure the group counter is > 0 !!
-	public int getMaxSemesterReferenceKey() {
-		SQLiteDatabase db = this.getWritableDatabase();
-			
-		// Get max semester referenceKey from database.
-	    String selectQuery = "SELECT MAX(" + KEY_REFERENCE_KEY + ") AS maxSemesterReferenceKey FROM " + TABLE_SEMESTER;
-	    Cursor cursor = db.rawQuery(selectQuery, null);
-	        
-	    if (cursor != null)
-	            cursor.moveToFirst();
-	        
-	    int result = cursor.getInt(0);
-	    Log.d("MaxReferenceKey: ", "Result: " + result);
-	    cursor.close();
-	        
-	    return result;
+	// Get max semester ID.
+	public int getMaxSemesterID() {
+		if (getSemesterCount() == 0)
+			return -1;
+		
+		// Get max semester ID from database.
+        String maxSemesterIDQuery = "SELECT MAX(" + KEY_ID + ") AS maxSemesterID FROM " + TABLE_SEMESTER;
+        
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(maxSemesterIDQuery, null);
+        
+        if (cursor != null)
+            cursor.moveToFirst();
+        
+        int result = cursor.getInt(0);
+        Log.d("MaxReferenceKey: ", "Result: " + result);
+        
+        cursor.close();
+        
+		return result;
 	}
 	
 	/**
-	 * Course Operations
+	 * -- Course Operations --
 	 */
-	
-	// Add new course
-    public void addCourse(Course course) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    // Add new course
+    public void addCourse(String name, int hours, String grade, int excludedFromGPA, int semesterID, int groupID) {
         
-        ContentValues values = new ContentValues();
-        values.put(KEY_ID, course.getID());
-        values.put(KEY_SEMESTER_REFERENCE_KEY, course.getSemesterReferenceKey());
-        values.put(KEY_GROUP_REFERENCE_KEY, course.getGroupReferenceKey());
-        values.put(KEY_NAME, course.getName());
-        values.put(KEY_HOURS, course.getHours());
-        values.put(KEY_GRADE, course.getGrade());
-        values.put(KEY_EXCLUDED_FROM_GPA, course.getExcludedFromGPA());
+    	ContentValues values = new ContentValues();
+        values.put(KEY_ID, getMaxCourseID() + 1);
+        values.put(KEY_POSITION, getCourseCountByGroup(groupID));
+        values.put(KEY_NAME, name);
+        values.put(KEY_HOURS, hours);
+        values.put(KEY_GRADE, grade);
+        values.put(KEY_EXCLUDED_FROM_GPA, excludedFromGPA);
+        values.put(KEY_SEMESTER_ID, semesterID);
+        values.put(KEY_GROUP_ID, groupID);
      
         // Adding Row
+		SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_COURSE, null, values);
-        db.close();
+        ;
     }
     
-    // Insert course at a specified location.
-    public void insertCourse(Course course) {
+    // Move course position in list. Position applies to group that the course is in.
+    public void moveCourse(int from, int to, int groupID) {
     	SQLiteDatabase db = this.getWritableDatabase();
+    	ContentValues values;
     	
-        ContentValues values = new ContentValues();
-        values.put(KEY_ID, course.getID());
-        values.put(KEY_SEMESTER_REFERENCE_KEY, course.getSemesterReferenceKey());
-        values.put(KEY_GROUP_REFERENCE_KEY, course.getGroupReferenceKey());
-        values.put(KEY_NAME, course.getName());
-        values.put(KEY_HOURS, course.getHours());
-        values.put(KEY_GRADE, course.getGrade());
-        values.put(KEY_EXCLUDED_FROM_GPA, course.getExcludedFromGPA());
-		
-        // Need to update ids of other groups, etc.
-        List<Course> courses = getAllCoursesByGroupReferenceKey(course.getGroupReferenceKey());
-        
-        // Increments all of the groups below the group to insert.
-        for (int i = courses.size() - 1; i > course.getID() - 1; i--) {
-        	updateCourseID(db, courses.get(i), true);
-        }
-        
-        // Inserting Row
-        db.insert(TABLE_COURSE, null, values);
-        db.close(); 
+    	if (from != to) {
+    		
+    		// Temporarily set moving course position to -1
+    		values = new ContentValues();
+    		values.put(KEY_POSITION, -1);
+    		db.update(TABLE_COURSE, values, KEY_POSITION + "=? AND " + KEY_GROUP_ID + "=?", new String[] {String.valueOf(from), String.valueOf(groupID)} );
+    		
+    		if (from > to) {
+    			// Increment other courses
+        		for (int i = from - 1; i >= to; i--) {
+        			values = new ContentValues();
+        			values.put(KEY_POSITION, i + 1);
+        			db.update(TABLE_COURSE, values, KEY_POSITION + "=? AND " + KEY_GROUP_ID + "=?", new String[] {String.valueOf(i), String.valueOf(groupID)});
+        		}
+    		} else if (to > from) {
+    			// Decrement other courses
+        		for (int i = from + 1; i <= to; i++) {
+        			values = new ContentValues();
+        			values.put(KEY_POSITION, i - 1);
+        			db.update(TABLE_COURSE, values, KEY_POSITION + "=? AND " + KEY_GROUP_ID + "=?", new String[] {String.valueOf(i), String.valueOf(groupID)});
+        		}
+    		}
+
+    		// Set moving course to destination position
+    		values = new ContentValues();
+    		values.put(KEY_POSITION, to);
+    		db.update(TABLE_COURSE, values, KEY_POSITION + "=? AND " + KEY_GROUP_ID + "=?", new String[] {String.valueOf(-1), String.valueOf(groupID)} );
+    	}
     }
     
-    // Get single course, need the id and groupReferenceKey
-    public Course getCourse(int id, Group group) {
+    // Get single course
+    public Course getCourse(int position) {
         SQLiteDatabase db = this.getReadableDatabase();
      
         Cursor cursor = db.query(TABLE_COURSE, 
-        		
-        		new String[] {
-        		KEY_ID, 
-        		KEY_SEMESTER_REFERENCE_KEY, 
-        		KEY_GROUP_REFERENCE_KEY, 
-        		KEY_NAME,
-        		KEY_HOURS,
-        		KEY_GRADE,
-        		KEY_EXCLUDED_FROM_GPA }, 
-        		
-        		KEY_ID + "=?" + " AND " + KEY_GROUP_REFERENCE_KEY + "=?", 
-        		
-        		new String[] { String.valueOf( id ), String.valueOf( group.getReferenceKey() ) },
-        		
+        		new String[] {KEY_ID, KEY_POSITION, KEY_NAME, KEY_HOURS, KEY_GRADE, KEY_EXCLUDED_FROM_GPA, KEY_SEMESTER_ID, KEY_GROUP_ID},
+        		KEY_ID + "=?",
+        		new String[] { String.valueOf( position )},
         		null, null, null, null);
         
         if (cursor != null)
             cursor.moveToFirst();
      
         Course course = new Course(
-        		Integer.parseInt(cursor.getString(0)), 
-        		Integer.parseInt(cursor.getString(1)), 
-        		Integer.parseInt(cursor.getString(2)),
-        		cursor.getString(3),
-        		Integer.parseInt(cursor.getString(4)),
-        		cursor.getString(5),
-        		Integer.parseInt(cursor.getString(6))
+        		Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)),
+        		cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4),
+        		Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
+        		Integer.parseInt(cursor.getString(7))
         		);
         
         cursor.close();
         
-        // return group
+        // return course
         return course;
     }
     
-    // Get all courses
+    // Get single course by position
+    public Course getCourseByPosition(int position, int groupID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+     
+        Cursor cursor = db.query(TABLE_COURSE, 
+        		new String[] {KEY_ID, KEY_POSITION, KEY_NAME, KEY_HOURS, KEY_GRADE, KEY_EXCLUDED_FROM_GPA, KEY_SEMESTER_ID, KEY_GROUP_ID},
+        		KEY_POSITION + "=? AND " + KEY_GROUP_ID + "=?",
+        		new String[] { String.valueOf( position ), String.valueOf(groupID)},
+        		null, null, null, null);
+        
+        if (cursor != null)
+            cursor.moveToFirst();
+     
+        Course course = new Course(
+        		Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)),
+        		cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4),
+        		Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
+        		Integer.parseInt(cursor.getString(7))
+        		);
+        
+        cursor.close();
+        
+        // return course
+        return course;
+    }
+    
+    // Get all courses. Ordered by ID.
     public List<Course> getAllCourses() {
-        List<Course> courseList= new ArrayList<Course>();
+        List<Course> courseList = new ArrayList<Course>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_COURSE;
+        String selectQuery = "SELECT  * FROM " + TABLE_COURSE + " ORDER BY " + KEY_ID;
      
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -552,216 +579,181 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                
             	Course course = new Course(
-                	Integer.parseInt(cursor.getString(0)), 
-                	Integer.parseInt(cursor.getString(1)), 
-                	Integer.parseInt(cursor.getString(2)),
-                	cursor.getString(3),
-                	Integer.parseInt(cursor.getString(4)),
-                	cursor.getString(5),
-                	Integer.parseInt(cursor.getString(6))
-                	);
+                		Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)),
+                		cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4),
+                		Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
+                		Integer.parseInt(cursor.getString(7))
+                		);
                 
-                // Adding group to list
+                // Adding course to list
                 courseList.add(course);
             } while (cursor.moveToNext());
         }
         
         cursor.close();
-        db.close();
      
-        // return group list
+        // return course list
         return courseList;
     }
     
-    // Get all courses by group
-    public List<Course> getAllCoursesByGroupReferenceKey(int groupReferenceKey) {
-    	
-        List<Course> courseList= new ArrayList<Course>();
+    // Get all courses by group. Ordered by position.
+    public List<Course> getAllCoursesByGroup(int groupID) {
+        List<Course> courseList = new ArrayList<Course>();
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "=" + String.valueOf(groupID) + " ORDER BY " + KEY_POSITION;
      
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_COURSE, new String[] {
-        		KEY_ID, 
-        		KEY_SEMESTER_REFERENCE_KEY, 
-        		KEY_GROUP_REFERENCE_KEY,
-        		KEY_NAME,
-        		KEY_HOURS,
-        		KEY_GRADE,
-        		KEY_EXCLUDED_FROM_GPA }, KEY_GROUP_REFERENCE_KEY + "=?", new String[] { String.valueOf(groupReferenceKey) },
-        		null, null, null, null);
+        Cursor cursor = db.rawQuery(selectQuery, null);
      
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                
             	Course course = new Course(
-            		Integer.parseInt(cursor.getString(0)), 
-                    Integer.parseInt(cursor.getString(1)), 
-                    Integer.parseInt(cursor.getString(2)),
-                   	cursor.getString(3),
-                    Integer.parseInt(cursor.getString(4)),
-                    cursor.getString(5),
-                    Integer.parseInt(cursor.getString(6))
-                   	);
+                		Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)),
+                		cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4),
+                		Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
+                		Integer.parseInt(cursor.getString(7))
+                		);
                 
-                // Adding group to list
+                // Adding course to list
                 courseList.add(course);
             } while (cursor.moveToNext());
         }
         
         cursor.close();
-        db.close();
      
-        // return group list
+        // return course list
         return courseList;
     }
     
-    // Get all courses by semester. This may not be needed...
-    public List<Course> getAllCoursesBySemesterReferenceKey(int semesterReferenceKey) {
-        List<Course> courseList= new ArrayList<Course>();
+    // Get all courses by semester. Ordered by position.
+    public List<Course> getAllCoursesBySemester(int semesterID) {
+        List<Course> courseList = new ArrayList<Course>();
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_SEMESTER_ID + "=" + String.valueOf(semesterID) + " ORDER BY " + KEY_POSITION;
      
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_COURSE, new String[] {
-        		KEY_ID, 
-        		KEY_SEMESTER_REFERENCE_KEY, 
-        		KEY_GROUP_REFERENCE_KEY,
-        		KEY_NAME,
-        		KEY_HOURS,
-        		KEY_GRADE,
-        		KEY_EXCLUDED_FROM_GPA }, KEY_SEMESTER_REFERENCE_KEY + "=?", new String[] { String.valueOf(semesterReferenceKey) },
-        		null, null, null, null);
+        Cursor cursor = db.rawQuery(selectQuery, null);
      
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                
             	Course course = new Course(
-            		Integer.parseInt(cursor.getString(0)), 
-                    Integer.parseInt(cursor.getString(1)), 
-                    Integer.parseInt(cursor.getString(2)),
-                    cursor.getString(3),
-                    Integer.parseInt(cursor.getString(4)),
-                    cursor.getString(5),
-                    Integer.parseInt(cursor.getString(6))
-                   	);
+                		Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)),
+                		cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4),
+                		Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
+                		Integer.parseInt(cursor.getString(7))
+                		);
                 
-                // Adding group to list
+                // Adding course to list
                 courseList.add(course);
             } while (cursor.moveToNext());
         }
         
         cursor.close();
-        db.close();
      
-        // return group list
+        // return course list
         return courseList;
     }
-    
-    // Increment or decrement course ID.
-    public void updateCourseID(SQLiteDatabase db, Course course, boolean incrementID) {
-     
-    	ContentValues values = new ContentValues();
-    	
-    	if (incrementID)
-    		values.put(KEY_ID, course.getID() + 1);
-    	else
-    		values.put(KEY_ID,  course.getID() - 1);
-    	
-    	values.put(KEY_SEMESTER_REFERENCE_KEY, course.getSemesterReferenceKey());
-        values.put(KEY_GROUP_REFERENCE_KEY, course.getGroupReferenceKey());
-        values.put(KEY_NAME, course.getName());
-        values.put(KEY_HOURS, course.getHours());
+
+    // Update single course info
+    public void updateCourse(Course course) {
+        SQLiteDatabase db = this.getWritableDatabase();
+	 
+        ContentValues values = new ContentValues();
+        
+		values.put(KEY_NAME, course.getName());
+		values.put(KEY_HOURS, course.getHours());
         values.put(KEY_GRADE, course.getGrade());
         values.put(KEY_EXCLUDED_FROM_GPA, course.getExcludedFromGPA());
-     
+        values.put(KEY_SEMESTER_ID, course.getSemesterID());
+        values.put(KEY_GROUP_ID, course.getGroupID());
+        
         // updating row
         db.update(TABLE_COURSE, values, KEY_ID + " = ?", new String[] { String.valueOf(course.getID()) });
+        ;
     }
     
-    // Delete a course.
+    // Delete single course 
     public void deleteCourse(Course course) {
-    	SQLiteDatabase db = this.getWritableDatabase();
+    	
+    	int courseCount = getCourseCountByGroup(course.getGroupID()) - 1;
+    	
+        SQLiteDatabase db = this.getWritableDatabase();
         
-        db.delete(TABLE_COURSE,
-        	KEY_ID + "=?" + " AND " + KEY_GROUP_REFERENCE_KEY + "=?", 
-        	new String[] { String.valueOf( course.getID() ), String.valueOf( course.getGroupReferenceKey() ) });
+        // Delete the course
+        db.delete(TABLE_COURSE, KEY_ID + " = ?",new String[] { String.valueOf(course.getID()) });
         
-        // Need to update ids of other groups, etc.
-        List<Course> courses = getAllCoursesByGroupReferenceKey(course.getGroupReferenceKey());
-        
-        // Decrements all of the semesters below the semester to delete.
-        for (int i = course.getID() + 1; i < courses.size() + 1; i++) {
-        	updateSemesterID(db, getSemester(i), false);
-        }
-        db.close();
+        // Decrement all of the courses below the course that was deleted
+        for (int i = course.getPosition() + 1; i <= courseCount; i++) {
+			ContentValues values = new ContentValues();
+			values.put(KEY_POSITION, i - 1);
+			db.update(TABLE_COURSE, values, KEY_POSITION + "=? AND " + KEY_GROUP_ID + "=?", new String[] {String.valueOf(i), String.valueOf(course.getGroupID())});
+		}
     }
-    
-    // Get the highest course ID within a group.
-    public int getMaxCourseID(int groupReferenceKey) {
-    	SQLiteDatabase db = this.getWritableDatabase();
+
+	// Get course count
+	public int getCourseCount() {
+		SQLiteDatabase db = this.getWritableDatabase();
 		
-		// Get max group referenceKey from database.
-        String selectQuery = "SELECT MAX(" + KEY_ID + ") AS maxCourseID FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_REFERENCE_KEY + "=" + groupReferenceKey;
-        Cursor cursor = db.rawQuery(selectQuery, null);
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE;
+	    Cursor cursor = db.rawQuery(countQuery, null);
+	    
+	    int count = cursor.getCount();
+	    cursor.close();
+	    
+	    // return count
+	    return count;
+	}
+	
+	// Get course count by group
+	public int getCourseCountByGroup(int groupID) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "=" + String.valueOf(groupID);
+	    Cursor cursor = db.rawQuery(countQuery, null);
+	    
+	    int count = cursor.getCount();
+	    cursor.close();
+	    
+	    // return count
+	    return count;
+	}
+	
+	// Get course count by semester
+	public int getCourseCountBySemester(int semesterID) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_SEMESTER_ID + "=" + String.valueOf(semesterID);
+	    Cursor cursor = db.rawQuery(countQuery, null);
+	    
+	    int count = cursor.getCount();
+	    cursor.close();
+	    
+	    // return count
+	    return count;
+	}
+	
+	// Get max course ID.
+	public int getMaxCourseID() {
+		if (getCourseCount() == 0)
+			return -1;
+		
+		// Get max course ID from database.
+        String maxCourseIDQuery = "SELECT MAX(" + KEY_ID + ") AS maxCourseID FROM " + TABLE_COURSE;
+        
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(maxCourseIDQuery, null);
         
         if (cursor != null)
             cursor.moveToFirst();
         
         int result = cursor.getInt(0);
-        Log.d("MaxCourseID: ", "Result: " + result + ", GroupReferenceKey: " + groupReferenceKey);
+        Log.d("MaxReferenceKey: ", "Result: " + result);
+        
         cursor.close();
         
 		return result;
-    }
-    
-    // Get course count
- 	public int getCourseCount(SQLiteDatabase db) {
- 	    String countQuery = "SELECT * FROM " + TABLE_COURSE;
- 	    Cursor cursor = db.rawQuery(countQuery, null);
- 	    
- 	    int count = cursor.getCount();
- 	    cursor.close();
- 	    
- 	    // return count
- 	    return count;
- 	}
- 	
- 	// Get course count by group
-  	public int getCourseCount(SQLiteDatabase db, Group group) {
-  		Cursor cursor = db.query(TABLE_COURSE,
-  				
-  				new String[] { KEY_GROUP_REFERENCE_KEY },
-        		
-        		KEY_GROUP_REFERENCE_KEY + "=?",
-        		
-        		new String[] { String.valueOf( group.getReferenceKey() ) },
-        		
-        		null, null, null, null);
-  	    
-  	    int count = cursor.getCount();
-  	    cursor.close();
-  	    
-  	    // return count
-  	    return count;
-  	}
-  	
-  	// Get course count by semester
-   	public int getCourseCount(SQLiteDatabase db, Semester semester) {
-   		Cursor cursor = db.query(TABLE_COURSE,
-   				
-   				new String[] { KEY_SEMESTER_REFERENCE_KEY }, 
-   				
-   				KEY_SEMESTER_REFERENCE_KEY + "=?", 
-   				
-   				new String[] { String.valueOf( semester.getReferenceKey() ) },
-         		
-   				null, null, null, null);
-   	    
-   	    int count = cursor.getCount();
-   	    cursor.close();
-   	    
-   	    // return count
-   	    return count;
-   	}
+	}
 }

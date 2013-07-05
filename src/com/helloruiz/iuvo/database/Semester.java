@@ -8,8 +8,8 @@ package com.helloruiz.iuvo.database;
 public class Semester {
 	
 	// private variables
-	private int _id;
-	private int referenceKey;
+	private int _id; // unique, can never change
+	private int position;
 	private String name;
 	private String color;
 	
@@ -18,13 +18,10 @@ public class Semester {
       return name;
     }
 	
-	// empty constructor
-	public Semester() { }
-	
 	// Constructor
-	public Semester(int id, int referenceKey, String name, String color) {
+	public Semester(int id, int position, String name, String color) {
 		this._id = id;
-		this.referenceKey = referenceKey;
+		this.position = position;
 		this.name = name;
 		this.color = color;
 	}
@@ -34,14 +31,14 @@ public class Semester {
 		return this._id;
 	}
 	
-	// set id
-	public void setID(int id) {
-		this._id = id;
+	// get position
+	public int getPosition() {
+		return this.position;
 	}
 	
-	// get reference key
-	public int getReferenceKey() {
-		return this.referenceKey;
+	// set position
+	public void setPosition(int position) {
+		this.position = position;
 	}
 	
 	// get name

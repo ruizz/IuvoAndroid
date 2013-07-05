@@ -8,8 +8,8 @@ package com.helloruiz.iuvo.database;
 public class Group {
 	
 	// private variables
-	private int _id; // unique
-	private int referenceKey; // can never change
+	private int _id; // unique, can never change
+	private int position;
 	private String name;
 	
 	@Override
@@ -21,14 +21,9 @@ public class Group {
 	public Group() { }
 	
 	// constructor
-	public Group(String name) {
-		this.name = name;
-	}
-	
-	// constructor with id
-	public Group(int id, int referenceKey, String name) {
+	public Group(int id, int position, String name) {
 		this._id = id;
-		this.referenceKey = referenceKey;
+		this.position = position;
 		this.name = name;
 	}
 	
@@ -36,15 +31,15 @@ public class Group {
 	public int getID() {
 		return this._id;
 	}
+
+	// get position
+	public int getPosition() {
+		return this.position;
+	}
 	
-	// set id
-	public void setID(int id) {
-		this._id = id;
-	}	
-	
-	// get reference key
-	public int getReferenceKey() {
-		return this.referenceKey;
+	// set position
+	public void setPosition(int position) {
+		this.position = position;
 	}
 	
 	// get name

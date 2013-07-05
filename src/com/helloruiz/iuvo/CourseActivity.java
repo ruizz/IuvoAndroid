@@ -28,8 +28,8 @@ public class CourseActivity extends Activity {
 	int hours = 3;
 	String grade = "None";
 	String excludeFromGPA = "No";
-	int groupReferenceKey = -1;
-	int semesterReferenceKey = -1;
+	int groupID = -1;
+	int semesterID = -1;
 	String group = "None (Hidden)";
 	String semester = "None";
 
@@ -62,6 +62,9 @@ public class CourseActivity extends Activity {
         
         textView = (TextView) findViewById(R.id.course_semester_textview); textView.setTypeface(typeFace);
         textView.setText(semester);
+        
+        View view;
+        view = findViewById(R.id.course_name_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
 	}
 	
 	@Override
@@ -91,29 +94,30 @@ public class CourseActivity extends Activity {
 	public void addCourse() {
 		DatabaseHandler db = new DatabaseHandler(this);
 		
-		int id = db.getMaxCourseID(groupReferenceKey) + 1;
-		int gpa = 0;
+		
 		
 		EditText editText = (EditText) findViewById(R.id.course_name_edittext);
+		
 		String name = editText.getText().toString();
 		
+		int eFGPA = 0;
 		if(excludeFromGPA.equals("Yes"))
-			gpa = 1;
+			eFGPA = 1;
 		else
-			gpa = 0;
+			eFGPA = 0;
 		
-		Course course = new Course(id, semesterReferenceKey, groupReferenceKey, name, hours, grade, gpa);
+		db.addCourse(name, hours, grade, eFGPA, semesterID, groupID);
 		
-		db.addCourse(course);
-		
+		Log.d("All Courses Group", "Courses the same group:");
 		List<Course> allCourses = db.getAllCourses();
 		for(Course c : allCourses) {
-			Log.d("All Courses", "ID: " + c.getID() + ", gRK: "+ c.getGroupReferenceKey() + ", sRK: " + c.getSemesterReferenceKey() + ", Name: " + c.getName());
+			Log.d("All Courses", "ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
 		}
 		
-		List<Course> allCoursesGroup = db.getAllCoursesByGroupReferenceKey(groupReferenceKey);
+		Log.d("All Courses Group", "Courses the same group:");
+		List<Course> allCoursesGroup = db.getAllCoursesByGroup(groupID);
 		for(Course c : allCoursesGroup) {
-			Log.d("All Courses Group", "ID: " + c.getID() + ", gRK: "+ c.getGroupReferenceKey() + ", sRK: " + c.getSemesterReferenceKey() + ", Name: " + c.getName());
+			Log.d("All Courses Group", "ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
 		}
 	}
 	
@@ -218,27 +222,27 @@ public class CourseActivity extends Activity {
 		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 		List<Group> groupsInDatabase = databaseHandler.getAllGroups();
 		List<String> groupNames = new ArrayList<String>();
-		List<String> groupReferenceKeys = new ArrayList<String>();
+		List<String> groupIDs = new ArrayList<String>();
 		
 		groupNames.add("None (Hidden)");
-		groupReferenceKeys.add("-1");
+		groupIDs.add("-1");
 		for (Group g : groupsInDatabase) {
 			groupNames.add(g.getName());
-			groupReferenceKeys.add(String.valueOf(g.getReferenceKey()));
+			groupIDs.add(String.valueOf(g.getID()));
 		}
 		
 		final CharSequence[] groupNameItems = groupNames.toArray(new CharSequence[groupNames.size()]);
-		final CharSequence[] groupReferenceKeyItems = groupReferenceKeys.toArray(new CharSequence[groupReferenceKeys.size()]);
+		final CharSequence[] groupIDItems = groupIDs.toArray(new CharSequence[groupIDs.size()]);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle(dialogTitle);
 	    builder.setItems(groupNameItems, new DialogInterface.OnClickListener() {
 	               public void onClick(DialogInterface dialog, int which) {
 	            	   group = groupNameItems[which].toString();
-	            	   groupReferenceKey = Integer.parseInt((String) groupReferenceKeyItems[which]);
+	            	   groupID = Integer.parseInt((String) groupIDItems[which]);
 	            	   
 	            	   Log.d("Course Group: ", "Group Name: " + group);
-	            	   Log.d("Course Group: ", "Group Reference Key: " + groupReferenceKey);
+	            	   Log.d("Course Group: ", "Group Reference Key: " + groupID);
 	            	   
 	            	   TextView textView;
 	            	   textView = (TextView) findViewById(R.id.course_group_textview);
@@ -255,27 +259,27 @@ public class CourseActivity extends Activity {
 		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 		List<Semester> semestersInDatabase = databaseHandler.getAllSemesters();
 		List<String> semesterNames = new ArrayList<String>();
-		List<String> semesterReferenceKeys = new ArrayList<String>();
+		List<String> semesterIDs = new ArrayList<String>();
 		
 		semesterNames.add("None");
-		semesterReferenceKeys.add("-1");
+		semesterIDs.add("-1");
 		for (Semester g : semestersInDatabase) {
 			semesterNames.add(g.getName());
-			semesterReferenceKeys.add(String.valueOf(g.getReferenceKey()));
+			semesterIDs.add(String.valueOf(g.getID()));
 		}
 		
 		final CharSequence[] semesterNameItems = semesterNames.toArray(new CharSequence[semesterNames.size()]);
-		final CharSequence[] semesterReferenceKeyItems = semesterReferenceKeys.toArray(new CharSequence[semesterReferenceKeys.size()]);
+		final CharSequence[] semesterIDItems = semesterIDs.toArray(new CharSequence[semesterIDs.size()]);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle(dialogTitle);
 	    builder.setItems(semesterNameItems, new DialogInterface.OnClickListener() {
 	               public void onClick(DialogInterface dialog, int which) {
 	            	   semester = semesterNameItems[which].toString();
-	            	   semesterReferenceKey = Integer.parseInt((String) semesterReferenceKeyItems[which]);
+	            	   semesterID = Integer.parseInt((String) semesterIDItems[which]);
 	            	   
 	            	   Log.d("Course Semester: ", "Semester Name: " + semester);
-	            	   Log.d("Course Semester: ", "Semester Reference Key: " + semesterReferenceKey);
+	            	   Log.d("Course Semester: ", "Semester Reference Key: " + semesterID);
 	            	   
 	            	   TextView textView;
 	            	   textView = (TextView) findViewById(R.id.course_semester_textview);
