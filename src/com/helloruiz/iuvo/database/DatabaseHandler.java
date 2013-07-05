@@ -515,14 +515,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	}
     }
     
+    // Decrements the positions of courses in a group by 1.
+    // Used for when moving classes between groups.
+    public void decrementCoursePositions(int startingPosition, int groupID) {
+    	SQLiteDatabase db = this.getWritableDatabase();
+    	ContentValues values;
+    	
+    	// Decrement other courses
+		for (int i = startingPosition; i <= getCourseCountByGroup(groupID); i++) {
+			values = new ContentValues();
+			values.put(KEY_POSITION, i - 1);
+			db.update(TABLE_COURSE, values, KEY_POSITION + "=? AND " + KEY_GROUP_ID + "=?", new String[] {String.valueOf(i), String.valueOf(groupID)});
+		}
+    }
+    
     // Get single course
-    public Course getCourse(int position) {
+    public Course getCourse(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
      
         Cursor cursor = db.query(TABLE_COURSE, 
         		new String[] {KEY_ID, KEY_POSITION, KEY_NAME, KEY_HOURS, KEY_GRADE, KEY_EXCLUDED_FROM_GPA, KEY_SEMESTER_ID, KEY_GROUP_ID},
         		KEY_ID + "=?",
-        		new String[] { String.valueOf( position )},
+        		new String[] { String.valueOf( id )},
         		null, null, null, null);
         
         if (cursor != null)
@@ -663,6 +677,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 
         ContentValues values = new ContentValues();
         
+        values.put(KEY_POSITION, course.getPosition());
 		values.put(KEY_NAME, course.getName());
 		values.put(KEY_HOURS, course.getHours());
         values.put(KEY_GRADE, course.getGrade());

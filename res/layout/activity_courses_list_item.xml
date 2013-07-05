@@ -4,7 +4,7 @@
   android:layout_width="fill_parent"
   android:layout_height="wrap_content"
   android:orientation="horizontal"
-  android:background="@color/theme_blue" >
+  android:background="@color/gray" >
   
   <LinearLayout
     android:layout_width="wrap_content"
@@ -14,7 +14,7 @@
     android:padding="16sp" >
     
     <TextView
-      android:id="@+id/semester_name_textview"
+      android:id="@+id/course_name_textview"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
       android:text="@string/coming_soon"
@@ -22,10 +22,10 @@
       android:textSize="26sp" />
     
     <TextView
-      android:id="@+id/semester_class_count_textview"
+      android:id="@+id/course_semester_textview"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
-      android:text="@string/course_count_dummy"
+      android:text="@string/plan_no_semester_assigned"
       android:textColor="@color/theme_white"
       android:textSize="14sp" />
 

@@ -422,4 +422,55 @@ public class Dialogs {
 		
 		dialog.show();
 	}
+	
+	/** 
+	 * Dialog for confirming deletion of a course
+	 */
+	public static void deleteCourseConfirm(final Activity activity, final int _which) {
+		
+		// Took hours of looking for solutions, but found one that makes clickable links in dialogs
+		// without having to create a new layout and inflate it, or any other tedious task.
+		// http://stackoverflow.com/questions/7479813/android-linkify-text-in-dialog
+		
+		String dialogAddTitle = activity.getString(R.string.dialog_delete_confirm_title);
+		String dialogText = activity.getString(R.string.dialog_delete_course_confirm_text);
+		
+		TextView textView = new TextView(activity);
+		textView.setText(dialogText);
+		textView.setPadding(15, 15, 15, 15);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+		
+		// Listener for the 'Delete' button
+		DialogInterface.OnClickListener deleteClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				((CoursesActivity) activity).deleteCourse(_which);
+			}
+		};
+		
+		// Listener for the 'Cancel button
+		DialogInterface.OnClickListener cancelClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				((CoursesActivity) activity).refreshListAdapter();
+			}
+		};
+		
+		// If the dialog is dismissed any other way. (Such as through the back button.)
+		DialogInterface.OnCancelListener backClickListener = new DialogInterface.OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				((CoursesActivity) activity).refreshListAdapter();	
+			}
+		};
+	    
+		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
+			.setPositiveButton("Delete", deleteClickListener)
+			.setNegativeButton("Cancel", cancelClickListener)
+			.setOnCancelListener(backClickListener)
+			.setTitle(dialogAddTitle)
+			.setView(textView);
+		
+		dialog.show();
+	}
 }

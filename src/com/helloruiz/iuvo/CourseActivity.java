@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,13 +26,17 @@ public class CourseActivity extends Activity {
 	/**
 	 * Variables
 	 */
+	int id = -1;
+	int position = -1;
+	String name = "";
 	int hours = 3;
 	String grade = "None";
 	String excludeFromGPA = "No";
-	int groupID = -1;
 	int semesterID = -1;
-	String group = "None (Hidden)";
+	int oldGroupID = -1;
+	int groupID = -1;
 	String semester = "None";
+	String group = "None (Hidden)";
 
 	/**
 	 * Overrides
@@ -43,9 +48,37 @@ public class CourseActivity extends Activity {
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		Intent intent = getIntent();
+		
+		id = intent.getIntExtra(MainActivity.MAINACTIVITY_COURSE_ID, -1);
+		
+		if (id != -1) {
+			DatabaseHandler db = new DatabaseHandler(this);
+			Course course = db.getCourse(id);
+			
+			position = course.getPosition();
+			name = course.getName();
+			hours = course.getHours();
+			grade = course.getGrade();
+			if (course.getExcludedFromGPA() == 1)
+				excludeFromGPA = "Yes";
+			semesterID = course.getSemesterID();
+			groupID = course.getGroupID();
+			oldGroupID = course.getGroupID();
+			if (semesterID != -1)
+				semester = db.getSemester(semesterID).getName();
+			if (groupID != -1) {
+				group = db.getGroup(groupID).getName();
+			}
+			
+			setTitle(name);
+		}
+		
+		
 		Typeface typeFace=Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 		
 		EditText editText = (EditText) findViewById(R.id.course_name_edittext); editText.setTypeface(typeFace);
+		editText.setText((CharSequence) name);
 		
 		TextView textView;
 		textView = (TextView) findViewById(R.id.course_hours_textview); textView.setTypeface(typeFace);
@@ -106,18 +139,28 @@ public class CourseActivity extends Activity {
 		else
 			eFGPA = 0;
 		
-		db.addCourse(name, hours, grade, eFGPA, semesterID, groupID);
+		if(id == -1)
+			db.addCourse(name, hours, grade, eFGPA, semesterID, groupID);
+		else {
+			if (oldGroupID != groupID) {
+				db.decrementCoursePositions(position + 1, oldGroupID);
+				position = db.getCourseCountByGroup(groupID);
+			}
+			
+			Course course = new Course(id, position, name, hours, grade, eFGPA, semesterID, groupID);
+			db.updateCourse(course);
+		}
 		
-		Log.d("All Courses Group", "Courses the same group:");
+		Log.d("All Courses", "All Current Courses:");
 		List<Course> allCourses = db.getAllCourses();
 		for(Course c : allCourses) {
-			Log.d("All Courses", "ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
+			Log.d("All Courses", "Position: " + c.getPosition() + ", ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
 		}
 		
 		Log.d("All Courses Group", "Courses the same group:");
 		List<Course> allCoursesGroup = db.getAllCoursesByGroup(groupID);
 		for(Course c : allCoursesGroup) {
-			Log.d("All Courses Group", "ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
+			Log.d("All Courses Group", "Position: " + c.getPosition() + ", ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
 		}
 	}
 	
@@ -147,7 +190,7 @@ public class CourseActivity extends Activity {
 	               public void onClick(DialogInterface dialog, int which) {
 	               switch(which) {
 	               case 1:
-	            	   grade = "A";
+	            	   grade = "A ";
 	            	   break;
 	               case 2:
 	            	   grade = "A-";
@@ -156,7 +199,7 @@ public class CourseActivity extends Activity {
 	            	   grade = "B+";
 	            	   break;
 	               case 4:
-	            	   grade = "B";
+	            	   grade = "B ";
 	            	   break;
 	               case 5:
 	            	   grade = "B-";
@@ -165,7 +208,7 @@ public class CourseActivity extends Activity {
 	            	   grade = "C+";
 	            	   break;
 	               case 7:
-	            	   grade = "C";
+	            	   grade = "C ";
 	            	   break;
 	               case 8:
 	            	   grade = "C-";
@@ -174,13 +217,13 @@ public class CourseActivity extends Activity {
 	            	   grade = "D+";
 	            	   break;
 	               case 10:
-	            	   grade = "D";
+	            	   grade = "D ";
 	            	   break;
 	               case 11:
 	            	   grade = "D-";
 	            	   break;
 	               case 12:
-	            	   grade = "F";
+	            	   grade = "F ";
 	            	   break;
 	               default:
 	            	   grade = "None";

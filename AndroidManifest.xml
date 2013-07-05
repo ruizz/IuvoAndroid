@@ -55,6 +55,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.helloruiz.iuvo.MainActivity" />
         </activity>
+        <activity
+            android:name="com.helloruiz.iuvo.CoursesActivity"
+            android:label="@string/title_activity_courses"
+            android:parentActivityName="com.helloruiz.iuvo.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.helloruiz.iuvo.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

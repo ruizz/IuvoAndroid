@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -41,35 +42,35 @@ import com.helloruiz.iuvo.database.Semester;
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
 	/**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
-     * three primary sections of the app. We use a {@link android.support.v4.app.FragmentPagerAdapter}
-     * derivative, which will keep every loaded fragment in memory. If this becomes too memory
-     * intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+	 * Variables
+	 */
+    //The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
+    //three primary sections of the app. We use a {@link android.support.v4.app.FragmentPagerAdapter}
+    //derivative, which will keep every loaded fragment in memory. If this becomes too memory
+    //intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
+	AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	
-    /**
-     * The {@link ViewPager} that will display the three primary sections of the app, one at a
-     * time.
-     */
-    ViewPager mViewPager;
+    // The {@link ViewPager} that will display the three primary sections of the app, one at a time.
     // If you ever need to switch pages programatically. Could be useful: mViewPager.setCurrentItem(0);
+    ViewPager mViewPager;
     
-    /**
-     * For keeping track of the currently selected tab.
-     */
+    // For keeping track of the currently selected tab.
     int currentTabIndex = 0;
     
-    /**
-     * Application preferences
-     */
+    // Application preferences
     static SharedPreferences iuvoSettings;
     
-    /**
-     * We'll use this do display any dialogs. All the heavy lifting done in DialogManager.java
-     */
+    // Unique tags for passing an intent to another activity.
+    static String MAINACTIVITY_COURSE_ID = "com.helloruiz.iuvo.MainActivity.courseID";
+    static String MAINACTIVITY_GROUP_ID = "com.helloruiz.iuvo.MainActivity.groupID";
+    
+    // We'll use this do display any dialogs. All the heavy lifting done in DialogManager.java
     static Dialogs dialogDatabase = new Dialogs();
     
+    /**
+     * Overrides
+     */
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -176,6 +177,58 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
     }
     
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_home, menu);
+		
+		MenuItem mEditProfile = menu.findItem(R.id.menu_edit_profile);
+		MenuItem mManageGroups = menu.findItem(R.id.menu_manage_groups);
+		MenuItem mManageSemesters = menu.findItem(R.id.menu_manage_semesters);
+		MenuItem mAddCourse = menu.findItem(R.id.menu_add_course);
+		
+		switch(currentTabIndex) {
+		case 0:
+			mManageGroups.setVisible(false);
+			mManageSemesters.setVisible(false);
+			mAddCourse.setVisible(false);
+			break;
+		case 1:
+			mEditProfile.setVisible(false);
+			break;
+		default:
+			mEditProfile.setVisible(false);
+			mManageGroups.setVisible(false);
+			mManageSemesters.setVisible(false);
+			mAddCourse.setVisible(false);
+			break;
+		}
+		
+		return true;
+	}
+    
+    @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    
+		// Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.menu_edit_profile:
+	            menuEditProfile();
+	            return true;
+	        case R.id.menu_manage_groups:
+	        	menuManageGroups();
+	        	return true;
+	        case R.id.menu_manage_semesters:
+	        	menuManageSemesters();
+	        	return true;
+	        case R.id.menu_add_course:
+	        	menuAddCourse();
+	        	return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+    
     /**
      * Me section fragment.
      */
@@ -236,21 +289,22 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	 */
 	public static class PlanSectionFragment extends ListFragment {
 	    
-		/**
-		 * Plan section fragment. Static variables.
-		 */
-	    public static final List<String> courseHeaders = new ArrayList<String>();
+		
+		// Static variables.
+	    public static final List<String> groupTitles = new ArrayList<String>();
+	    public static final List<Integer> groupIDs = new ArrayList<Integer>();
 	    public static final List<String> courseTitles = new ArrayList<String>();
 	    public static final List<String> courseSemesters = new ArrayList<String>();
 	    public static final List<String> courseSemesterColors = new ArrayList<String>();
 	    public static final List<String> courseGrades = new ArrayList<String>();
+	    public static final List<Integer> courseIDs = new ArrayList<Integer>();
 	    
 	    private static final Integer LIST_HEADER = 0;
 	    private static final Integer LIST_ITEM = 1;
 
 	    private ListView listView;
 
-	    /** Called when the activity is first created. */
+	    // Called when MainActivity is first created.
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	        
@@ -263,11 +317,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    public void onResume() {
 	    	super.onResume();
 	    	
-	    	courseHeaders.clear();
+	    	groupTitles.clear();
+	    	groupIDs.clear();
 	    	courseTitles.clear();
 	    	courseSemesters.clear();
 	    	courseSemesterColors.clear();
 	    	courseGrades.clear();
+	    	courseIDs.clear();
 
 	    	DatabaseHandler db = new DatabaseHandler(getActivity());
 	    	List<Group> groups = db.getAllGroups();
@@ -275,28 +331,30 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    	// If user didn't create any groups, populate "Let's get started" dialogue into the headers and display.
 	    	if (groups.size() == 0) {
 	    		
-	    		courseHeaders.add(getString(R.string.plan_getting_started_header));
-	    		courseHeaders.add(getString(R.string.plan_getting_started_note1));
-	    		courseHeaders.add(getString(R.string.plan_getting_started_note2));
+	    		groupTitles.add(getString(R.string.plan_getting_started_header));
+	    		groupTitles.add(getString(R.string.plan_getting_started_note1));
+	    		groupTitles.add(getString(R.string.plan_getting_started_note2));
 	    		
 	    		listView = getListView(); 
-	    		//listView.setSelector(android.R.color.transparent);
 		        setListAdapter(new getStartedListAdapter(getActivity()));
 		        
 	    	} else { // User created groups, populate the appropriate headers, titles, etc and display them.
 	    		
 		    	for (Group g : groups) {
 		    		
-		    		courseHeaders.add(g.getName());
+		    		groupTitles.add(g.getName());
+		    		groupIDs.add(g.getID());
 		    		courseTitles.add(null);
 		    		courseSemesters.add(null);
 		    		courseSemesterColors.add(null);
 		    		courseGrades.add(null);
+		    		courseIDs.add(null);
 		    		
 		    		List<Course> courses = db.getAllCoursesByGroup(g.getID());
 		    		for (Course c : courses) {
 		    			
-		    			courseHeaders.add(null);
+		    			groupTitles.add(null);
+		    			groupIDs.add(null);
 			    		courseTitles.add(c.getName() + " (" + c.getHours() + ")");
 			    		
 			    		if (c.getSemesterID() == -1) {
@@ -312,6 +370,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			    			courseGrades.add("");
 			    		else
 			    			courseGrades.add(c.getGrade());
+			    		
+			    		courseIDs.add(c.getID());
 		    		}
 		    	}
 		    	
@@ -320,18 +380,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    	}
 	    }
 	    
-	    /**
-		 * Plan section fragment. BaseAdapter explicitly designed to show the "Let's get started" dialogue
-		 * and make it look pretty. Uses a few header list items and modifies them for a unique look different
-		 * from how the list would normally look.
-		 */
+	    // BaseAdapter explicitly designed to show the "Let's get started" dialogue
 	    private class getStartedListAdapter extends BaseAdapter {
 	        public getStartedListAdapter(Context context) {
 	            mContext = context;
 	        }
 
 	        @Override
-	        public int getCount() { return courseHeaders.size(); }
+	        public int getCount() { return groupTitles.size(); }
 
 	        @Override
 	        public Object getItem(int position) {return position;}
@@ -342,13 +398,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	        // Disables the highlight selection that appears when selecting a list item.
 	        @Override
 	        public boolean isEnabled(int position) {
-	        	return false;
+	        	return true;
 	        }
 
 	        @Override
 	        public View getView(int position, View convertView, ViewGroup parent) {
 
-	            String headerText = courseHeaders.get(position);
+	            String headerText = groupTitles.get(position);
 	            View rootView = convertView;
 	            
                 if (convertView == null || convertView.getTag() == LIST_ITEM) {
@@ -379,9 +435,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	        private final Context mContext;
 	    }
 	    
-	    /**
-		 * Plan section fragment. Designed to show the degree plan as a list with headers.
-		 */
+	    
+		// Plan section fragment. Designed to show the degree plan as a list with headers.
 	    private class DegreePlanListAdapter extends BaseAdapter {
 	        public DegreePlanListAdapter(Context context) {
 	            mContext = context;
@@ -389,7 +444,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	        @Override
 	        public int getCount() {
-	            return courseHeaders.size();
+	            return groupTitles.size();
 	        }
 
 	        @Override
@@ -415,10 +470,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	        @Override
 	        public View getView(int position, View convertView, ViewGroup parent) {
 
-	            String headerText = courseHeaders.get(position);
+	            String headerText = groupTitles.get(position);
 	            View rootView = convertView;
 	            
-	            if(headerText != null) {
+	            if(headerText != null) { // Group Header
 	                if(convertView == null || convertView.getTag() == LIST_ITEM) {
 	                    rootView = LayoutInflater.from(mContext).inflate(
 	                            R.layout.fragment_plan_list_header, parent, false);
@@ -429,9 +484,28 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	                Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
 	                headerTextView.setTypeface(typeFace);
 	                headerTextView.setText(headerText);
+	                
+	                rootView.setTag(groupIDs.get(position));
+	                
+	                rootView.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View view) {
+							
+							int groupID = (Integer) view.getTag();
+							//Toast.makeText(mContext, "Course ID: " + groupID, Toast.LENGTH_SHORT).show();
+							// TODO
+							Intent intent = new Intent(mContext, CoursesActivity.class);
+							intent.putExtra(MAINACTIVITY_GROUP_ID, groupID);
+							startActivity(intent);
+						}
+	                	
+	                });
+	                
+	                
 	                return rootView;
 	            
-	            } else {
+	            } else { // Course Item
 		            if(convertView == null || convertView.getTag() == LIST_HEADER) {
 		                rootView = LayoutInflater.from(mContext).inflate(
 		                        R.layout.fragment_plan_list_item, parent, false);
@@ -450,7 +524,23 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
 	                gradeText.setTypeface(typeFace);
 		            gradeText.setText(courseGrades.get(position));
-	
+		            
+		            rootView.setTag(courseIDs.get(position));
+		            
+		            rootView.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View view) {
+							
+							int courseID = (Integer) view.getTag();
+							//Toast.makeText(mContext, "Course ID: " + courseID, Toast.LENGTH_SHORT).show();
+							Intent intent = new Intent(mContext, CourseActivity.class);
+							intent.putExtra(MAINACTIVITY_COURSE_ID, courseID);
+							startActivity(intent);
+						}
+	                	
+	                });
+		            
 		            return rootView;
 	            }
 	        }
@@ -534,58 +624,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             });
         }
     }
-    
-    @Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_home, menu);
-		
-		MenuItem mEditProfile = menu.findItem(R.id.menu_edit_profile);
-		MenuItem mManageGroups = menu.findItem(R.id.menu_manage_groups);
-		MenuItem mManageSemesters = menu.findItem(R.id.menu_manage_semesters);
-		MenuItem mAddCourse = menu.findItem(R.id.menu_add_course);
-		
-		switch(currentTabIndex) {
-		case 0:
-			mManageGroups.setVisible(false);
-			mManageSemesters.setVisible(false);
-			mAddCourse.setVisible(false);
-			break;
-		case 1:
-			mEditProfile.setVisible(false);
-			break;
-		default:
-			mEditProfile.setVisible(false);
-			mManageGroups.setVisible(false);
-			mManageSemesters.setVisible(false);
-			mAddCourse.setVisible(false);
-			break;
-		}
-		
-		return true;
-	}
-    
-    @Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    
-		// Handle item selection
-	    switch (item.getItemId()) {
-	        case R.id.menu_edit_profile:
-	            menuEditProfile();
-	            return true;
-	        case R.id.menu_manage_groups:
-	        	menuManageGroups();
-	        	return true;
-	        case R.id.menu_manage_semesters:
-	        	menuManageSemesters();
-	        	return true;
-	        case R.id.menu_add_course:
-	        	menuAddCourse();
-	        	return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
-	}
     
     /**
      * Pops up with a dialog so that user can edit their profile.

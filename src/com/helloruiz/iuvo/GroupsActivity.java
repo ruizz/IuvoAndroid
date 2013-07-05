@@ -128,7 +128,7 @@ public class GroupsActivity extends ListActivity {
 	/**
 	 * -- Voids --
 	 */
-	// Pops up with dialog so that user can add a group
+	// Pops up with dialog so that user get help
     public void menuGroupsHelp() {
     	Dialogs.groupsHelp(this);
     }
