@@ -63,6 +63,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     // We'll use this do display any dialogs. All the heavy lifting done in DialogManager.java
     static Dialogs dialogDatabase = new Dialogs();
     
+    // Typeface for pretty lobster font.
+    static Typeface typeFace;
+    
     /**
      * Overrides
      */
@@ -70,6 +73,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        typeFace = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -251,7 +256,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             
             // Assign name according to application settings.
             textView = (TextView) rootView.findViewById(R.id.me_name);
-            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
             textView.setTypeface(typeFace);
             if(!userName.equals(""))
             	textView.setText((CharSequence) userName);
@@ -416,7 +420,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 
                 // Title text
                 if (position == 0) {
-	                Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
 	                headerTextView.setTypeface(typeFace);
 	                headerTextView.setTextSize(30);
 	                headerTextView.setPadding(0, 0, 0, 5);
@@ -475,11 +478,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	                }
 
 	                TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
-	                Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
 	                headerTextView.setTypeface(typeFace);
 	                headerTextView.setText(headerText);
 	                
-	                rootView.setTag(groupIDs.get(position));
+	                // Would use setTag, but that's used for switching between headers and course items.
+	                rootView.setId(groupIDs.get(position));
 	                
 	                rootView.setOnClickListener(new OnClickListener() {
 
@@ -487,7 +490,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 						public void onClick(View view) {
 							
 							DatabaseHandler db = new DatabaseHandler(mContext);
-							int groupID = (Integer) view.getTag();
+							int groupID = (Integer) view.getId();
 							
 							if (db.getCourseCountByGroup(groupID) == 0) {
 								Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_SHORT).show();
@@ -519,18 +522,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		            rootView.setBackgroundColor(ColorHandler.getColor(mContext, courseSemesterColors.get(position)));
 		            
 		            TextView gradeText = (TextView)rootView.findViewById(R.id.plan_item_grade);
-		            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
+		            
 	                gradeText.setTypeface(typeFace);
 		            gradeText.setText(courseGrades.get(position));
 		            
-		            rootView.setTag(courseIDs.get(position));
+		            // Would use setTag, but that's used for switching between headers and course items.
+		            rootView.setId(courseIDs.get(position));
 		            
 		            rootView.setOnClickListener(new OnClickListener() {
 
 						@Override
 						public void onClick(View view) {
 							
-							int courseID = (Integer) view.getTag();
+							int courseID = (Integer) view.getId();
 							//Toast.makeText(mContext, "Course ID: " + courseID, Toast.LENGTH_SHORT).show();
 							Intent intent = new Intent(mContext, CourseActivity.class);
 							intent.putExtra(MAINACTIVITY_COURSE_ID, courseID);
@@ -618,7 +622,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 
                 TextView headerTextView = (TextView)rootView.findViewById(R.id.more_item_title);
                 headerTextView.setText(headerTitle);
-	            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
 	            headerTextView.setTypeface(typeFace);
                 
 	            headerTextView = (TextView)rootView.findViewById(R.id.more_item_subtitle);
