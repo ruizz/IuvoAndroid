@@ -24,6 +24,7 @@
     <string name="plan_getting_started_note1">Begin populating your degree plan by adding semesters and groups.</string>
     <string name="plan_getting_started_note2">You can then add courses, which will display their semester color and appear under their assigned group.</string>
     <string name="plan_no_semester_assigned">No Semester Assigned</string>
+    <string name="plan_no_courses_found">No courses found for this group!</string>
     <string name="dialog_name">Name</string>
     <string name="dialog_school">School</string>
     <string name="dialog_major">Major</string>

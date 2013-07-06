@@ -96,8 +96,14 @@ public class CourseActivity extends Activity {
         textView = (TextView) findViewById(R.id.course_semester_textview); textView.setTypeface(typeFace);
         textView.setText(semester);
         
+        // Not sure what's causing these views to change random colors. This ensures that they stay blue.
         View view;
         view = findViewById(R.id.course_name_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+        view = findViewById(R.id.course_hours_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+        view = findViewById(R.id.course_grade_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+        view = findViewById(R.id.course_exclude_from_gpa_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+        view = findViewById(R.id.course_group_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+        view = findViewById(R.id.course_semester_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
 	}
 	
 	@Override

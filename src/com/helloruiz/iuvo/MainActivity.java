@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -26,10 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -227,6 +223,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
+
 	}
     
     /**
@@ -291,13 +288,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    
 		
 		// Static variables.
-	    public static final List<String> groupTitles = new ArrayList<String>();
-	    public static final List<Integer> groupIDs = new ArrayList<Integer>();
-	    public static final List<String> courseTitles = new ArrayList<String>();
-	    public static final List<String> courseSemesters = new ArrayList<String>();
-	    public static final List<String> courseSemesterColors = new ArrayList<String>();
-	    public static final List<String> courseGrades = new ArrayList<String>();
-	    public static final List<Integer> courseIDs = new ArrayList<Integer>();
+	    static List<String> groupTitles = new ArrayList<String>();
+	    static List<Integer> groupIDs = new ArrayList<Integer>();
+	    static List<String> courseTitles = new ArrayList<String>();
+	    static List<String> courseSemesters = new ArrayList<String>();
+	    static List<String> courseSemesterColors = new ArrayList<String>();
+	    static List<String> courseGrades = new ArrayList<String>();
+	    static List<Integer> courseIDs = new ArrayList<Integer>();
 	    
 	    private static final Integer LIST_HEADER = 0;
 	    private static final Integer LIST_ITEM = 1;
@@ -428,13 +425,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 	View dividerView = rootView.findViewById(R.id.item_separator);
                 	dividerView.setVisibility(View.INVISIBLE);
                 }
-                
                 return rootView;
 	        }
-
 	        private final Context mContext;
 	    }
-	    
 	    
 		// Plan section fragment. Designed to show the degree plan as a list with headers.
 	    private class DegreePlanListAdapter extends BaseAdapter {
@@ -492,12 +486,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 						@Override
 						public void onClick(View view) {
 							
+							DatabaseHandler db = new DatabaseHandler(mContext);
 							int groupID = (Integer) view.getTag();
-							//Toast.makeText(mContext, "Course ID: " + groupID, Toast.LENGTH_SHORT).show();
-							// TODO
-							Intent intent = new Intent(mContext, CoursesActivity.class);
-							intent.putExtra(MAINACTIVITY_GROUP_ID, groupID);
-							startActivity(intent);
+							
+							if (db.getCourseCountByGroup(groupID) == 0) {
+								Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_SHORT).show();
+							} else {
+								Intent intent = new Intent(mContext, CoursesActivity.class);
+								intent.putExtra(MAINACTIVITY_GROUP_ID, groupID);
+								startActivity(intent);
+							}
 						}
 	                	
 	                });
@@ -540,89 +538,154 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 						}
 	                	
 	                });
-		            
 		            return rootView;
 	            }
 	        }
-
 	        private final Context mContext;
 	    }
-	    
-	    
 	}
 
 	/**
      * More section fragment.
      */
-    public static class MoreSectionFragment extends Fragment {
+	public static class MoreSectionFragment extends ListFragment {
     	
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            
-        	View rootView = inflater.inflate(R.layout.fragment_more, container, false);
-
-            GridView gridView = (GridView) rootView.findViewById(R.id.more_grid_view);
-            gridView.setAdapter(new ImageAdapter(rootView.getContext()));
-            
-            return rootView;
-        }
+    	private ListView listView;
+    	
+    	public static final List<String> moreTitles = new ArrayList<String>();
+    	public static final List<String> moreSubtitles = new ArrayList<String>();
+    	
+    	private static final Integer LIST_TITLE = 0;
+	    private static final Integer LIST_SUBTITLE = 1;
+    	
+    	// Called when MainActivity is first created.
+	    @Override
+	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	        
+	    	listView = (ListView) inflater.inflate(R.layout.fragment_plan, container, false);
+	        return listView;
+	    }
+	    
+	    @Override
+	    public void onActivityCreated(Bundle savedInstanceState) {
+	    	super.onActivityCreated(savedInstanceState);
+	    	if (moreTitles.size() == 0) {
+		    	String[] titles = getResources().getStringArray(R.array.fragment_more_titles_array);
+		    	String[] subTitles = getResources().getStringArray(R.array.fragment_more_subtitles_array);
+		    	
+		    	for(int i = 0; i < titles.length; i++) {
+		    		moreTitles.add(titles[i]);
+		    		moreSubtitles.add(subTitles[i]);
+		    	}
+	    	}
+	    	listView = getListView();
+	        setListAdapter(new moreListAdapter(getActivity()));
+	    }
         
-        @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
-        	
-            View rootView = getView();
-            GridView gridView = (GridView) rootView.findViewById(R.id.more_grid_view);
-            // Declared as final so that it can be used in the class defined in the
-            // gridView.setItemClickListener method.
-        	final Activity activity = getActivity();
-        	
-        	gridView.setOnItemClickListener(
-        		new OnItemClickListener() {
-        			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {             	
-                	
-        				Intent webIntent;
-        				List<ResolveInfo> activities;
-        				Toast noWebApp = Toast.makeText(activity.getApplicationContext(), "No web apps found.", Toast.LENGTH_SHORT);
-        				
-        				switch(position) {
-        				case 0: // About Iuvo
-        					
-        					// Display 'About' dialog
-        					dialogDatabase.aboutIuvo(activity);
-        					
-        					break;
-        				case 1: // View Source code
-        					
-        					webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ruizz/Iuvo/"));
+	 // BaseAdapter explicitly designed to show the "Let's get started" dialogue
+	    private class moreListAdapter extends BaseAdapter {
+	        public moreListAdapter(Context context) {
+	            mContext = context;
+	        }
 
-        					// Verify that there is at least one compatible app to open a web page
-        					activities = activity.getPackageManager().queryIntentActivities(webIntent, 0);
-        					if(activities.size() > 0)
-        						startActivity(webIntent);
-        					else
-        						noWebApp.show();
-        					
-        					break;
-        				case 2: // Visit my website
-        					
-        					webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://helloruiz.com"));
+	        @Override
+	        public int getCount() { return moreTitles.size(); }
 
-        					// Verify that there is at least one compatible app to open a web page
-        					activities = activity.getPackageManager().queryIntentActivities(webIntent, 0);
-        					if(activities.size() > 0)
-        						startActivity(webIntent);
-        					else
-        						noWebApp.show();
-        					
-        					break;
-        				default:
-        					break;
-        				}
-        					
-        			}
-            });
-        }
+	        @Override
+	        public Object getItem(int position) {return position;}
+
+	        @Override
+	        public long getItemId(int position) { return position; }
+
+	        // Disables the highlight selection that appears when selecting a list item.
+	        @Override
+	        public boolean isEnabled(int position) {
+	        	return true;
+	        }
+
+	        @Override
+	        public View getView(int position, View convertView, ViewGroup parent) {
+
+	            String headerTitle = moreTitles.get(position);
+	            String headerSubtitle = moreSubtitles.get(position);
+	            View rootView = convertView;
+	            
+                if (convertView == null || convertView.getTag() == LIST_TITLE) {
+                    rootView = LayoutInflater.from(mContext).inflate(
+                            R.layout.fragment_more_list_item, parent, false);
+                    rootView.setTag(LIST_TITLE);
+                }
+                
+                TextView headerTextView = (TextView)rootView.findViewById(R.id.more_item_title);
+                headerTextView.setText(headerTitle);
+	            Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
+	            headerTextView.setTypeface(typeFace);
+                
+	            headerTextView = (TextView)rootView.findViewById(R.id.more_item_subtitle);
+	            headerTextView.setText(headerSubtitle);
+	            
+	            switch(position) {
+	            case 1:
+	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_navy));
+	            	break;
+	            case 2:
+	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	            	break;
+	            case 3:
+	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_teal));
+	            	break;
+	            }
+	            
+	            rootView.setId(position);
+	            
+	            rootView.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+						
+						int id = view.getId();
+						Intent webIntent;
+						List<ResolveInfo> activities;
+						Toast noWebApp = Toast.makeText(getActivity().getApplicationContext(), "No web apps found.", Toast.LENGTH_SHORT);
+						
+						switch(id) {
+						case 0:
+							DatabaseHandler db = new DatabaseHandler(getActivity());
+							
+							if (db.getCourseCountByGroup(-1) == 0) {
+								Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_SHORT).show();
+							} else {
+								Intent intent = new Intent(mContext, CoursesActivity.class);
+								intent.putExtra(MAINACTIVITY_GROUP_ID, -1);
+								startActivity(intent);
+							}
+							break;
+						case 1:
+							// Display 'About' dialog
+	    					dialogDatabase.aboutIuvo(getActivity());
+							break;
+						case 2:
+							
+							break;
+						case 3:
+							webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://helloruiz.com"));
+
+	    					// Verify that there is at least one compatible app to open a web page
+	    					activities = getActivity().getPackageManager().queryIntentActivities(webIntent, 0);
+	    					if(activities.size() > 0)
+	    						startActivity(webIntent);
+	    					else
+	    						noWebApp.show();
+							break;
+						}
+					}
+                });
+	            
+                return rootView;
+	        }
+
+	        private final Context mContext;
+	    }
     }
     
     /**

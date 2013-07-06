@@ -38,7 +38,7 @@ public class ImageAdapter extends BaseAdapter {
         TextView textView;
         if (convertView == null) {  // if it's not recycled, initialize some attributes
         	LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        	rootView = li.inflate(R.layout.fragment_more_grid_item, null);
+        	rootView = li.inflate(R.layout.fragment_more_list_item, null);
         	
         	// No longer needed, since we're not using bitmaps for the more grid items anymore.
         	// GridView item has been changed from RelativeLayout to LinearLayout anyways.
@@ -56,9 +56,9 @@ public class ImageAdapter extends BaseAdapter {
             Typeface typeFace=Typeface.createFromAsset(rootView.getContext().getAssets(),"fonts/lobster.otf");
             textView.setTypeface(typeFace);
             
-            textView = (TextView) rootView.findViewById(R.id.more_item_description);
-            textView.setText(mDescriptionIds[position]);
-            textView.setBackgroundColor(Color.parseColor(mContext.getString(mImageIds[position])));
+            //textView = (TextView) rootView.findViewById(R.id.more_item_description);
+            //textView.setText(mDescriptionIds[position]);
+            //textView.setBackgroundColor(Color.parseColor(mContext.getString(mImageIds[position])));
             
         } else {
             rootView = convertView;

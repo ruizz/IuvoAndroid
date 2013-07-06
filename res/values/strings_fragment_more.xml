@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fragment_more_titles_array">
+        <item>Hidden Courses</item>
+        <item>About</item>
+        <item>Export</item>
+        <item>Visit</item>
+    </string-array>
+    
+    <string-array name="fragment_more_subtitles_array">
+        <item>View and edit your hidden courses.</item>
+        <item>Iuvo information and credits.</item>
+        <item>Coming soon!</item>
+        <item>Check out my website, helloruiz.com</item>
+    </string-array>
+</resources>

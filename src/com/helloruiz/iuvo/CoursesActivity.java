@@ -111,6 +111,12 @@ public class CoursesActivity extends ListActivity {
 		
 		refreshListAdapter();
 	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		refreshListAdapter();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -121,9 +127,10 @@ public class CoursesActivity extends ListActivity {
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		// Course is editable from degree plan view. No need here.
-		// Course item = courseAdapter.getItem(position);
-		// Dialogs.editCourse(this, item);
+		DatabaseHandler db = new DatabaseHandler(this);
+		Intent intent = new Intent(getApplicationContext(), CourseActivity.class);
+		intent.putExtra(MainActivity.MAINACTIVITY_COURSE_ID, db.getCourseByPosition(position, groupID).getID());
+		startActivity(intent);
 	}
 	
 	@Override
@@ -168,7 +175,7 @@ public class CoursesActivity extends ListActivity {
 	public void refreshListAdapter() {
 		// Refresh the ListAdapter to reflect the new changes in the database.
 		DatabaseHandler databaseHandler = new DatabaseHandler(this);
-		List<Course> coursesInDatabase = databaseHandler.getAllCourses();
+		List<Course> coursesInDatabase = databaseHandler.getAllCoursesByGroup(groupID);
 		
 		Log.d("Course: ", "Updating ListAdapter...");
 		mCourses = new ArrayList<Course>();
