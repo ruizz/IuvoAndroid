@@ -238,12 +238,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	// Group size after deletion of the group.
     	int groupCount = getGroupCount() - 1;
     	
+    	// Size of hidden group.
+    	int hiddenGroupCount = getCourseCountByGroup(-1);
+    	
         SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values;
         
-        // Update all courses associated with this semester
-		ContentValues values = new ContentValues();
+        // Update all courses associated with this semester. First the position...
+        List<Course> courses = getAllCoursesByGroup(group.getID());
+	    for (Course c : courses) {
+	    	values = new ContentValues();
+	    	values.put(KEY_POSITION,String.valueOf(c.getPosition() + hiddenGroupCount));
+	    	db.update(TABLE_COURSE, values, KEY_ID + " = ?", new String[] {String.valueOf(c.getID())});
+	    }
+        
+	    // ... and then the groupID
+		values = new ContentValues();
 		values.put(KEY_GROUP_ID, "-1");
 	    db.update(TABLE_COURSE, values, KEY_GROUP_ID + " = ?", new String[] {String.valueOf(group.getID())});
+	    
         
         // Delete the group
         db.delete(TABLE_GROUP, KEY_ID + " = ?",new String[] { String.valueOf(group.getID()) });

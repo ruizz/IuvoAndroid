@@ -33,9 +33,20 @@ public class GroupsActivity extends ListActivity {
 
 	      public View getView(int position, View convertView, ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
+	        
+	        String courseCount = String.valueOf(databaseHandler.getCourseCountByGroup(position));
+	        
+	        if (courseCount.equals("1"))
+	        	courseCount = courseCount + SINGLE_COURSE;
+	        else
+	        	courseCount = courseCount + MULTIPLE_COURSES;
 
 	        TextView textView = (TextView) v.findViewById(R.id.group_name_textview);
             textView.setTypeface(typeface);
+            
+            textView = (TextView) v.findViewById(R.id.group_class_count_textview);
+            textView.setText((CharSequence) courseCount);
+            
 	        
             // Background color would change after messing with semesters. Band-Aid fix.
             v.setBackgroundColor(getResources().getColor(R.color.theme_blue));
@@ -77,20 +88,23 @@ public class GroupsActivity extends ListActivity {
 	
 	// Typeface for pretty lobster font.
 	Typeface typeface;
-
+	
+	// Strings defined globally here since they'll be used in a loop.
+	String SINGLE_COURSE = " Course";
+	String MULTIPLE_COURSES = " Courses";
+	
 	/**
 	 * -- Overrides --
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
-		
 		setContentView(R.layout.activity_groups);
+		
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 		databaseHandler = new DatabaseHandler(this);
 		
 		// Set up our drag sort ListView

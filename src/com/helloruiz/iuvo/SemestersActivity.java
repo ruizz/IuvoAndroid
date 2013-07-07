@@ -34,20 +34,32 @@ public class SemestersActivity extends ListActivity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
 	        
-	        DatabaseHandler databaseHandler = new DatabaseHandler(SemestersActivity.this);
-	        Semester semester = databaseHandler.getSemesterByPosition(position);
+	        String courseCount = String.valueOf(databaseHandler.getCourseCountBySemester(position));
 	        
+	        if (courseCount.equals("1"))
+	        	courseCount = courseCount + SINGLE_COURSE;
+	        else
+	        	courseCount = courseCount + MULTIPLE_COURSES;
+
 	        TextView textView = (TextView) v.findViewById(R.id.semester_name_textview);
             textView.setTypeface(typeface);
-	        
+            
+            textView = (TextView) v.findViewById(R.id.semester_class_count_textview);
+            textView.setText((CharSequence) courseCount);
+            
+            // Set list item to color of semester
+            Semester semester = databaseHandler.getSemesterByPosition(position);
 	        v.setBackgroundColor(ColorHandler.getColor(getContext(), semester.getColor()));
+	        
 	        return v;
 	      }
 	    }
 	
 	/**
-	 * -- Static Variables --
+	 * -- Variables --
 	 */
+	private DatabaseHandler databaseHandler;
+	
 	private SemesterAdapter semesterAdapter;
 
     private ArrayList<Semester> mSemesters;
@@ -57,7 +69,6 @@ public class SemestersActivity extends ListActivity {
     	@Override
     	public void drop(int from, int to) {
     		
-			DatabaseHandler databaseHandler = new DatabaseHandler(SemestersActivity.this);
 			databaseHandler.moveSemester(from, to);      
     		
 			refreshListAdapter();
@@ -77,18 +88,23 @@ public class SemestersActivity extends ListActivity {
 	// Typeface for pretty lobster font.
 	Typeface typeface;
 
+	// Strings defined globally here since they'll be used in a loop.
+	String SINGLE_COURSE = " Course";
+	String MULTIPLE_COURSES = " Courses";
+		
 	/**
 	 * -- Overrides --
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
-		
 		setContentView(R.layout.activity_semesters);
+		
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
+		databaseHandler = new DatabaseHandler(this);
 		
 		// Set up our drag sort ListView
 		DragSortListView dragSortListView = (DragSortListView) getListView();
@@ -147,7 +163,6 @@ public class SemestersActivity extends ListActivity {
 
     // Executes after user adds a semester from addMenuSemester
 	public void addSemester(String name, String color) {
-		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 		databaseHandler.addSemester(name, color);
 
 		refreshListAdapter();
@@ -155,7 +170,6 @@ public class SemestersActivity extends ListActivity {
 	
 	// Called after a user has confirmed that they want to edit a semester
 	public void editSemester(String newName, String newColor, Semester item) {
-		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 		
 		item.setName(newName);
 		item.setColor(newColor);
@@ -166,7 +180,6 @@ public class SemestersActivity extends ListActivity {
 	
 	// Executes after user has confirmed that they want to delete a semester
 	public void deleteSemester(int which) {
-		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
 		Semester item = databaseHandler.getSemesterByPosition(which);
 		
@@ -178,8 +191,8 @@ public class SemestersActivity extends ListActivity {
 	
 	// Called whenever the Drag Sort ListView needs to be updated to reflect database changes
 	public void refreshListAdapter() {
+		
 		// Refresh the ListAdapter to reflect the new changes in the database.
-		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 		List<Semester> semestersInDatabase = databaseHandler.getAllSemesters();
 		
 		Log.d("Semester: ", "Updating ListAdapter...");
