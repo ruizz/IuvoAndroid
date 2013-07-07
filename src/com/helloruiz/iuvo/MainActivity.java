@@ -303,7 +303,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    static List<Integer> courseIDs = new ArrayList<Integer>();
 	    
 	    private static final Integer LIST_HEADER = 0;
-	    private static final Integer LIST_ITEM = 1;
+	    private static final Integer LIST_EMPTY = 1;
+	    private static final Integer LIST_ITEM = 2;
 
 	    private ListView listView;
 
@@ -354,9 +355,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		    		courseIDs.add(null);
 		    		
 		    		if (db.getCourseCountByGroup(g.getID()) == 0) {
-		    			groupTitles.add(MAINACTIVITY_EMPTY_GROUP_KEY);
-			    		groupIDs.add(g.getID());
-			    		courseTitles.add(null);
+		    			groupTitles.add(null);
+			    		groupIDs.add(null);
+			    		courseTitles.add(MAINACTIVITY_EMPTY_GROUP_KEY);
 			    		courseSemesters.add(null);
 			    		courseSemesterColors.add(null);
 			    		courseGrades.add(null);
@@ -420,7 +421,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            String headerText = groupTitles.get(position);
 	            View rootView = convertView;
 	            
-                if (convertView == null || convertView.getId() == LIST_ITEM) {
+                if (convertView == null || convertView.getId() == LIST_ITEM || convertView.getId() == LIST_EMPTY) {
                     rootView = LayoutInflater.from(mContext).inflate(
                             R.layout.fragment_plan_list_header, parent, false);
                     rootView.setId(LIST_HEADER);
@@ -442,6 +443,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 }
                 
                 headerTextView = (TextView) rootView.findViewById(R.id.header_edit_textview);
+                headerTextView.setText("");
             	headerTextView.setVisibility(View.INVISIBLE);
             	
                 return rootView;
@@ -484,56 +486,58 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	        public View getView(int position, View convertView, ViewGroup parent) {
 
 	            String headerText = groupTitles.get(position);
+	            String emptyText = courseTitles.get(position);
 	            View rootView = convertView;
 	            
 	            if(headerText != null) { // Group Header
-	                if(convertView == null || convertView.getId() == LIST_ITEM) {
+	            	
+	                if(convertView == null || convertView.getId() == LIST_ITEM || convertView.getId() == LIST_EMPTY ) {
 	                    rootView = LayoutInflater.from(mContext).inflate(
 	                            R.layout.fragment_plan_list_header, parent, false);
 	                    rootView.setId(LIST_HEADER);
 	                }
 
-	                TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
-	                
-	                if (headerText.equals(MAINACTIVITY_EMPTY_GROUP_KEY)) {
-	                	headerTextView.setText(getString(R.string.plan_empty_group));
-	                	headerTextView.setGravity(Gravity.CENTER);
-	                	headerTextView.setTextSize(18);
-	                	
-	                	headerTextView = (TextView) rootView.findViewById(R.id.header_edit_textview);
-	                	headerTextView.setVisibility(View.INVISIBLE);
-	                	
-	                	View dividerView = rootView.findViewById(R.id.item_separator);
-	                	dividerView.setVisibility(View.INVISIBLE);
-		            } else {
-		            	headerTextView.setTypeface(typeFace);
-		                headerTextView.setText(headerText);
-		                
-		                rootView.setTag(groupIDs.get(position));
-		                
-		                rootView.setOnClickListener(new OnClickListener() {
+                TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
+                
 
-							@Override
-							public void onClick(View view) {
-								
-								DatabaseHandler db = new DatabaseHandler(mContext);
-								int groupID = (Integer) view.getTag();
-								
-								if (db.getCourseCountByGroup(groupID) == 0) {
-									Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
-								} else {
-									Intent intent = new Intent(mContext, CoursesActivity.class);
-									intent.putExtra(MAINACTIVITY_GROUP_ID, groupID);
-									startActivity(intent);
-								}
+	            	headerTextView.setTypeface(typeFace);
+	                headerTextView.setText(headerText);
+	                
+	                rootView.setTag(groupIDs.get(position));
+	                
+	                rootView.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View view) {
+							
+							DatabaseHandler db = new DatabaseHandler(mContext);
+							int groupID = (Integer) view.getTag();
+							
+							if (db.getCourseCountByGroup(groupID) == 0) {
+								Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
+							} else {
+								Intent intent = new Intent(mContext, CoursesActivity.class);
+								intent.putExtra(MAINACTIVITY_GROUP_ID, groupID);
+								startActivity(intent);
 							}
-		                	
-		                });
-		            }
+						}
+	                	
+	                });
+
 	                return rootView;
 	            
+	            } else if (emptyText != null && emptyText.equals(MAINACTIVITY_EMPTY_GROUP_KEY)) { // Empty group indicator
+	            	
+	            	if(convertView == null || convertView.getId() == LIST_ITEM || convertView.getId() == LIST_HEADER ) {
+	                    rootView = LayoutInflater.from(mContext).inflate(
+	                            R.layout.fragment_plan_list_empty, parent, false);
+	                    rootView.setId(LIST_EMPTY);
+	                }
+                	return rootView;
+                	
 	            } else { // Course Item
-		            if(convertView == null || convertView.getId() == LIST_HEADER) {
+	            	
+		            if(convertView == null || convertView.getId() == LIST_HEADER || convertView.getId() == LIST_EMPTY ) {
 		                rootView = LayoutInflater.from(mContext).inflate(
 		                        R.layout.fragment_plan_list_item, parent, false);
 		                rootView.setId(LIST_ITEM);
@@ -568,6 +572,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	                	
 	                });
 		            return rootView;
+		            
 	            }
 	        }
 	        private final Context mContext;
@@ -610,7 +615,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	        setListAdapter(new moreListAdapter(getActivity()));
 	    }
         
-	 // BaseAdapter explicitly designed to show the "Let's get started" dialogue
+	    // BaseAdapter that shows the list seen in the 'more' tab.
 	    private class moreListAdapter extends BaseAdapter {
 	        public moreListAdapter(Context context) {
 	            mContext = context;

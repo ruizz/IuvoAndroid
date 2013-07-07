@@ -29,9 +29,10 @@
 	        android:id="@+id/header_edit_textview"
 	        android:textColor="@color/theme_gray"
 	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
+	        android:layout_height="match_parent"
 	        android:layout_weight="0"
-	        android:textSize="14sp"
+	        android:gravity="bottom"
+	        android:textSize="12sp"
 	        android:text="@string/plan_edit_group"
 	        />
         

@@ -24,9 +24,9 @@
     <string name="plan_getting_started_note1">Begin populating your degree plan by adding semesters and groups.</string>
     <string name="plan_getting_started_note2">You can then add courses, which will display their semester color and appear under their assigned group.</string>
     <string name="plan_no_semester_assigned">No Semester Assigned</string>
-    <string name="plan_no_courses_found">Whoa there! Add a course to this group first before editing.</string>
-    <string name="plan_empty_group">(empty)</string>
-    <string name="plan_edit_group">Edit</string>
+    <string name="plan_no_courses_found">There\'s nothing in this group to manage.</string>
+    <string name="plan_empty_group"><i>(empty)</i></string>
+    <string name="plan_edit_group">Manage</string>
     <string name="more_export_success">Database successfully exported to sdcard/Iuvo.</string>
     <string name="more_export_fail">Export failed! Could not write to file.</string>
     <string name="more_import_success">Database successfully imported from sdcard/Iuvo.</string>

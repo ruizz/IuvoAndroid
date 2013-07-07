@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:clickable="false"
+    >
+        
+    	<!-- textStyle: 0 = normal, 1 = bold, 2 = italic -->
+        <TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/header_empty_textview"
+	        android:textColor="@color/theme_gray"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:gravity="center"
+	        android:layout_weight="1"
+	        android:text="@string/plan_empty_group"
+	        android:textSize="14sp"
+	        />
+
+</LinearLayout>

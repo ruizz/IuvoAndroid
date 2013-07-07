@@ -35,7 +35,7 @@
     android:id="@+id/plan_item_grade"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginRight="12dp"
+    android:layout_marginRight="6dp"
     android:textColor="@color/white"
     android:textSize="36sp"
     android:layout_weight="0"
