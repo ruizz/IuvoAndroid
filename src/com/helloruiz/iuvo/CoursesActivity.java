@@ -40,8 +40,7 @@ public class CoursesActivity extends ListActivity {
 	        Course course = db.getCourseByPosition(position, groupID);
 	        
 	        TextView textView = (TextView) v.findViewById(R.id.course_name_textview);
-	        Typeface typeFace=Typeface.createFromAsset(v.getContext().getAssets(),"fonts/lobster.otf");
-            textView.setTypeface(typeFace);
+            textView.setTypeface(typeface);
 	        textView.setText((CharSequence) course.getName() + "(" + String.valueOf(course.getHours()) + ")");
 	        
 	        textView = (TextView) v.findViewById(R.id.course_semester_textview);
@@ -86,6 +85,9 @@ public class CoursesActivity extends ListActivity {
 			deleteCourseConfirm(which);			
 		}
 	};
+	
+	// Typeface for pretty lobster front.
+	Typeface typeface;
 
 	/**
 	 * -- Overrides --
@@ -93,6 +95,9 @@ public class CoursesActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
+		
 		setContentView(R.layout.activity_courses);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);

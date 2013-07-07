@@ -3,14 +3,16 @@
     <string-array name="fragment_more_titles_array">
         <item>Hidden Courses</item>
         <item>About</item>
-        <item>Export</item>
+        <item>Export Degree Plan</item>
+        <item>Import Degree Plan</item>
         <item>Visit</item>
     </string-array>
     
     <string-array name="fragment_more_subtitles_array">
         <item>View and edit your hidden courses.</item>
         <item>Iuvo information and credits.</item>
-        <item>Coming soon!</item>
+        <item>Export to internal/external SD card.</item>
+        <item>Import from internal/external SD card.</item>
         <item>Check out my website, helloruiz.com</item>
     </string-array>
 </resources>

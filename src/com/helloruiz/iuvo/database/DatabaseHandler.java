@@ -1,5 +1,12 @@
 package com.helloruiz.iuvo.database;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +15,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -26,7 +34,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
  
     // Database Name
-    private static final String DATABASE_NAME = "IuvoDatabase";
+    private static final String DATABASE_NAME = "IuvoDatabase.db";
  
     // Group table name
     private static final String TABLE_GROUP = "groups";
@@ -44,10 +52,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_GRADE = "grade";
     private static final String KEY_EXCLUDED_FROM_GPA = "excludedFromGPA";
 
+    // Database location in file system.
+    public static String DB_FILEPATH;
+ 
+    static Context mContext;
+    
+    /**
+     * Constructor
+     */
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
+        DB_FILEPATH = context.getDatabasePath("IuvoDatabase.db").toString();
     }
- 
+    
     /**
 	 * -- Overrides --
 	 */
@@ -222,15 +240,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	
         SQLiteDatabase db = this.getWritableDatabase();
         
-        // Delete all courses associated with this group
-        db.delete(TABLE_COURSE, KEY_GROUP_ID + " = ?", new String[] { String.valueOf(group.getID()) });
+        // Update all courses associated with this semester
+		ContentValues values = new ContentValues();
+		values.put(KEY_GROUP_ID, "-1");
+	    db.update(TABLE_COURSE, values, KEY_GROUP_ID + " = ?", new String[] {String.valueOf(group.getID())});
         
         // Delete the group
         db.delete(TABLE_GROUP, KEY_ID + " = ?",new String[] { String.valueOf(group.getID()) });
         
         // Decrement all of the groups below the group that was deleted
         for (int i = group.getPosition() + 1; i <= groupCount; i++) {
-			ContentValues values = new ContentValues();
+			values = new ContentValues();
 			values.put(KEY_POSITION, i - 1);
 			db.update(TABLE_GROUP, values, KEY_POSITION + "=?", new String[] {String.valueOf(i)});
 		}
@@ -770,5 +790,96 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         
 		return result;
+	}
+	
+	// Source for import/export technique found here:
+	// http://stackoverflow.com/questions/6540906/android-simple-export-import-of-sqlite-database
+	
+	// Check if the database backup exists.
+	
+	public boolean doesBackupExist() {
+		File sdCard = Environment.getExternalStorageDirectory();
+		
+		// Create file of database to be imported.
+		File importedDatabase = new File(sdCard.getAbsolutePath() + "/Iuvo/IuvoDatabase.db");
+		
+		// Check if the database to be imported exists in file system.
+		if(importedDatabase.exists())
+			return true;
+		else
+			return false;
+	}
+	
+	// Imports the database stored from the backup location and overwrites the app's database.
+	public boolean importDatabase() throws IOException {
+		
+		// Creates the file directory at (SD card)/Iuvo if it doesn't exist.
+		File sdCard = Environment.getExternalStorageDirectory();
+		File fileDir = new File(sdCard.getAbsolutePath() + "/Iuvo");
+		fileDir.mkdirs();
+		
+		// Close the SQLiteOpenHelper so it will commit the created empty database to internal storage.
+		close();
+		
+		// Create file of database to be imported.
+		File importedDatabase = new File(fileDir.getAbsolutePath() + "/IuvoDatabase.db");
+		File appDatabase = new File(DB_FILEPATH);
+		
+		// Check if the database to be imported exists in file system. Exit if it doesn't.
+		if(!importedDatabase.exists())
+			return false;
+		
+	    // Overwrite the app's database.
+	    FileCopier.copyFile(new FileInputStream(importedDatabase), new FileOutputStream(appDatabase));
+	    
+	    // Access the copied database so SQLiteHelper will cache it and mark it as created.
+	    getWritableDatabase().close();
+	    
+	    return true;
+	}
+	
+	// Exports the app's database
+	public boolean exportDatabase() throws IOException {
+		
+		// Creates the file directory at (SD card)/Iuvo if it doens't exist.
+		File sdCard = Environment.getExternalStorageDirectory();
+		File fileDir = new File(sdCard.getAbsolutePath() + "/Iuvo");
+		fileDir.mkdirs();
+		
+		// Close the SQLiteOpenHelper so it will commit the created empty database to internal storage.
+		close();
+		
+		// Create file of the data to be exported
+		File exportedDatabase = new File(fileDir.getAbsolutePath() + "/IuvoDatabase.db");
+		File appDatabase = new File(DB_FILEPATH);
+		
+		// If file exists already, delete it. We already confirmed with the user that we can overwrite.
+		if(exportedDatabase.exists())
+			exportedDatabase.delete();
+		
+		// Create file
+		OutputStream out = null;
+		try {
+			out = new BufferedOutputStream(new FileOutputStream(exportedDatabase));
+		} catch (FileNotFoundException e) {
+			// File can't be written
+			return false;
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					//Failed to close file.
+					return false;
+				}
+			}
+		}
+		
+		// Write the app's database to the exported file.
+	    FileCopier.copyFile(new FileInputStream(appDatabase), new FileOutputStream(exportedDatabase));
+	    
+	    // Access the copied database so SQLiteHelper will cache it and mark it as created.
+	    getWritableDatabase().close();
+	    return true;
 	}
 }

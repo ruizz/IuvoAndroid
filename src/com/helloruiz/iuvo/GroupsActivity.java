@@ -35,8 +35,7 @@ public class GroupsActivity extends ListActivity {
 	        View v = super.getView(position, convertView, parent);
 
 	        TextView textView = (TextView) v.findViewById(R.id.group_name_textview);
-	        Typeface typeFace=Typeface.createFromAsset(v.getContext().getAssets(),"fonts/lobster.otf");
-            textView.setTypeface(typeFace);
+            textView.setTypeface(typeface);
 	        
             // Background color would change after messing with semesters. Band-Aid fix.
             v.setBackgroundColor(getResources().getColor(R.color.theme_blue));
@@ -75,6 +74,9 @@ public class GroupsActivity extends ListActivity {
 			deleteGroupConfirm(which);			
 		}
 	};
+	
+	// Typeface for pretty lobster font.
+	Typeface typeface;
 
 	/**
 	 * -- Overrides --
@@ -82,6 +84,9 @@ public class GroupsActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
+		
 		setContentView(R.layout.activity_groups);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);

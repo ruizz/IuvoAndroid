@@ -38,8 +38,7 @@ public class SemestersActivity extends ListActivity {
 	        Semester semester = databaseHandler.getSemesterByPosition(position);
 	        
 	        TextView textView = (TextView) v.findViewById(R.id.semester_name_textview);
-	        Typeface typeFace=Typeface.createFromAsset(v.getContext().getAssets(),"fonts/lobster.otf");
-            textView.setTypeface(typeFace);
+            textView.setTypeface(typeface);
 	        
 	        v.setBackgroundColor(ColorHandler.getColor(getContext(), semester.getColor()));
 	        return v;
@@ -74,6 +73,9 @@ public class SemestersActivity extends ListActivity {
 			deleteSemesterConfirm(which);			
 		}
 	};
+	
+	// Typeface for pretty lobster font.
+	Typeface typeface;
 
 	/**
 	 * -- Overrides --
@@ -81,6 +83,9 @@ public class SemestersActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
+		
 		setContentView(R.layout.activity_semesters);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);

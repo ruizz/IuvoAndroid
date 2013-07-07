@@ -1,7 +1,11 @@
 package com.helloruiz.iuvo;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.method.LinkMovementMethod;
@@ -13,8 +17,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.helloruiz.iuvo.MainActivity.MeSectionFragment;
+import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Group;
 import com.helloruiz.iuvo.database.Semester;
 
@@ -23,6 +29,7 @@ import com.helloruiz.iuvo.database.Semester;
  * to isolate them all and do the heavy lifting here than to pollute all of the other code.
  */
 public class Dialogs {
+	
 	/** 
 	 * Dialog for 'About' grid item in the 'more' tab
 	 */
@@ -32,6 +39,7 @@ public class Dialogs {
 		// without having to create a new layout and inflate it, or any other tedious task.
 		// http://stackoverflow.com/questions/7479813/android-linkify-text-in-dialog
 		
+		// TODO: Put this in XML
 		String dialogAboutTitle = "About Iuvo";
 		String dialogAbout = "Iuvo Version 1.0\n\n" +
 				"Created by Ruiz Akpan\n\n" +
@@ -107,15 +115,16 @@ public class Dialogs {
 				AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 				dialogBuilder.setTitle("Edit Profile");
 				dialogBuilder.setView(dialogView);
-				dialogBuilder.setPositiveButton("Save", saveClickListener).setNegativeButton("Cancel", null);
+				dialogBuilder.setPositiveButton("Save", saveClickListener).setNegativeButton(activity.getString(R.string.dialog_button_cancel), null);
 				return dialogBuilder;
 	}
 	
 	/** 
-	 * Dialog for 'About' grid item in the 'more' tab
+	 * Dialog for 'help' item in the Groups activity.
 	 */
 	public static void groupsHelp(Activity activity) {
 		
+		// TODO: place this in XML.
 		String dialogAboutTitle = "Groups Help";
 		String dialogAbout = 
 				"Not all degree plans are created the same. Some categorize your classes by subject (e.g. Math, Science, History, etc.) while others categorize them by classification (e.g. Freshman, Junior, etc.). Iuvo allows you to create groups in order to match your degree plan as closely as possible. You need to make at least one group before adding a course.\n\n" +
@@ -162,7 +171,7 @@ public class Dialogs {
 	    
 		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
 			.setPositiveButton("Add", addClickListener)
-			.setNegativeButton("Cancel", null)
+			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), null)
 			.setTitle(dialogAddTitle)
 			.setView(editText);
 		
@@ -193,7 +202,7 @@ public class Dialogs {
 	    
 		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
 			.setPositiveButton("Save", editClickListener)
-			.setNegativeButton("Cancel", null)
+			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), null)
 			.setTitle(dialogAddTitle)
 			.setView(editText);
 		
@@ -238,8 +247,8 @@ public class Dialogs {
 		};
 	    
 		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
-			.setPositiveButton("Delete", deleteClickListener)
-			.setNegativeButton("Cancel", cancelClickListener)
+			.setPositiveButton(activity.getString(R.string.dialog_button_delete), deleteClickListener)
+			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), cancelClickListener)
 			.setOnCancelListener(backClickListener)
 			.setTitle(dialogAddTitle)
 			.setView(textView);
@@ -248,14 +257,10 @@ public class Dialogs {
 	}
 	
 	/** 
-	 * Dialog for 'About' grid item in the 'more' tab
+	 * Dialog for 'help' item in the Semesters activity.
 	 */
 	public static void semestersHelp(Activity activity) {
-		
-		// Took hours of looking for solutions, but found one that makes clickable links in dialogs
-		// without having to create a new layout and inflate it, or any other tedious task.
-		// http://stackoverflow.com/questions/7479813/android-linkify-text-in-dialog
-		
+		// TODO: place this in XML.
 		String dialogAboutTitle = "Semesters Help";
 		String dialogAbout = 
 				"Iuvo allows you to create semesters in order to match your college career path as closely as possible. You can name your semesters whatever you want (e.g. \"Fall 2010\". \"SU 11\" or \"May Minimester 2012\") and order them however you like. In addition, you can pick a color for your semester. Classes assigned to a semester will be displayed in the semester’s color on your degree plan.\n\n" +
@@ -318,7 +323,7 @@ public class Dialogs {
 	    
 		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
 			.setPositiveButton("Add", addClickListener)
-			.setNegativeButton("Cancel", null)
+			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), null)
 			.setTitle(dialogAddTitle)
 			.setView(linearLayout);
 		
@@ -365,7 +370,7 @@ public class Dialogs {
 	    
 		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
 			.setPositiveButton("Save", editClickListener)
-			.setNegativeButton("Cancel", null)
+			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), null)
 			.setTitle(dialogAddTitle)
 			.setView(linearLayout);
 		
@@ -376,10 +381,6 @@ public class Dialogs {
 	 * Dialog for confirming deletion of a semester
 	 */
 	public static void deleteSemesterConfirm(final Activity activity, final int _which) {
-		
-		// Took hours of looking for solutions, but found one that makes clickable links in dialogs
-		// without having to create a new layout and inflate it, or any other tedious task.
-		// http://stackoverflow.com/questions/7479813/android-linkify-text-in-dialog
 		
 		String dialogAddTitle = activity.getString(R.string.dialog_delete_confirm_title);
 		String dialogText = activity.getString(R.string.dialog_delete_semester_confirm_text);
@@ -414,8 +415,8 @@ public class Dialogs {
 		};
 	    
 		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
-			.setPositiveButton("Delete", deleteClickListener)
-			.setNegativeButton("Cancel", cancelClickListener)
+			.setPositiveButton(activity.getString(R.string.dialog_button_delete), deleteClickListener)
+			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), cancelClickListener)
 			.setOnCancelListener(backClickListener)
 			.setTitle(dialogAddTitle)
 			.setView(textView);
@@ -427,10 +428,6 @@ public class Dialogs {
 	 * Dialog for confirming deletion of a course
 	 */
 	public static void deleteCourseConfirm(final Activity activity, final int _which) {
-		
-		// Took hours of looking for solutions, but found one that makes clickable links in dialogs
-		// without having to create a new layout and inflate it, or any other tedious task.
-		// http://stackoverflow.com/questions/7479813/android-linkify-text-in-dialog
 		
 		String dialogAddTitle = activity.getString(R.string.dialog_delete_confirm_title);
 		String dialogText = activity.getString(R.string.dialog_delete_course_confirm_text);
@@ -465,12 +462,89 @@ public class Dialogs {
 		};
 	    
 		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
-			.setPositiveButton("Delete", deleteClickListener)
-			.setNegativeButton("Cancel", cancelClickListener)
+			.setPositiveButton(activity.getString(R.string.dialog_button_delete), deleteClickListener)
+			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), cancelClickListener)
 			.setOnCancelListener(backClickListener)
 			.setTitle(dialogAddTitle)
 			.setView(textView);
 		
+		dialog.show();
+	}
+	
+	/** 
+	 * Dialog for confirming export
+	 */
+	public void exportConfirm(final Activity activity) {
+		
+		String dialogAddTitle = activity.getString(R.string.dialog_title_backup_found);
+		String dialogText1 = activity.getString(R.string.dialog_backup_found_export);
+		
+		TextView textView = new TextView(activity);
+		textView.setText(dialogText1);
+		textView.setPadding(15, 15, 15, 15);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+		
+		// Listener for the 'export' button
+		DialogInterface.OnClickListener exportClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				DatabaseHandler db = new DatabaseHandler(activity);
+				
+				try {
+					if (db.exportDatabase())
+						Toast.makeText(activity, activity.getResources().getString(R.string.more_export_success), Toast.LENGTH_LONG).show();
+					else
+						Toast.makeText(activity, activity.getResources().getString(R.string.more_export_fail), Toast.LENGTH_LONG).show();
+				} catch (IOException e) {
+					Toast.makeText(activity, activity.getResources().getString(R.string.more_export_fail) + " (IOException)", Toast.LENGTH_LONG).show();
+				}
+			}
+		};
+	    
+		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
+			.setPositiveButton(activity.getString(R.string.dialog_button_export), exportClickListener)
+			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), null)
+			.setTitle(dialogAddTitle)
+			.setView(textView);
+		dialog.show();
+	}
+	
+	/** 
+	 * Dialog for confirming export
+	 */
+	public void importConfirm(final Activity activity) {
+		
+		String dialogAddTitle = activity.getString(R.string.dialog_title_backup_found);
+		String dialogText1 = activity.getString(R.string.dialog_backup_found_import);
+		
+		TextView textView = new TextView(activity);
+		textView.setText(dialogText1);
+		textView.setPadding(15, 15, 15, 15);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+		
+		// Listener for the 'export' button
+		DialogInterface.OnClickListener importClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				DatabaseHandler db = new DatabaseHandler(activity);
+				
+				try {
+					if (db.importDatabase()) {
+						activity.recreate();
+						Toast.makeText(activity, activity.getResources().getString(R.string.more_import_success), Toast.LENGTH_LONG).show();
+					} else
+						Toast.makeText(activity, activity.getResources().getString(R.string.more_import_fail), Toast.LENGTH_LONG).show();
+				} catch (IOException e) {
+					Toast.makeText(activity, activity.getResources().getString(R.string.more_import_fail) + "IOException", Toast.LENGTH_LONG).show();
+				} 
+			}
+		};
+	    
+		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
+			.setPositiveButton(activity.getString(R.string.dialog_button_import), importClickListener)
+			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), null)
+			.setTitle(dialogAddTitle)
+			.setView(textView);
 		dialog.show();
 	}
 }

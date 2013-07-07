@@ -37,6 +37,9 @@ public class CourseActivity extends Activity {
 	int groupID = -1;
 	String semester = "None";
 	String group = "None (Hidden)";
+	
+	// Typeface for pretty lobster font.
+	Typeface typeface;
 
 	/**
 	 * Overrides
@@ -44,6 +47,9 @@ public class CourseActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
+		
 		setContentView(R.layout.activity_course);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,26 +80,23 @@ public class CourseActivity extends Activity {
 			setTitle(name);
 		}
 		
-		
-		Typeface typeFace=Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
-		
-		EditText editText = (EditText) findViewById(R.id.course_name_edittext); editText.setTypeface(typeFace);
+		EditText editText = (EditText) findViewById(R.id.course_name_edittext); editText.setTypeface(typeface);
 		editText.setText((CharSequence) name);
 		
 		TextView textView;
-		textView = (TextView) findViewById(R.id.course_hours_textview); textView.setTypeface(typeFace);
+		textView = (TextView) findViewById(R.id.course_hours_textview); textView.setTypeface(typeface);
 		textView.setText(String.valueOf(hours));
 		
-        textView = (TextView) findViewById(R.id.course_grade_textview); textView.setTypeface(typeFace);
+        textView = (TextView) findViewById(R.id.course_grade_textview); textView.setTypeface(typeface);
         textView.setText(grade);
         
-        textView = (TextView) findViewById(R.id.course_exclude_from_gpa_textview); textView.setTypeface(typeFace);
+        textView = (TextView) findViewById(R.id.course_exclude_from_gpa_textview); textView.setTypeface(typeface);
         textView.setText(excludeFromGPA);
 
-        textView = (TextView) findViewById(R.id.course_group_textview); textView.setTypeface(typeFace);
+        textView = (TextView) findViewById(R.id.course_group_textview); textView.setTypeface(typeface);
         textView.setText(group);
         
-        textView = (TextView) findViewById(R.id.course_semester_textview); textView.setTypeface(typeFace);
+        textView = (TextView) findViewById(R.id.course_semester_textview); textView.setTypeface(typeface);
         textView.setText(semester);
         
         // Not sure what's causing these views to change random colors. This ensures that they stay blue.

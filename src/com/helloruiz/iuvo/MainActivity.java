@@ -1,5 +1,6 @@
 package com.helloruiz.iuvo;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,9 +60,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     // Unique tags for passing an intent to another activity.
     static String MAINACTIVITY_COURSE_ID = "com.helloruiz.iuvo.MainActivity.courseID";
     static String MAINACTIVITY_GROUP_ID = "com.helloruiz.iuvo.MainActivity.groupID";
+    static String MAINACTIVITY_EMPTY_GROUP_KEY = "com.helloruiz.iuvo.MainActivity.emptyGroupKey";
     
     // We'll use this do display any dialogs. All the heavy lifting done in DialogManager.java
-    static Dialogs dialogDatabase = new Dialogs();
+    static Dialogs dialogs = new Dialogs();
     
     // Typeface for pretty lobster font.
     static Typeface typeFace;
@@ -351,6 +353,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		    		courseGrades.add(null);
 		    		courseIDs.add(null);
 		    		
+		    		if (db.getCourseCountByGroup(g.getID()) == 0) {
+		    			groupTitles.add(MAINACTIVITY_EMPTY_GROUP_KEY);
+			    		groupIDs.add(g.getID());
+			    		courseTitles.add(null);
+			    		courseSemesters.add(null);
+			    		courseSemesterColors.add(null);
+			    		courseGrades.add(null);
+			    		courseIDs.add(null);
+		    		}
+		    		
 		    		List<Course> courses = db.getAllCoursesByGroup(g.getID());
 		    		for (Course c : courses) {
 		    			
@@ -399,7 +411,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	        // Disables the highlight selection that appears when selecting a list item.
 	        @Override
 	        public boolean isEnabled(int position) {
-	        	return true;
+	        	return false;
 	        }
 
 	        @Override
@@ -408,10 +420,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            String headerText = groupTitles.get(position);
 	            View rootView = convertView;
 	            
-                if (convertView == null || convertView.getTag() == LIST_ITEM) {
+                if (convertView == null || convertView.getId() == LIST_ITEM) {
                     rootView = LayoutInflater.from(mContext).inflate(
                             R.layout.fragment_plan_list_header, parent, false);
-                    rootView.setTag(LIST_HEADER);
+                    rootView.setId(LIST_HEADER);
                 }
                 
                 TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
@@ -428,6 +440,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 	View dividerView = rootView.findViewById(R.id.item_separator);
                 	dividerView.setVisibility(View.INVISIBLE);
                 }
+                
+                headerTextView = (TextView) rootView.findViewById(R.id.header_edit_textview);
+            	headerTextView.setVisibility(View.INVISIBLE);
+            	
                 return rootView;
 	        }
 	        private final Context mContext;
@@ -471,46 +487,56 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            View rootView = convertView;
 	            
 	            if(headerText != null) { // Group Header
-	                if(convertView == null || convertView.getTag() == LIST_ITEM) {
+	                if(convertView == null || convertView.getId() == LIST_ITEM) {
 	                    rootView = LayoutInflater.from(mContext).inflate(
 	                            R.layout.fragment_plan_list_header, parent, false);
-	                    rootView.setTag(LIST_HEADER);
+	                    rootView.setId(LIST_HEADER);
 	                }
 
 	                TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
-	                headerTextView.setTypeface(typeFace);
-	                headerTextView.setText(headerText);
 	                
-	                // Would use setTag, but that's used for switching between headers and course items.
-	                rootView.setId(groupIDs.get(position));
-	                
-	                rootView.setOnClickListener(new OnClickListener() {
-
-						@Override
-						public void onClick(View view) {
-							
-							DatabaseHandler db = new DatabaseHandler(mContext);
-							int groupID = (Integer) view.getId();
-							
-							if (db.getCourseCountByGroup(groupID) == 0) {
-								Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_SHORT).show();
-							} else {
-								Intent intent = new Intent(mContext, CoursesActivity.class);
-								intent.putExtra(MAINACTIVITY_GROUP_ID, groupID);
-								startActivity(intent);
-							}
-						}
+	                if (headerText.equals(MAINACTIVITY_EMPTY_GROUP_KEY)) {
+	                	headerTextView.setText(getString(R.string.plan_empty_group));
+	                	headerTextView.setGravity(Gravity.CENTER);
+	                	headerTextView.setTextSize(18);
 	                	
-	                });
-	                
-	                
+	                	headerTextView = (TextView) rootView.findViewById(R.id.header_edit_textview);
+	                	headerTextView.setVisibility(View.INVISIBLE);
+	                	
+	                	View dividerView = rootView.findViewById(R.id.item_separator);
+	                	dividerView.setVisibility(View.INVISIBLE);
+		            } else {
+		            	headerTextView.setTypeface(typeFace);
+		                headerTextView.setText(headerText);
+		                
+		                rootView.setTag(groupIDs.get(position));
+		                
+		                rootView.setOnClickListener(new OnClickListener() {
+
+							@Override
+							public void onClick(View view) {
+								
+								DatabaseHandler db = new DatabaseHandler(mContext);
+								int groupID = (Integer) view.getTag();
+								
+								if (db.getCourseCountByGroup(groupID) == 0) {
+									Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
+								} else {
+									Intent intent = new Intent(mContext, CoursesActivity.class);
+									intent.putExtra(MAINACTIVITY_GROUP_ID, groupID);
+									startActivity(intent);
+								}
+							}
+		                	
+		                });
+		            }
 	                return rootView;
 	            
 	            } else { // Course Item
-		            if(convertView == null || convertView.getTag() == LIST_HEADER) {
+		            if(convertView == null || convertView.getId() == LIST_HEADER) {
 		                rootView = LayoutInflater.from(mContext).inflate(
 		                        R.layout.fragment_plan_list_item, parent, false);
-		                rootView.setTag(LIST_ITEM);
+		                rootView.setId(LIST_ITEM);
 		            }
 		            
 		            TextView header = (TextView)rootView.findViewById(R.id.plan_item_title);
@@ -526,16 +552,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	                gradeText.setTypeface(typeFace);
 		            gradeText.setText(courseGrades.get(position));
 		            
-		            // Would use setTag, but that's used for switching between headers and course items.
-		            rootView.setId(courseIDs.get(position));
+		            rootView.setTag(courseIDs.get(position));
 		            
 		            rootView.setOnClickListener(new OnClickListener() {
 
 						@Override
 						public void onClick(View view) {
 							
-							int courseID = (Integer) view.getId();
-							//Toast.makeText(mContext, "Course ID: " + courseID, Toast.LENGTH_SHORT).show();
+							int courseID = (Integer) view.getTag();
+							//Toast.makeText(mContext, "Course ID: " + courseID, Toast.LENGTH_LONG).show();
 							Intent intent = new Intent(mContext, CourseActivity.class);
 							intent.putExtra(MAINACTIVITY_COURSE_ID, courseID);
 							startActivity(intent);
@@ -560,7 +585,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     	public static final List<String> moreSubtitles = new ArrayList<String>();
     	
     	private static final Integer LIST_TITLE = 0;
-	    private static final Integer LIST_SUBTITLE = 1;
     	
     	// Called when MainActivity is first created.
 	    @Override
@@ -635,6 +659,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_blue));
 	            	break;
 	            case 3:
+	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	            	break;
+	            case 4:
 	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_teal));
 	            	break;
 	            }
@@ -649,28 +676,52 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 						int id = view.getId();
 						Intent webIntent;
 						List<ResolveInfo> activities;
-						Toast noWebApp = Toast.makeText(getActivity().getApplicationContext(), "No web apps found.", Toast.LENGTH_SHORT);
+						Toast noWebApp = Toast.makeText(getActivity().getApplicationContext(), "No web apps found.", Toast.LENGTH_LONG);
+						DatabaseHandler db = new DatabaseHandler(getActivity());
 						
 						switch(id) {
-						case 0:
-							DatabaseHandler db = new DatabaseHandler(getActivity());
+						case 0: // View hidden courses
 							
 							if (db.getCourseCountByGroup(-1) == 0) {
-								Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_SHORT).show();
+								Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
 							} else {
 								Intent intent = new Intent(mContext, CoursesActivity.class);
 								intent.putExtra(MAINACTIVITY_GROUP_ID, -1);
 								startActivity(intent);
 							}
-							break;
-						case 1:
-							// Display 'About' dialog
-	    					dialogDatabase.aboutIuvo(getActivity());
-							break;
-						case 2:
 							
 							break;
-						case 3:
+						case 1: // Display 'About' dialog
+							
+	    					dialogs.aboutIuvo(getActivity());
+	    					
+							break;
+						case 2: // Export
+							
+							if (db.doesBackupExist()) {
+								dialogs.exportConfirm(getActivity());
+							} else {
+								try {
+									db.exportDatabase();
+								} catch (IOException e) {
+									Toast.makeText(mContext, view.getResources().getString(R.string.more_export_fail), Toast.LENGTH_LONG).show();
+								} finally {
+									Toast.makeText(mContext, view.getResources().getString(R.string.more_export_success), Toast.LENGTH_LONG).show();
+								}
+							}
+							
+							break;
+						case 3: // Import
+							
+							if (db.doesBackupExist()) {
+								dialogs.importConfirm(getActivity());
+							} else {
+								Toast.makeText(mContext, view.getResources().getString(R.string.more_import_not_found), Toast.LENGTH_LONG).show();
+							}
+							
+							break;
+						case 4: // Open browser, go to helloruiz.com
+							
 							webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://helloruiz.com"));
 
 	    					// Verify that there is at least one compatible app to open a web page
@@ -679,6 +730,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    						startActivity(webIntent);
 	    					else
 	    						noWebApp.show();
+	    					
 							break;
 						}
 					}
