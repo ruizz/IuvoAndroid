@@ -58,8 +58,10 @@
         </activity>
         <activity
             android:name="com.helloruiz.iuvo.CoursesActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_courses"
-            android:parentActivityName="com.helloruiz.iuvo.MainActivity" >
+            android:parentActivityName="com.helloruiz.iuvo.MainActivity"
+            android:screenOrientation="portrait" > >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.helloruiz.iuvo.MainActivity" />
