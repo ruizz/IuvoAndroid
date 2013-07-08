@@ -1,0 +1,118 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin"
+    android:clipToPadding="false"
+	android:scrollbars="none"
+    android:background="@color/theme_white"
+    tools:context=".AboutActivity" >
+	
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+	    
+	    <TextView
+	        android:id="@+id/semester_help_title_textview"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="26sp"
+	        android:text="@string/semester_help_title" />
+	    
+	    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lvDividerHeight"
+        android:background="@color/theme_gray" />
+	    
+	    <ImageView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:adjustViewBounds="true"
+	        android:contentDescription="@string/a_picture"
+	        android:src="@drawable/semester_help_semester" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/semester_help_overview" />
+	    
+	    <ImageView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:adjustViewBounds="true"
+	        android:contentDescription="@string/a_picture"
+	        android:src="@drawable/semester_help_add" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/semester_help_add" />
+	    
+	    <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+	    
+	    <ImageView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:adjustViewBounds="true"
+	        android:contentDescription="@string/a_picture"
+	        android:src="@drawable/semester_help_delete" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/semester_help_delete" />
+	    
+	    <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+	    
+	    <ImageView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:adjustViewBounds="true"
+	        android:contentDescription="@string/a_picture"
+	        android:src="@drawable/semester_help_arrange" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/semester_help_arrange" />
+	    
+	    <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+	    
+	    <ImageView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:adjustViewBounds="true"
+	        android:contentDescription="@string/a_picture"
+	        android:src="@drawable/semester_help_edit" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/semester_help_edit" />
+	    
+	</LinearLayout> 
+</ScrollView>

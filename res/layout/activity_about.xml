@@ -1,0 +1,137 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin"
+    android:clipToPadding="false"
+	android:scrollbars="none"
+    android:background="@color/theme_white"
+    tools:context=".AboutActivity" >
+	
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+	
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        
+	        <View
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="1.5" />
+	        
+	        <ImageView
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:adjustViewBounds="true"
+	            android:layout_weight="1"
+	            android:contentDescription="@string/a_picture"
+	            android:src="@drawable/iuvo_about" />
+	        
+	        <View
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="1.5" />
+	        
+	    </LinearLayout>
+	    
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/about_pronounced" />
+	    
+	    <TextView
+	        android:id="@+id/about_version_textview"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/about_version" />
+	    
+	    <View
+	            android:layout_width="match_parent"
+	            android:layout_height="10dp" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/about_copyright"
+	        android:clickable="true"
+	        android:onClick="website" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/about_web"
+	        android:clickable="true"
+	        android:onClick="website" />
+	    
+	    <View
+	            android:layout_width="match_parent"
+	            android:layout_height="10dp" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/about_feedback"
+	        android:clickable="true"
+	        android:onClick="email" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/about_email"
+	        android:clickable="true"
+	        android:onClick="email" />
+	    
+	    <View
+	            android:layout_width="match_parent"
+	            android:layout_height="20dp" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/about_rate_application"
+	        android:clickable="true"
+	        android:onClick="rate" />
+	    
+	    <View
+	            android:layout_width="match_parent"
+	            android:layout_height="20dp" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/about_open_source"
+	        android:clickable="true"
+	        android:onClick="license" />
+	</LinearLayout> 
+</ScrollView>
+
+

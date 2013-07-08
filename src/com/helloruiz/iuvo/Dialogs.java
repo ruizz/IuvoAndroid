@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.method.LinkMovementMethod;
@@ -29,41 +27,6 @@ import com.helloruiz.iuvo.database.Semester;
  * to isolate them all and do the heavy lifting here than to pollute all of the other code.
  */
 public class Dialogs {
-	
-	/** 
-	 * Dialog for 'About' grid item in the 'more' tab
-	 */
-	public void aboutIuvo(Activity activity) {
-		
-		// Took hours of looking for solutions, but found one that makes clickable links in dialogs
-		// without having to create a new layout and inflate it, or any other tedious task.
-		// http://stackoverflow.com/questions/7479813/android-linkify-text-in-dialog
-		
-		// TODO: Put this in XML
-		String dialogAboutTitle = "About Iuvo";
-		String dialogAbout = "Iuvo Version 1.0\n\n" +
-				"Created by Ruiz Akpan\n\n" +
-				"A simple, open-source application that allows students to monitor the progress of their degree plan.\n\n" +
-				"Resources Used:\n" +
-				"http://jgilfelt.github.io/android-actionbarstylegenerator/\n\n" +
-				"http://appicontemplate.com/\n\n" +
-				"http://www.colourlovers.com/palette/559067/\n\n" +
-				"http://www.impallari.com/lobster/";
-		
-		final TextView textView=new TextView(activity);
-		textView.setText(dialogAbout);
-		textView.setPadding(15, 15, 15, 15);
-		textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-		textView.setAutoLinkMask(Activity.RESULT_OK);
-		textView.setMovementMethod(LinkMovementMethod.getInstance());
-	    
-		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
-			.setPositiveButton(android.R.string.ok, null)
-			.setTitle(dialogAboutTitle)
-			.setView(textView);
-		
-		dialog.show();
-	}
 	
 	/** 
 	 * Dialog for the 'Edit Profile' menu setting that is shown when the 'me' tab is in focus.
@@ -530,7 +493,6 @@ public class Dialogs {
 				
 				try {
 					if (db.importDatabase()) {
-						activity.recreate();
 						Toast.makeText(activity, activity.getResources().getString(R.string.more_import_success), Toast.LENGTH_LONG).show();
 					} else
 						Toast.makeText(activity, activity.getResources().getString(R.string.more_import_fail), Toast.LENGTH_LONG).show();

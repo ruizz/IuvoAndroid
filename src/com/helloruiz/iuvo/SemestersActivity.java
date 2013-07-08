@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Semester;
+import com.helloruiz.iuvo.help.SemestersHelpActivity;
 import com.mobeta.android.dslv.DragSortListView;
 
 public class SemestersActivity extends ListActivity {
@@ -148,7 +150,8 @@ public class SemestersActivity extends ListActivity {
 	 */
 	// Pops up with dialog so that user can add a semester
     public void menuSemestersHelp() {
-    	Dialogs.semestersHelp(this);
+    	Intent intent = new Intent(getApplicationContext(), SemestersHelpActivity.class);
+    	startActivity(intent);
     }
 	
 	// Pops up with dialog so that user can add a semester

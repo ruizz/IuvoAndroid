@@ -1,6 +1,5 @@
 package com.helloruiz.iuvo;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ResolveInfo;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -35,6 +32,8 @@ import com.helloruiz.iuvo.database.Course;
 import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Group;
 import com.helloruiz.iuvo.database.Semester;
+import com.helloruiz.iuvo.help.AboutActivity;
+import com.helloruiz.iuvo.help.BackupActivity;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -62,7 +61,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     static String MAINACTIVITY_GROUP_ID = "com.helloruiz.iuvo.MainActivity.groupID";
     static String MAINACTIVITY_EMPTY_GROUP_KEY = "com.helloruiz.iuvo.MainActivity.emptyGroupKey";
     
-    // We'll use this do display any dialogs. All the heavy lifting done in DialogManager.java
+    // We'll use this do display any dialogs. All the heavy lifting done in Dialogs.java
     static Dialogs dialogs = new Dialogs();
     
     // Typeface for pretty lobster font.
@@ -658,15 +657,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            
 	            switch(position) {
 	            case 1:
-	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_navy));
+	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_blue));
 	            	break;
 	            case 2:
-	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-	            	break;
-	            case 3:
-	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-	            	break;
-	            case 4:
 	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_teal));
 	            	break;
 	            }
@@ -679,9 +672,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 					public void onClick(View view) {
 						
 						int id = view.getId();
-						Intent webIntent;
-						List<ResolveInfo> activities;
-						Toast noWebApp = Toast.makeText(getActivity().getApplicationContext(), "No web apps found.", Toast.LENGTH_LONG);
+						Intent intent;
 						DatabaseHandler db = new DatabaseHandler(getActivity());
 						
 						switch(id) {
@@ -690,52 +681,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 							if (db.getCourseCountByGroup(-1) == 0) {
 								Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
 							} else {
-								Intent intent = new Intent(mContext, CoursesActivity.class);
+								intent = new Intent(mContext, CoursesActivity.class);
 								intent.putExtra(MAINACTIVITY_GROUP_ID, -1);
 								startActivity(intent);
 							}
-							
 							break;
-						case 1: // Display 'About' dialog
-							
-	    					dialogs.aboutIuvo(getActivity());
-	    					
+						case 1: // Backup/Restore
+							intent = new Intent(mContext, BackupActivity.class);
+	    					startActivity(intent);
 							break;
-						case 2: // Export
 							
-							if (db.doesBackupExist()) {
-								dialogs.exportConfirm(getActivity());
-							} else {
-								try {
-									db.exportDatabase();
-								} catch (IOException e) {
-									Toast.makeText(mContext, view.getResources().getString(R.string.more_export_fail), Toast.LENGTH_LONG).show();
-								} finally {
-									Toast.makeText(mContext, view.getResources().getString(R.string.more_export_success), Toast.LENGTH_LONG).show();
-								}
-							}
-							
-							break;
-						case 3: // Import
-							
-							if (db.doesBackupExist()) {
-								dialogs.importConfirm(getActivity());
-							} else {
-								Toast.makeText(mContext, view.getResources().getString(R.string.more_import_not_found), Toast.LENGTH_LONG).show();
-							}
-							
-							break;
-						case 4: // Open browser, go to helloruiz.com
-							
-							webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://helloruiz.com"));
-
-	    					// Verify that there is at least one compatible app to open a web page
-	    					activities = getActivity().getPackageManager().queryIntentActivities(webIntent, 0);
-	    					if(activities.size() > 0)
-	    						startActivity(webIntent);
-	    					else
-	    						noWebApp.show();
-	    					
+						case 2: // About
+							intent = new Intent(mContext, AboutActivity.class);
+	    					startActivity(intent);
 							break;
 						}
 					}

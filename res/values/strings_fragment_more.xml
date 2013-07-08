@@ -2,17 +2,13 @@
 <resources>
     <string-array name="fragment_more_titles_array">
         <item>Hidden Courses</item>
+        <item>Backup and Restore</item>
         <item>About</item>
-        <item>Export Degree Plan</item>
-        <item>Import Degree Plan</item>
-        <item>Visit</item>
     </string-array>
     
     <string-array name="fragment_more_subtitles_array">
         <item>View and edit your hidden courses.</item>
+        <item>Import or export your degree plan.</item>
         <item>Iuvo information and credits.</item>
-        <item>Export to internal/external SD card.</item>
-        <item>Import from internal/external SD card.</item>
-        <item>Check out my website, helloruiz.com</item>
     </string-array>
 </resources>
