@@ -36,7 +36,7 @@ public class SemestersActivity extends ListActivity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
 	        
-	        String courseCount = String.valueOf(databaseHandler.getCourseCountBySemester(position));
+	        String courseCount = String.valueOf(databaseHandler.getCourseCountBySemesterPosition(position));
 	        
 	        if (courseCount.equals("1"))
 	        	courseCount = courseCount + SINGLE_COURSE;
@@ -74,7 +74,7 @@ public class SemestersActivity extends ListActivity {
 			databaseHandler.moveSemester(from, to);      
     		
 			refreshListAdapter();
-			getListView().setSelection(to);
+			getListView().setSelection(to - 2);
     	}
     };
 	

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Group;
+import com.helloruiz.iuvo.help.GroupsHelpActivity;
 import com.mobeta.android.dslv.DragSortListView;
 
 public class GroupsActivity extends ListActivity {
@@ -34,7 +36,7 @@ public class GroupsActivity extends ListActivity {
 	      public View getView(int position, View convertView, ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
 	        
-	        String courseCount = String.valueOf(databaseHandler.getCourseCountByGroup(position));
+	        String courseCount = String.valueOf(databaseHandler.getCourseCountByGroupPosition(position));
 	        
 	        if (courseCount.equals("1"))
 	        	courseCount = courseCount + SINGLE_COURSE;
@@ -46,7 +48,6 @@ public class GroupsActivity extends ListActivity {
             
             textView = (TextView) v.findViewById(R.id.group_class_count_textview);
             textView.setText((CharSequence) courseCount);
-            
 	        
             // Background color would change after messing with semesters. Band-Aid fix.
             v.setBackgroundColor(getResources().getColor(R.color.theme_blue));
@@ -72,7 +73,7 @@ public class GroupsActivity extends ListActivity {
 			databaseHandler.moveGroup(from, to);     
     		
 			refreshListAdapter();
-			getListView().setSelection(to);
+			getListView().setSelection(to - 2);
 
     	}
     };
@@ -149,7 +150,8 @@ public class GroupsActivity extends ListActivity {
 	 */
 	// Pops up with dialog so that user get help
     public void menuGroupsHelp() {
-    	Dialogs.groupsHelp(this);
+    	Intent intent = new Intent(getApplicationContext(), GroupsHelpActivity.class);
+    	startActivity(intent);
     }
 	
 	// Pops up with dialog so that user can add a group

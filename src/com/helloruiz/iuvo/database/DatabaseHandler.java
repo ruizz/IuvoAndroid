@@ -755,7 +755,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    return count;
 	}
 	
-	// Get course count by group
+	// Get course count by group ID
 	public int getCourseCountByGroup(int groupID) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -769,9 +769,41 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    return count;
 	}
 	
-	// Get course count by semester
+	// Get course count by group position.
+	public int getCourseCountByGroupPosition(int groupPosition) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		int groupID = getGroupByPosition(groupPosition).getID();
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "=" + String.valueOf(groupID);
+	    Cursor cursor = db.rawQuery(countQuery, null);
+	    
+	    int count = cursor.getCount();
+	    cursor.close();
+	    
+	    // return count
+	    return count;
+	}
+	
+	// Get course count by semester ID
 	public int getCourseCountBySemester(int semesterID) {
 		SQLiteDatabase db = this.getWritableDatabase();
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_SEMESTER_ID + "=" + String.valueOf(semesterID);
+	    Cursor cursor = db.rawQuery(countQuery, null);
+	    
+	    int count = cursor.getCount();
+	    cursor.close();
+	    
+	    // return count
+	    return count;
+	}
+	
+	// Get course count by semester
+	public int getCourseCountBySemesterPosition(int semesterPosition) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		int semesterID = getSemesterByPosition(semesterPosition).getID();
 		
 	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_SEMESTER_ID + "=" + String.valueOf(semesterID);
 	    Cursor cursor = db.rawQuery(countQuery, null);

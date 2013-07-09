@@ -16,9 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Course;
+import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Semester;
+import com.helloruiz.iuvo.help.CoursesHelpActivity;
 import com.mobeta.android.dslv.DragSortListView;
 
 public class CoursesActivity extends ListActivity {
@@ -144,9 +145,9 @@ public class CoursesActivity extends ListActivity {
 		case android.R.id.home:
 			onBackPressed();
 			return true;
-		//case R.id.menu_course_help:
-			//menuCoursesHelp();
-			//return true;
+		case R.id.menu_courses_help:
+			menuCoursesHelp();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -154,9 +155,10 @@ public class CoursesActivity extends ListActivity {
 	/**
 	 * -- Voids --
 	 */
-	// Pops up with dialog so that user can add a course
+	// Pops up with dialog so that user get help
     public void menuCoursesHelp() {
-    	// Dialogs.coursesHelp(this);
+    	Intent intent = new Intent(getApplicationContext(), CoursesHelpActivity.class);
+    	startActivity(intent);
     }
     
     // Pops up with dialog so that user can confirm deletion

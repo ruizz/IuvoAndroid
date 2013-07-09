@@ -68,7 +68,7 @@
     <string name="title_activity_semesters_help">Semesters Help</string>
     <string name="title_activity_groups_help">Groups Help</string>
     <string name="title_activity_course_help">Course Help</string>
-    <string name="title_activity_courses_help">Group Management Help</string>
+    <string name="title_activity_courses_help">Course Management Help</string>
     <string name="a_picture">A picture.</string>
     
     <string name="about_pronounced"><i>(pronounced \"yoo-voh\")</i></string>
@@ -87,14 +87,39 @@
     <string name="backup_restore_title">Restore</string>
     <string name="backup_restore_subtitle">Be sure to take a deep breath first!</string>
     
+    <!-- Semesters Help -->
     <string name="semester_help_title">\"When did I take that class again?\"</string>
     <string name="semester_help_overview">Iuvo allows you to create semesters in order to match your college career path as closely as possible. You can name your semesters anything you want. \"Fall 2011\", \"May Minimester 2012\" or \"Greatest Semester Ever!\" are all fine!	\n\n
         In addition, you can pick a color for your semester. Classes assigned to a semester will be displayed in that semester\’s color on your degree plan.\n\n
-		Tip: If you don’t want your degree plan to look too colorful, you can assign a single color to many semesters to indicate that they are completed, that you really liked those semesters, or for whatever reason you want.</string>
+		Tip: If you don’t want your degree plan to look too colorful, you can assign a single color to many semesters to indicate that they are completed, that you really liked those semesters, or for any other reason you want.</string>
     <string name="semester_help_add">Add a semester from the menu at the top. Enter the name, select a color, and then save. Easy peasy.</string>
     <string name="semester_help_delete">Delete a semester by swiping left or right. Courses assigned to that semester will have no semester assigned to them.</string>
     <string name="semester_help_arrange">Re-arrange your semesters by dragging their handles on the right side. This doesn\’t affect anything else, it simply helps organize your semesters.</string>
     <string name="semester_help_edit">Edit a semester name or color by tapping on it.</string>
+    
+    <!-- Groups Help -->
+    <string name="group_help_title">Not all degree plans are the same</string>
+    <string name="group_help_overview">Some degree plans will categorize your classes by subject, such as Math, Science, English, etc. Others will categorize them by year: Freshman, Junior, etc. Iuvo allows you to create groups in order to match your degree plan as closely as possible.</string>
+    <string name="group_help_add">Add a group from the menu at the top. Enter the name and then save. Easy peasy.</string>
+    <string name="group_help_delete">Delete a group by swiping left or right. Courses assigned to that group will be hidden from your degree plan.</string>
+    <string name="group_help_arrange">Re-arrange your groups by dragging their handles on the right side. This affects how your groups appear on your degree plan.</string>
+    <string name="group_help_edit">Edit a group name by tapping on it.</string>
+    
+    <!-- Course Help -->
+    <string name="course_credit_image">A, B, C, D, F</string>
+    <string name="course_help_title">Are you a student? Because you must have class.</string>
+	<string name="course_help_name">Adding courses to your degree plan is easy. Start off with the name. Call it whatever you want. \"ENGR 123\", \"Calculus II\" or \"[Professor name] sucks!\" are all perfectly acceptable.</string>
+    <string name="course_help_credit">Next up are credit hours and grade. Iuvo should cover all of the possible values for U.S. post-secondary courses. If not, then let the developer know so that it can be included in an update.</string>
+    <string name="course_help_exclude">Some institutions do not include transfer credit in your GPA calculation. If you don’t want Iuvo to include a course in your GPA calculations, just let it know.</string>
+    <string name="course_help_group">Assign group that you created to your course. Your course will appear under that group in your degree plan. Courses that do not have a group assigned to them will be hidden from your degree plan. You can edit your hidden courses in the ‘more’ tab of the home screen.</string>
+    <string name="course_help_semester">Finally, assign a semester that you created to your course. Your course will appear in your degree plan while rockin’ that semester’s color.</string>
+    
+    <!-- Courses Help -->
+    <string name="courses_help_title">No creative title this time, just some simple help.</string>
+    <string name="courses_help_overview">You can manage your courses within a group the same way you manage your groups and semesters. </string>
+    <string name="courses_help_delete">Delete a course by swiping left or right. That course will no longer appear on your degree plan.</string>
+    <string name="courses_help_arrange">Re-arrange your courses by dragging their handles on the right side. Your courses will appear in the same order within its assigned group on your degree plan.</string>
+    <string name="courses_help_edit">Edit a course by tapping on it.</string>
     
 	<string name="toast_no_web">No web apps found.</string>
 	<string name="toast_no_email">No email apps found.</string>

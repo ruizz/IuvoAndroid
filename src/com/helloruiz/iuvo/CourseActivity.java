@@ -20,6 +20,7 @@ import com.helloruiz.iuvo.database.Course;
 import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Group;
 import com.helloruiz.iuvo.database.Semester;
+import com.helloruiz.iuvo.help.CourseHelpActivity;
 
 public class CourseActivity extends Activity {
 	
@@ -123,7 +124,7 @@ public class CourseActivity extends Activity {
 			onBackPressed();
 			return true;
 		case R.id.menu_course_help:
-			// TODO Show Dialog
+			menuCourseHelp();
 			return true;
 		case R.id.menu_course_save:
 			addCourse();
@@ -131,6 +132,14 @@ public class CourseActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	/**
+	 * -- Voids --
+	 */
+	public void menuCourseHelp() {
+		Intent intent = new Intent(getApplicationContext(), CourseHelpActivity.class);
+    	startActivity(intent);
 	}
 	
 	public void addCourse() {

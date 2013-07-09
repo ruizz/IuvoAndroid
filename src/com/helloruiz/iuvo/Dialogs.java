@@ -83,35 +83,6 @@ public class Dialogs {
 	}
 	
 	/** 
-	 * Dialog for 'help' item in the Groups activity.
-	 */
-	public static void groupsHelp(Activity activity) {
-		
-		// TODO: place this in XML.
-		String dialogAboutTitle = "Groups Help";
-		String dialogAbout = 
-				"Not all degree plans are created the same. Some categorize your classes by subject (e.g. Math, Science, History, etc.) while others categorize them by classification (e.g. Freshman, Junior, etc.). Iuvo allows you to create groups in order to match your degree plan as closely as possible. You need to make at least one group before adding a course.\n\n" +
-				"Add a group from the menu at the top\n\n" +
-				"Delete a group by swiping it left or right. This will delete any classes that are in that group.\n\n" +
-				"Re-arrange your groups by dragging their handles on the right side.\n\n" +
-				"Edit a group by tapping on it.";
-		
-		final TextView textView=new TextView(activity);
-		textView.setText(dialogAbout);
-		textView.setPadding(15, 15, 15, 15);
-		textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-		textView.setAutoLinkMask(Activity.RESULT_OK);
-		textView.setMovementMethod(LinkMovementMethod.getInstance());
-	    
-		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
-			.setPositiveButton(android.R.string.ok, null)
-			.setTitle(dialogAboutTitle)
-			.setView(textView);
-		
-		dialog.show();
-	}
-	
-	/** 
 	 * Dialog for 'add' menu option in the group manager activity.
 	 */
 	public static void addGroup(final Activity activity) {
