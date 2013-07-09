@@ -67,6 +67,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     // Typeface for pretty lobster font.
     static Typeface typeFace;
     
+    // Context
+    static Context myContext;
+    
     /**
      * Overrides
      */
@@ -74,6 +77,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        myContext = getApplicationContext();
         
         typeFace = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 
@@ -247,9 +252,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             return rootView;
         }
         
+        @Override
+        public void onResume() {
+        	super.onResume();
+        	displayProfile();
+        }
+        
         public void displayProfile() {
         	TextView textView;
-            
+        	DatabaseHandler db = new DatabaseHandler(myContext);
+        	
+            // TODO Get from string XML instead
         	String userName = iuvoSettings.getString("name", "");
             String userSchool = iuvoSettings.getString("school", "");
             String userMajor = iuvoSettings.getString("major", "");
@@ -261,28 +274,38 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             if(!userName.equals(""))
             	textView.setText((CharSequence) userName);
             else
-            	textView.setText("No Name");
+            	textView.setText("[Name]");
             
             // Assign school...
             textView = (TextView) rootView.findViewById(R.id.me_school);
+            textView.setTypeface(typeFace);
             if(!userSchool.equals(""))
             	textView.setText((CharSequence) userSchool);
             else
-            	textView.setText("No School");
+            	textView.setText("[School]");
             
             // Major
             textView = (TextView) rootView.findViewById(R.id.me_major);
+            textView.setTypeface(typeFace);
             if(!userMajor.equals(""))
             	textView.setText((CharSequence) userMajor);
             else
-            	textView.setText("No Major");
+            	textView.setText("[Major]");
             
             // Classification
             textView = (TextView) rootView.findViewById(R.id.me_classification);
+            textView.setTypeface(typeFace);
             if(!userClassification.equals(""))
             	textView.setText((CharSequence) userClassification);
             else
-            	textView.setText("No Classification");
+            	textView.setText("[Classification]");
+            
+            // GPA
+            String GPA = db.getGPA();
+            textView = (TextView) rootView.findViewById(R.id.me_gpa);
+            textView.setTypeface(typeFace);
+            System.out.println(GPA);
+            textView.setText((CharSequence)GPA);
         }
     }
     

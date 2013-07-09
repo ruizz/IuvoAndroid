@@ -14,11 +14,6 @@
     <string name="menu_add">Add</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_save">Save</string>
-    <string name="me_name">No Name</string>
-    <string name="me_school">No School</string>
-    <string name="me_major">No Major</string>
-    <string name="me_classification">No Classification</string>
-    <string name="me_background_description">Background Image</string>
     <string name="plan_getting_started_header">Let\'s get started.</string>
     <string name="plan_getting_started_note1">Begin populating your degree plan by adding semesters and groups.</string>
     <string name="plan_getting_started_note2">You can then add courses, which will display their semester color and appear under their assigned group.</string>
@@ -71,6 +66,20 @@
     <string name="title_activity_courses_help">Course Management Help</string>
     <string name="a_picture">A picture.</string>
     
+    <!-- Me Tab -->
+    <string name="me_name">[Name]</string>
+    <string name="me_school">[School]</string>
+    <string name="me_major">[Major]</string>
+    <string name="me_classification">[Classification]</string>
+    <string name="me_name_desc">Name</string>
+    <string name="me_school_desc">School</string>
+    <string name="me_major_desc">Major</string>
+    <string name="me_classification_desc">Classification</string>
+    <string name="me_gpa">0.00</string>
+    <string name="me_gpa_desc">GPA</string>
+    <string name="me_view_more_details"><u>View more details</u></string>
+    
+    <!-- About Iuvo -->
     <string name="about_pronounced"><i>(pronounced \"yoo-voh\")</i></string>
     <string name="about_version">Version</string>
     <string name="about_copyright">© Ruiz Akpan</string>
@@ -80,6 +89,7 @@
     <string name="about_rate_application"><u>Rate application</u></string>
     <string name="about_open_source"><u>Licenses</u></string>
     
+    <!-- Backup and Restore -->
     <string name="backup_title">Better safe than sorry!</string>
     <string name="backup_instructions">Iuvo can save or restore your degree plan by using a backup located on your SD card. Please be sure to have an external (or \"internal\") SD card installed!\n\nThe backup file is named \"IuvoDatabase.db\" and can be found at \"[SD card]/Iuvo\". Iuvo will only save to or restore from this file only.\n\nFor the geeks that are wondering: Yes, this backup is indeed viewable in any SQLite viewer.</string>
     <string name="backup_backup_title">Backup</string>

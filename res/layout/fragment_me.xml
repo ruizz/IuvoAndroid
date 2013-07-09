@@ -1,53 +1,130 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    
-    <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="fill_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="16dp"
-    android:paddingTop="16dp"
-    android:background="@color/theme_white"
-     >
-    	
-        <TextView
-            android:id="@+id/me_name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/me_school"
-            android:text="@string/me_name"
-            android:textColor="@color/theme_gray"
-            android:textSize="50sp"  />
-        
-        <TextView
-            android:id="@+id/me_school"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/me_major"
-            android:text="@string/me_school"
-            android:textColor="@color/theme_gray"
-            android:textSize="22sp" />
-        
-        <TextView
-            android:id="@+id/me_major"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/me_classification"
-            android:text="@string/me_major"
-            android:textColor="@color/theme_gray"
-            android:textSize="22sp" />
-    
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin"
+    android:clipToPadding="false"
+	android:scrollbars="none"
+    android:background="@color/theme_white" >
+
+	<RelativeLayout
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content" >
+	  	
+	      <TextView
+	          android:id="@+id/me_name"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_alignParentTop="true"
+	          android:layout_alignParentRight="true"
+	          android:text="@string/me_name"
+	          android:textColor="@color/theme_gray"
+	          android:textSize="50sp"  />
+	      
+	      <TextView
+	          android:id="@+id/me_name_desc"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_below="@+id/me_name"
+	          android:layout_alignParentRight="true"
+	          android:layout_marginTop="-8dp"
+	          android:text="@string/me_name_desc"
+	          android:textColor="@color/theme_gray"
+	          android:textSize="14sp" />
+	      
+	      <TextView
+	          android:id="@+id/me_school"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_below="@+id/me_name_desc"
+	          android:layout_alignParentRight="true"
+	          android:text="@string/me_school"
+	          android:textColor="@color/theme_gray"
+	          android:textSize="30sp" />
+	      
+	      <TextView
+	          android:id="@+id/me_school_desc"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_below="@+id/me_school"
+	          android:layout_alignParentRight="true"
+	          android:layout_marginTop="-5dp"
+	          android:text="@string/me_school_desc"
+	          android:textColor="@color/theme_gray"
+	          android:textSize="14sp" />
+	      
+	      <TextView
+	          android:id="@+id/me_major"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_below="@+id/me_school_desc"
+	          android:layout_alignParentRight="true"
+	          android:text="@string/me_major"
+	          android:textColor="@color/theme_gray"
+	          android:textSize="30sp" />
+	      
+	      <TextView
+	          android:id="@+id/me_major_desc"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_below="@+id/me_major"
+	          android:layout_alignParentRight="true"
+	          android:layout_marginTop="-5dp"
+	          android:text="@string/me_major_desc"
+	          android:textColor="@color/theme_gray"
+	          android:textSize="14sp" />
+	  
 		<TextView
 		    android:id="@+id/me_classification"
-		    android:layout_width="fill_parent"
+		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_alignParentBottom="true"
+		    android:layout_alignParentRight="true"
+		    android:layout_below="@+id/me_major_desc"
 		    android:text="@string/me_classification"
 		    android:textColor="@color/theme_gray"
-		    android:textSize="22sp" />
-
-    </RelativeLayout>
-</FrameLayout>
+		    android:textSize="30sp" />
+		
+		<TextView
+	          android:id="@+id/me_classification_desc"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_below="@+id/me_classification"
+	          android:layout_alignParentRight="true"
+	          android:layout_marginTop="-5dp"
+	          android:text="@string/me_classification_desc"
+	          android:textColor="@color/theme_gray"
+	          android:textSize="14sp" />
+		
+		<TextView
+		    android:id="@+id/me_gpa"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/me_classification"
+		    android:text="@string/me_gpa"
+		    android:textColor="@color/theme_gray"
+		    android:textSize="60sp" />
+	
+		<TextView
+		    android:id="@+id/me_gpa_desc"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/me_gpa"
+		    android:layout_marginTop="-10dp"
+		    android:text="@string/me_gpa_desc"
+		    android:textColor="@color/theme_gray"
+		    android:textSize="14sp" />
+		
+		<TextView
+		    android:id="@+id/me_gpa_desc_link"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/me_gpa_desc"
+		    android:text="@string/me_view_more_details"
+		    android:textColor="@color/theme_gray"
+		    android:textSize="14sp" />
+		
+	</RelativeLayout>
+</ScrollView>

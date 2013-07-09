@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -644,6 +645,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return courseList;
     }
     
+    // Get all courses. Ordered by ID.
+    public List<Course> getAllCoursesNotExcludedFromGPA() {
+        List<Course> courseList = new ArrayList<Course>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_COURSE + " WHERE " + KEY_EXCLUDED_FROM_GPA + "=0" + " ORDER BY " + KEY_ID;
+     
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+     
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+            	Course course = new Course(
+                		Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)),
+                		cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4),
+                		Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
+                		Integer.parseInt(cursor.getString(7))
+                		);
+                
+                // Adding course to list
+                courseList.add(course);
+            } while (cursor.moveToNext());
+        }
+        
+        cursor.close();
+     
+        // return course list
+        return courseList;
+    }
+    
     // Get all courses by group. Ordered by position.
     public List<Course> getAllCoursesByGroup(int groupID) {
         List<Course> courseList = new ArrayList<Course>();
@@ -926,5 +957,64 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    // Access the copied database so SQLiteHelper will cache it and mark it as created.
 	    getWritableDatabase().close();
 	    return true;
+	}
+	
+	public String getGPA() {
+		int hours = 0;
+		double points = 0.00;
+		int courseHours = 0;
+		List<Course> courses = getAllCoursesNotExcludedFromGPA();
+		
+		if (courses.size() == 0) {
+			return "0.00";
+		}
+		
+		for(Course c : courses) {
+			courseHours = c.getHours();
+			
+			// Can't use switch on strings. Shame.
+			if (c.getGrade().equals("A ")) {
+				points += 4.00 * courseHours;
+				hours += courseHours;
+			} else if (c.getGrade().equals("A-")) {
+				points += 3.67 * courseHours;
+				hours += courseHours;
+			} else if (c.getGrade().equals("B+")) {
+				points += 3.33 * courseHours;
+				hours += courseHours;
+			} else if (c.getGrade().equals("B ")) {
+				points += 3.00 * courseHours;
+				hours += courseHours;
+			} else if (c.getGrade().equals("B-")) {
+				points += 2.67 * courseHours;
+				hours += courseHours;
+			} else if (c.getGrade().equals("C+")) {
+				points += 2.33 * courseHours;
+				hours += courseHours;
+			} else if (c.getGrade().equals("C ")) {
+				points += 2.00 * courseHours;
+				hours += courseHours;
+			} else if (c.getGrade().equals("C-")) {
+				points += 1.67 * courseHours;
+				hours += courseHours;
+			} else if (c.getGrade().equals("D+")) {
+				points += 1.33 * courseHours;
+				hours += courseHours;
+			} else if (c.getGrade().equals("D ")) {
+				points += 1.00 * courseHours;
+				hours += courseHours;
+			} else if (c.getGrade().equals("D-")) {
+				points += 0.67 * courseHours;
+				hours += courseHours;
+			} else if (c.getGrade().equals("F ")) {
+				hours += courseHours;
+			}
+		}
+		
+		double finalGPA = points/hours;
+		DecimalFormat format = new DecimalFormat("#.##");
+		
+		
+		return format.format(finalGPA);
 	}
 }
