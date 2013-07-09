@@ -77,7 +77,12 @@
     <string name="me_classification_desc">Classification</string>
     <string name="me_gpa">0.00</string>
     <string name="me_gpa_desc">GPA</string>
+    <string name="me_progress_percentage">0%</string>
+    <string name="me_progress_percentage_desc">Completion</string>
+    <string name="me_progress_fraction">0/0</string>
+    <string name="me_progress_fraction_desc">Courses completed</string>
     <string name="me_view_more_details"><u>View more details</u></string>
+    
     
     <!-- About Iuvo -->
     <string name="about_pronounced"><i>(pronounced \"yoo-voh\")</i></string>

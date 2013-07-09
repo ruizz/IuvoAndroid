@@ -1,5 +1,6 @@
 package com.helloruiz.iuvo;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TableLayout;
+import android.widget.TableLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -260,6 +263,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         
         public void displayProfile() {
         	TextView textView;
+        	View view;
         	DatabaseHandler db = new DatabaseHandler(myContext);
         	
             // TODO Get from string XML instead
@@ -304,8 +308,38 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             String GPA = db.getGPA();
             textView = (TextView) rootView.findViewById(R.id.me_gpa);
             textView.setTypeface(typeFace);
-            System.out.println(GPA);
             textView.setText((CharSequence)GPA);
+            
+            // Progress
+            int courseCount = db.getCourseCountInDegreePlan();
+            int courseCountCompleted = db.getCourseCountInDegreePlanCompleted();
+            
+            double completePercentage;
+            if (courseCount == 0 && courseCountCompleted == 0)
+            	completePercentage = 0.0;
+            else
+            	completePercentage = ((double) courseCountCompleted / (double) courseCount) * 100;
+            
+            DecimalFormat format = new DecimalFormat("###.#");
+            String completePercentageString = format.format(completePercentage);
+            
+            textView = (TextView) rootView.findViewById(R.id.me_progress_percentage);
+            textView.setTypeface(typeFace);
+            textView.setText((CharSequence) completePercentageString + "%");
+            
+            textView = (TextView) rootView.findViewById(R.id.me_progress_fraction);
+            textView.setTypeface(typeFace);
+            textView.setText((CharSequence) String.valueOf(courseCountCompleted) + "/" + String.valueOf(courseCount));
+            
+            final float scale = myContext.getResources().getDisplayMetrics().density;
+            int pixels = (int) (40 * scale + 0.5f);
+            
+            if (courseCountCompleted != 0) {
+	            view = (View) rootView.findViewById(R.id.me_progress_completed);
+	            view.setLayoutParams(new TableLayout.LayoutParams(0, pixels, courseCount - courseCountCompleted));
+	            view = (View) rootView.findViewById(R.id.me_progress_not_completed);
+	            view.setLayoutParams(new TableLayout.LayoutParams(0, pixels, courseCountCompleted));
+            }
         }
     }
     

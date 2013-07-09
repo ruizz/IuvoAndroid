@@ -19,7 +19,7 @@
 	          android:layout_alignParentRight="true"
 	          android:text="@string/me_name"
 	          android:textColor="@color/theme_gray"
-	          android:textSize="50sp"  />
+	          android:textSize="40sp"  />
 	      
 	      <TextView
 	          android:id="@+id/me_name_desc"
@@ -27,7 +27,7 @@
 	          android:layout_height="wrap_content"
 	          android:layout_below="@+id/me_name"
 	          android:layout_alignParentRight="true"
-	          android:layout_marginTop="-8dp"
+	          android:layout_marginTop="-5dp"
 	          android:text="@string/me_name_desc"
 	          android:textColor="@color/theme_gray"
 	          android:textSize="14sp" />
@@ -100,7 +100,7 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
-		    android:layout_below="@+id/me_classification"
+		    android:layout_below="@+id/me_major_desc"
 		    android:text="@string/me_gpa"
 		    android:textColor="@color/theme_gray"
 		    android:textSize="60sp" />
@@ -123,6 +123,69 @@
 		    android:layout_alignParentLeft="true"
 		    android:layout_below="@+id/me_gpa_desc"
 		    android:text="@string/me_view_more_details"
+		    android:textColor="@color/theme_gray"
+		    android:textSize="14sp" />
+		
+		<LinearLayout
+		    android:id="@+id/me_progress_linearlayout"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginTop="10dp"
+		    android:layout_below="@+id/me_gpa_desc_link"
+		    android:orientation="horizontal" >
+		    
+		    <View
+		        android:id="@+id/me_progress_completed"
+		        android:layout_width="0px"
+		        android:layout_height="30dp"
+		        android:layout_weight="0"
+		        android:background="@color/android_dark_green" />
+		    
+		    <View
+		        android:id="@+id/me_progress_not_completed"
+		        android:layout_width="0px"
+		        android:layout_height="30dp"
+		        android:layout_weight="1"
+		        android:background="@color/android_dark_red" />
+		</LinearLayout>
+		
+		<TextView
+		    android:id="@+id/me_progress_percentage"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/me_progress_linearlayout"
+		    android:text="@string/me_progress_percentage"
+		    android:textColor="@color/theme_gray"
+		    android:textSize="40sp" />
+		
+		<TextView
+		    android:id="@+id/me_progress_percentage_desc"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/me_progress_percentage"
+		    android:text="@string/me_progress_percentage_desc"
+		    android:textColor="@color/theme_gray"
+		    android:textSize="14sp" />
+		
+		<TextView
+		    android:id="@+id/me_progress_fraction"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentRight="true"
+		    android:layout_below="@+id/me_progress_linearlayout"
+		    android:text="@string/me_progress_fraction"
+		    android:textColor="@color/theme_gray"
+		    android:textSize="40sp" />
+		
+		<TextView
+		    android:id="@+id/me_progress_fraction_desc"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentRight="true"
+		    android:layout_below="@+id/me_progress_fraction"
+		    android:text="@string/me_progress_fraction_desc"
 		    android:textColor="@color/theme_gray"
 		    android:textSize="14sp" />
 		

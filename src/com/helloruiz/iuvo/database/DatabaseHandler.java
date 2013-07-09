@@ -846,6 +846,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    return count;
 	}
 	
+	// Get course count in degree plan.
+	public int getCourseCountInDegreePlan() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "!=-1";
+	    Cursor cursor = db.rawQuery(countQuery, null);
+	    
+	    int count = cursor.getCount();
+	    cursor.close();
+	    
+	    // return count
+	    return count;
+	}
+	
+	// Get completed course count in degree plan.
+	public int getCourseCountInDegreePlanCompleted() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "!=? AND " + KEY_GRADE + "!=?";
+	    Cursor cursor = db.rawQuery(countQuery, new String[] {"-1", "None", "F "});
+	    
+	    int count = cursor.getCount();
+	    cursor.close();
+	    
+	    // return count
+	    return count;
+	}
+	
 	// Get max course ID.
 	public int getMaxCourseID() {
 		if (getCourseCount() == 0)
