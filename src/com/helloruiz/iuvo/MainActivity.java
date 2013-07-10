@@ -25,9 +25,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TableLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -264,6 +264,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         public void displayProfile() {
         	TextView textView;
         	View view;
+        	LayoutParams params;
         	DatabaseHandler db = new DatabaseHandler(myContext);
         	
             // TODO Get from string XML instead
@@ -313,6 +314,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             // Progress
             int courseCount = db.getCourseCountInDegreePlan();
             int courseCountCompleted = db.getCourseCountInDegreePlanCompleted();
+            int courseCountAttempted = db.getCourseCountInDegreePlanAttempted();
             
             double completePercentage;
             if (courseCount == 0 && courseCountCompleted == 0)
@@ -331,14 +333,141 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             textView.setTypeface(typeFace);
             textView.setText((CharSequence) String.valueOf(courseCountCompleted) + "/" + String.valueOf(courseCount));
             
-            final float scale = myContext.getResources().getDisplayMetrics().density;
-            int pixels = (int) (40 * scale + 0.5f);
-            
-            if (courseCountCompleted != 0) {
-	            view = (View) rootView.findViewById(R.id.me_progress_completed);
-	            view.setLayoutParams(new TableLayout.LayoutParams(0, pixels, courseCount - courseCountCompleted));
+            if (courseCountCompleted == 0) { // Show 0% completion
+            	
+            	view = (View) rootView.findViewById(R.id.me_progress_completed);
+            	params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
+            	view.setLayoutParams(params);
+            	
 	            view = (View) rootView.findViewById(R.id.me_progress_not_completed);
-	            view.setLayoutParams(new TableLayout.LayoutParams(0, pixels, courseCountCompleted));
+	            params = (LayoutParams) view.getLayoutParams(); params.weight = 1.0f;
+            	view.setLayoutParams(params);
+            	
+            } else { // Show X% completion
+            	
+            	view = (View) rootView.findViewById(R.id.me_progress_completed);
+            	params = (LayoutParams) view.getLayoutParams(); params.weight = (float) courseCountCompleted;
+            	view.setLayoutParams(params);
+            	
+	            view = (View) rootView.findViewById(R.id.me_progress_not_completed);
+	            params = (LayoutParams) view.getLayoutParams(); params.weight = (float) courseCount - (float) courseCountCompleted;
+            	view.setLayoutParams(params);
+            }
+            
+            // Grade distribution. This code to give the grade distribution bar its intended effect
+            // looks like a horrible 'gum over the pipe leak' approach. If I find better methods, I'll change it.
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_blank); textView.setTypeface(typeFace);
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_a); textView.setTypeface(typeFace);
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_b); textView.setTypeface(typeFace);
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_c); textView.setTypeface(typeFace);
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_d); textView.setTypeface(typeFace);
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_f); textView.setTypeface(typeFace);
+            
+            
+            if(courseCountAttempted == 0) { // Show the gray bar only to indicate no grades.
+            	
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_blank);
+	            params = (LayoutParams) view.getLayoutParams(); params.weight = 1.0f;
+	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_blank);
+            	view.setLayoutParams(params);
+            	textView.setText("(No Grades Yet)");
+            	
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_a);
+	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
+	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_a);
+            	view.setLayoutParams(params);
+            	textView.setText("");
+            	
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_b);
+	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
+	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_b);
+            	view.setLayoutParams(params);
+            	textView.setText("");
+            	
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_c);
+	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
+	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_c);
+            	view.setLayoutParams(params);
+            	textView.setText("");
+            	
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_d);
+	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
+	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_d);
+            	view.setLayoutParams(params);
+            	textView.setText("");
+            	
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_f);
+	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
+	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_f);
+            	view.setLayoutParams(params);
+            	textView.setText("");
+            	
+            } else {
+
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_blank);
+	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
+	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_blank);
+            	view.setLayoutParams(params);
+            	textView.setText("");
+            	
+            	int aCount = db.getACount(); int bCount = db.getBCount(); int cCount = db.getCCount();
+            	int dCount = db.getDCount(); int fCount = db.getFCount();
+            	
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_a);
+            	params = (LayoutParams) view.getLayoutParams();
+            	textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_a);
+            	if (aCount != 0) {
+            		params.weight = (float) aCount;
+            		textView.setText("A ");
+            	} else {
+            		params.weight = 0.0f;
+            		textView.setText("");
+            	}
+            	
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_b);
+            	params = (LayoutParams) view.getLayoutParams();
+            	textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_b);
+            	if (bCount != 0) {
+            		params.weight = (float) bCount;
+            		textView.setText("B ");
+            	} else {
+            		params.weight = 0.0f;
+            		textView.setText("");
+            	}
+            	
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_c);
+            	params = (LayoutParams) view.getLayoutParams();
+            	textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_c);
+            	if (cCount != 0) {
+            		params.weight = (float) cCount;
+            		textView.setText("C ");
+            	} else {
+            		params.weight = 0.0f;
+            		textView.setText("");
+            	}
+            	
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_d);
+            	params = (LayoutParams) view.getLayoutParams();
+            	textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_d);
+            	if (dCount != 0) {
+            		params.weight = (float) dCount;
+            		textView.setText("D ");
+            	} else {
+            		params.weight = 0.0f;
+            		textView.setText("");
+            	}
+            	
+            	view = (View) rootView.findViewById(R.id.me_grade_dist_f);
+            	params = (LayoutParams) view.getLayoutParams();
+            	textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_f);
+            	if (fCount != 0) {
+            		params.weight = (float) fCount;
+            		textView.setText("F ");
+            	} else {
+            		params.weight = 0.0f;
+            		textView.setText("");
+            	}
+            	
             }
         }
     }

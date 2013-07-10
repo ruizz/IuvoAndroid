@@ -101,8 +101,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_GROUP_TABLE);
         db.execSQL(CREATE_SEMESTER_TABLE);
         db.execSQL(CREATE_COURSE_TABLE);
-        
-        ;
+
     }
  
     // I'll worry about this if I ever have to upgrade the database. Leave clear for now.
@@ -874,6 +873,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    return count;
 	}
 	
+	// Get completed course count in degree plan.
+	public int getCourseCountInDegreePlanAttempted() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "!=?";
+	    Cursor cursor = db.rawQuery(countQuery, new String[] {"-1", "None"});
+	    
+	    int count = cursor.getCount();
+	    cursor.close();
+	    
+	    // return count
+	    return count;
+	}
+	
 	// Get max course ID.
 	public int getMaxCourseID() {
 		if (getCourseCount() == 0)
@@ -994,7 +1007,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		List<Course> courses = getAllCoursesNotExcludedFromGPA();
 		
 		if (courses.size() == 0) {
-			return "0.00";
+			return "0.0";
 		}
 		
 		for(Course c : courses) {
@@ -1039,10 +1052,116 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			}
 		}
 		
-		double finalGPA = points/hours;
+		if (hours == 0)
+			return "0.0";
+		
+		double finalGPA = points / (double) hours;
 		DecimalFormat format = new DecimalFormat("#.##");
+		String finalGPAString = format.format(finalGPA);
 		
+		if (finalGPAString.equals("1") ||
+				finalGPAString.equals("2") ||
+				finalGPAString.equals("3") ||
+				finalGPAString.equals("4"))
+			finalGPAString += ".0";
 		
-		return format.format(finalGPA);
+		return finalGPAString;
+	}
+	
+	// Get number of A's in degree plan
+	public int getACount() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		int count = 0;
+		Cursor cursor;
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + 
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?) OR " +
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?)";
+	    
+	    
+	    cursor = db.rawQuery(countQuery, new String[] {"-1", "A ", "-1", "A-"});
+	    
+	    count += cursor.getCount();
+	    cursor.close();
+	    
+	    return count;
+	}
+	
+	// Get number of B's in degree plan
+	public int getBCount() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		int count = 0;
+		Cursor cursor;
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + 
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?) OR " +
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?) OR " +
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?)";
+	    
+	    
+	    cursor = db.rawQuery(countQuery, new String[] {"-1", "B+", "-1", "B ", "-1", "B-"});
+	    
+	    count += cursor.getCount();
+	    cursor.close();
+	    
+	    return count;
+	}
+	
+	// Get number of C's in degree plan
+	public int getCCount() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		int count = 0;
+		Cursor cursor;
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + 
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?) OR " +
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?) OR " +
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?)";
+	    
+	    
+	    cursor = db.rawQuery(countQuery, new String[] {"-1", "C+", "-1", "C ", "-1", "C-"});
+	    
+	    count += cursor.getCount();
+	    cursor.close();
+	    
+	    return count;
+	}
+	
+	// Get number of D's in degree plan
+	public int getDCount() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		int count = 0;
+		Cursor cursor;
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + 
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?) OR " +
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?) OR " +
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?)";
+	    
+	    
+	    cursor = db.rawQuery(countQuery, new String[] {"-1", "D+", "-1", "D ", "-1", "D-"});
+	    
+	    count += cursor.getCount();
+	    cursor.close();
+	    
+	    return count;
+	}
+	
+	// Get number of F's in degree plan
+	public int getFCount() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		int count = 0;
+		Cursor cursor;
+		
+	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + 
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?)";
+	    
+	    
+	    cursor = db.rawQuery(countQuery, new String[] {"-1", "F "});
+	    
+	    count += cursor.getCount();
+	    cursor.close();
+	    
+	    return count;
 	}
 }

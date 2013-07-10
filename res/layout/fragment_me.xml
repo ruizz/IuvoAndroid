@@ -100,7 +100,7 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
-		    android:layout_below="@+id/me_major_desc"
+		    android:layout_below="@+id/me_classification"
 		    android:text="@string/me_gpa"
 		    android:textColor="@color/theme_gray"
 		    android:textSize="60sp" />
@@ -116,37 +116,39 @@
 		    android:textColor="@color/theme_gray"
 		    android:textSize="14sp" />
 		
+		<!-- Add in future update
 		<TextView
 		    android:id="@+id/me_gpa_desc_link"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
 		    android:layout_below="@+id/me_gpa_desc"
+		    android:layout_marginTop="-3dp"
 		    android:text="@string/me_view_more_details"
 		    android:textColor="@color/theme_gray"
-		    android:textSize="14sp" />
+		    android:textSize="14sp" /> -->
 		
 		<LinearLayout
 		    android:id="@+id/me_progress_linearlayout"
 		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
+		    android:layout_height="50dp"
 		    android:layout_marginTop="10dp"
-		    android:layout_below="@+id/me_gpa_desc_link"
+		    android:layout_below="@+id/me_gpa_desc"
 		    android:orientation="horizontal" >
 		    
 		    <View
 		        android:id="@+id/me_progress_completed"
-		        android:layout_width="0px"
-		        android:layout_height="30dp"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
 		        android:layout_weight="0"
-		        android:background="@color/android_dark_green" />
+		        android:background="@color/theme_teal" />
 		    
 		    <View
 		        android:id="@+id/me_progress_not_completed"
-		        android:layout_width="0px"
-		        android:layout_height="30dp"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
 		        android:layout_weight="1"
-		        android:background="@color/android_dark_red" />
+		        android:background="@color/theme_blue" />
 		</LinearLayout>
 		
 		<TextView
@@ -165,6 +167,7 @@
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
 		    android:layout_below="@+id/me_progress_percentage"
+		    android:layout_marginTop="-5dp"
 		    android:text="@string/me_progress_percentage_desc"
 		    android:textColor="@color/theme_gray"
 		    android:textSize="14sp" />
@@ -185,9 +188,144 @@
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentRight="true"
 		    android:layout_below="@+id/me_progress_fraction"
+		    android:layout_marginTop="-5dp"
 		    android:text="@string/me_progress_fraction_desc"
 		    android:textColor="@color/theme_gray"
 		    android:textSize="14sp" />
+		
+		<LinearLayout
+		    android:id="@+id/me_grade_dist_linearlayout"
+		    android:layout_width="match_parent"
+		    android:layout_height="50dp"
+		    android:layout_marginTop="15dp"
+		    android:layout_below="@+id/me_progress_percentage_desc"
+		    android:orientation="horizontal" >
+		    
+		    <View
+		        android:id="@+id/me_grade_dist_blank"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="1"
+		        android:background="@color/gray" />
+		    
+		    <View
+		        android:id="@+id/me_grade_dist_a"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="1"
+		        android:background="@color/theme_green" />
+		    
+		    <View
+		        android:id="@+id/me_grade_dist_b"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="1"
+		        android:background="@color/theme_teal" />
+		    
+		    <View
+		        android:id="@+id/me_grade_dist_c"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="1"
+		        android:background="@color/theme_blue" />
+		    
+		    <View
+		        android:id="@+id/me_grade_dist_d"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="1"
+		        android:background="@color/theme_gray" />
+		    
+		    <View
+		        android:id="@+id/me_grade_dist_f"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="1"
+		        android:background="@color/android_dark_red" />
+		    
+		</LinearLayout>
+		
+		<TextView
+		    android:id="@+id/me_grade_dist_key_blank"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_toLeftOf="@+id/me_grade_dist_key_a"
+		    android:layout_below="@+id/me_grade_dist_linearlayout"
+		    android:text="@string/me_grade_dist_key_blank"
+		    android:textColor="@color/theme_gray"
+		    android:textSize="30sp" />
+		
+		<TextView
+		    android:id="@+id/me_grade_dist_key_a"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_toLeftOf="@+id/me_grade_dist_key_b"
+		    android:layout_below="@+id/me_grade_dist_linearlayout"
+		    android:text="@string/me_grade_dist_key_a"
+		    android:textColor="@color/theme_green"
+		    android:textSize="30sp" />
+		
+		<TextView
+		    android:id="@+id/me_grade_dist_key_b"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_toLeftOf="@+id/me_grade_dist_key_c"
+		    android:layout_below="@+id/me_grade_dist_linearlayout"
+		    android:text="@string/me_grade_dist_key_b"
+		    android:textColor="@color/theme_teal"
+		    android:textSize="30sp" />
+		
+		<TextView
+		    android:id="@+id/me_grade_dist_key_c"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_toLeftOf="@+id/me_grade_dist_key_d"
+		    android:layout_below="@+id/me_grade_dist_linearlayout"
+		    android:text="@string/me_grade_dist_key_c"
+		    android:textColor="@color/theme_blue"
+		    android:textSize="30sp" />
+		
+		<TextView
+		    android:id="@+id/me_grade_dist_key_d"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_toLeftOf="@+id/me_grade_dist_key_f"
+		    android:layout_below="@+id/me_grade_dist_linearlayout"
+		    android:text="@string/me_grade_dist_key_d"
+		    android:textColor="@color/theme_gray"
+		    android:textSize="30sp" />
+		
+		<TextView
+		    android:id="@+id/me_grade_dist_key_f"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentRight="true"
+		    android:layout_below="@+id/me_grade_dist_linearlayout"
+		    android:text="@string/me_grade_dist_key_f"
+		    android:textColor="@color/android_dark_red"
+		    android:textSize="30sp" />
+		
+		<TextView
+		    android:id="@+id/me_grade_dist_desc"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentRight="true"
+		    android:layout_below="@+id/me_grade_dist_key_f"
+		    android:text="@string/me_grade_dist_desc"
+		    android:textColor="@color/theme_gray"
+		    android:textSize="14sp" />
+		
+		<!-- Add in future update 
+		<TextView
+		    android:id="@+id/me_grade_dist_desc_link"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentRight="true"
+		    android:layout_below="@+id/me_grade_dist_desc"
+		    android:layout_marginTop="-3dp"
+		    android:text="@string/me_view_more_details"
+		    android:textColor="@color/theme_gray"
+		    android:textSize="14sp" /> -->
 		
 	</RelativeLayout>
 </ScrollView>

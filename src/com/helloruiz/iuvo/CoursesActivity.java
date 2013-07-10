@@ -74,7 +74,7 @@ public class CoursesActivity extends ListActivity {
 			databaseHandler.moveCourse(from, to, groupID);      
     		
 			refreshListAdapter();
-			getListView().setSelection(to);
+			getListView().setSelection(to - 2);
     	}
     };
 	

@@ -81,6 +81,13 @@
     <string name="me_progress_percentage_desc">Completion</string>
     <string name="me_progress_fraction">0/0</string>
     <string name="me_progress_fraction_desc">Courses completed</string>
+    <string name="me_grade_dist_key_blank">(No Grades Yet)</string>
+    <string name="me_grade_dist_key_a"><b>A </b></string>
+    <string name="me_grade_dist_key_b"><b>B </b></string>
+    <string name="me_grade_dist_key_c"><b>C </b></string>
+    <string name="me_grade_dist_key_d"><b>D </b></string>
+    <string name="me_grade_dist_key_f"><b>F </b></string>
+    <string name="me_grade_dist_desc">Degree plan grade distribution</string>
     <string name="me_view_more_details"><u>View more details</u></string>
     
     
