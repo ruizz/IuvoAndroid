@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 import com.helloruiz.iuvo.MainActivity.MeSectionFragment;
 import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Group;
-import com.helloruiz.iuvo.database.Semester;
 
 /**
  * Stores all dialogs. Lots of lines just to display dialogs, but I'm sure that it's cleaner
@@ -219,99 +217,6 @@ public class Dialogs {
 	}
 	
 	/** 
-	 * Dialog for 'add' menu option in the semester manager activity.
-	 */
-	public static void addSemester(final Activity activity) {
-		
-		String dialogAddTitle = "Add Semester";
-		String dialogName = activity.getString(R.string.dialog_name);
-		
-
-		final EditText editText = new EditText(activity);
-		final Spinner spinner = (Spinner) new Spinner(activity);
-		LinearLayout linearLayout = new LinearLayout(activity);
-		
-		editText.setHint((CharSequence) dialogName);
-		
-		// Create an ArrayAdapter using the string array and a default spinner layout
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,
-		        R.array.color_array, android.R.layout.simple_spinner_item);
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
-		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition("Select Color"));
-		
-		linearLayout.setOrientation(LinearLayout.VERTICAL);
-		linearLayout.addView(editText);
-		linearLayout.addView(spinner);
-		
-		// Listener for the 'Save' button
-		DialogInterface.OnClickListener addClickListener = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// Adds semester to the database
-				((SemestersActivity) activity).addSemester(editText.getText().toString(), spinner.getSelectedItem().toString());
-			}
-		};
-	    
-		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
-			.setPositiveButton("Add", addClickListener)
-			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), null)
-			.setTitle(dialogAddTitle)
-			.setView(linearLayout);
-		
-		dialog.show();
-	}
-	
-	/** 
-	 * Dialog for allowing user to edit a semester in the semester manager activity.
-	 */
-	public static void editSemester(final Activity activity, final Semester item) {
-		
-		String dialogAddTitle = "Edit Semester";
-		String dialogName = activity.getString(R.string.dialog_name);
-		
-
-		final EditText editText = new EditText(activity);
-		final Spinner spinner = (Spinner) new Spinner(activity);
-		LinearLayout linearLayout = new LinearLayout(activity);
-		
-		editText.setHint((CharSequence) dialogName);
-		editText.setText((CharSequence) item.getName());
-		
-		// Create an ArrayAdapter using the string array and a default spinner layout
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,
-		        R.array.color_array, android.R.layout.simple_spinner_item);
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
-		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(item.getColor()));
-		
-		linearLayout.setOrientation(LinearLayout.VERTICAL);
-		linearLayout.addView(editText);
-		linearLayout.addView(spinner);
-		
-		// Listener for the 'Save' button
-		DialogInterface.OnClickListener editClickListener = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// Adds semester to the database
-				((SemestersActivity) activity).editSemester(editText.getText().toString(), spinner.getSelectedItem().toString(), item);
-			}
-		};
-	    
-		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
-			.setPositiveButton("Save", editClickListener)
-			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), null)
-			.setTitle(dialogAddTitle)
-			.setView(linearLayout);
-		
-		dialog.show();
-	}
-	
-	/** 
 	 * Dialog for confirming deletion of a semester
 	 */
 	public static void deleteSemesterConfirm(final Activity activity, final int _which) {
@@ -392,6 +297,54 @@ public class Dialogs {
 			@Override
 			public void onCancel(DialogInterface dialog) {
 				((CoursesActivity) activity).refreshListAdapter();	
+			}
+		};
+	    
+		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
+			.setPositiveButton(activity.getString(R.string.dialog_button_delete), deleteClickListener)
+			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), cancelClickListener)
+			.setOnCancelListener(backClickListener)
+			.setTitle(dialogAddTitle)
+			.setView(textView);
+		
+		dialog.show();
+	}
+	
+	/** 
+	 * Dialog for confirming deletion of a course. Band-aid copy for a new activity. Will
+	 * come up with a less wasteful solution later.
+	 */
+	public static void deleteCourseConfirmSemester(final Activity activity, final int _which) {
+		
+		String dialogAddTitle = activity.getString(R.string.dialog_delete_confirm_title);
+		String dialogText = activity.getString(R.string.dialog_delete_course_confirm_text);
+		
+		TextView textView = new TextView(activity);
+		textView.setText(dialogText);
+		textView.setPadding(15, 15, 15, 15);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+		
+		// Listener for the 'Delete' button
+		DialogInterface.OnClickListener deleteClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				((CoursesActivitySemester) activity).deleteCourse(_which);
+			}
+		};
+		
+		// Listener for the 'Cancel button
+		DialogInterface.OnClickListener cancelClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				((CoursesActivitySemester) activity).refreshListAdapter();
+			}
+		};
+		
+		// If the dialog is dismissed any other way. (Such as through the back button.)
+		DialogInterface.OnCancelListener backClickListener = new DialogInterface.OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				((CoursesActivitySemester) activity).refreshListAdapter();	
 			}
 		};
 	    

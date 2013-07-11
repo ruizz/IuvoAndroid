@@ -79,6 +79,8 @@ public class ColorHandler {
 		
 		if (colorName.equals("Gray"))
 			return context.getResources().getColor(R.color.gray);
+		
+		
 
 		return context.getResources().getColor(R.color.gray);
 	}

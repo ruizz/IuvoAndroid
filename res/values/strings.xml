@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Iuvo</string>
     <string name="title_activity_groups">Groups</string>
     <string name="title_activity_semesters">Semesters</string>
     <string name="title_activity_course">Add Course</string>
     <string name="title_activity_courses">Hidden Courses</string>
+    <string name="title_activity_courses_activity_semester">Semester Courses</string>
     <string name="menu_edit_profile">Edit Profile</string>
     <string name="menu_manage_groups">Groups</string>
     <string name="menu_manage_semesters">Semesters</string>
@@ -14,9 +16,6 @@
     <string name="menu_add">Add</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_save">Save</string>
-    <string name="plan_getting_started_header">Let\'s get started.</string>
-    <string name="plan_getting_started_note1">Begin populating your degree plan by adding semesters and groups.</string>
-    <string name="plan_getting_started_note2">You can then add courses, which will display their semester color and appear under their assigned group.</string>
     <string name="plan_no_semester_assigned">No Semester Assigned</string>
     <string name="plan_no_courses_found">There\'s nothing in this group to manage.</string>
     <string name="plan_empty_group"><i>(empty)</i></string>
@@ -58,21 +57,15 @@
     <string name="about_link4">http://www.impallari.com/lobster/</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_about">About Iuvo</string>
-    <string name="title_activity_backup">Backup and Restore</string>
-    <string name="title_activity_semesters_help">Semesters Help</string>
-    <string name="title_activity_groups_help">Groups Help</string>
-    <string name="title_activity_course_help">Course Help</string>
-    <string name="title_activity_courses_help">Course Management Help</string>
     <string name="a_picture">A picture.</string>
-    
+
     <!-- Me Tab -->
     <string name="me_name">[Name]</string>
     <string name="me_school">[School]</string>
     <string name="me_major">[Major]</string>
     <string name="me_classification">[Classification]</string>
     <string name="me_name_desc">Name</string>
-    <string name="me_school_desc">School</string>
+    <string name="me_school_desc">Student</string>
     <string name="me_major_desc">Major</string>
     <string name="me_classification_desc">Classification</string>
     <string name="me_gpa">0.00</string>
@@ -89,9 +82,48 @@
     <string name="me_grade_dist_key_f"><b>F </b></string>
     <string name="me_grade_dist_desc">Degree plan grade distribution</string>
     <string name="me_view_more_details"><u>View more details</u></string>
+
+    <!-- Get Started Page -->
+    <string name="plan_getting_started_header">Welcome to your degree plan.</string>
+    <string name="plan_getting_started_note1">It may not look like much yet, but with a good amount of effort and a LOT of data entry, we should have a beautiful, flexible, and detailed degree plan set up in no time!</string>
+    <string name="plan_getting_started_note1_1"><i>(You should back up your degree plan in the \'more\' tab afterwards so that you don\'t lose all of your hard earned work!)</i></string>
+    <string name="plan_getting_started_note2">First, start off by adding semesters. These aren\'t needed to construct your degree plan, but Iuvo uses your semesters to help \'color-code\' your your courses. (It\'ll make more sense later!) If you need help while adding or managing your semesters, hit the \'help\' button that displays at the top of the screen.</string>
+    <string name="plan_getting_started_note3">Next, we\'ll add groups. Now this is important. Groups are the fundamental building block of your degree plan and are used to organize your courses. Without groups, you can\'t construct a degree plan at all! Again, if you\'re in need of help, hit the \'help\' button that displays at the top of the screen. Once you add your first group, this tutorial will disappear and your degree plan will take its place.</string>
+    <string name="plan_getting_started_note4">Finally, we\'ll complete the degree plan by adding every single course from your curriculum. Courses contiain a lot more information than semesters or groups, and are therefore explained in more detail through the \'help\' button in the course screen. You should read this so that you can add all of your courses properly, including transfer credit and credit that is not part of your degree plan.</string>
+    <string name="plan_getting_started_note5">Below is a small sample of what your degree plan should look like. It includes a two semesters, two groups, and three courses. Remember that this tutorial will disappear after adding your first group. Good luck!</string>
+    <string name="plan_getting_started_semester_title">Spring 20XX</string>
+    <string name="plan_getting_started_semester_subtitle">X Courses</string>
+    <string name="plan_getting_started_group_title">Mathematics</string>
+    <string name="plan_getting_started_course_title">MATH 151</string>
+    <string name="plan_getting_started_course_grade">B+</string>
+    <string name="plan_getting_started_course_grade1">"A "</string>
+    <string name="plan_getting_started_course_grade2">"B "</string>
+    <string name="plan_getting_started_course_grade3">"C "</string>
+    <string name="plan_getting_started_sample_group1">Sample Group 1</string>
+    <string name="plan_getting_started_sample_group2">Sample Group 2</string>
+    <string name="plan_getting_started_sample_semester1">Sample Semester 1</string>
+    <string name="plan_getting_started_sample_semester2">Sample Semester 2</string>
+    <string name="plan_getting_started_sample_course1">Sample Course 1</string>
+    <string name="plan_getting_started_sample_course2">Sample Course 2</string>
+    <string name="plan_getting_started_sample_course3">Sample Course 3</string>
+    <string name="plan_getting_started_semester_caption"><i>A semester object</i></string>
+    <string name="plan_getting_started_group_caption"><i>A group object</i></string>
+    <string name="plan_getting_started_course_caption"><i>A course object as it will appear on your degree plan.</i></string>
     
-    
+    <!-- Add Semester -->
+    <string name="title_activity_semester">Add Semester</string>
+    <string name="semester_quick_fill">Quick Fill:</string>
+    <string name="semester_spring_20xx"><u>"Spring 20XX"</u></string>
+    <string name="semester_summer_20xx"><u>"Summer 20XX"</u></string>
+    <string name="semester_fall_20xx"><u>"Fall 20XX"</u></string>
+    <string name="semester_winter_20xx"><u>"Winter 20XX"</u></string>
+    <string name="semester_color">Color</string>
+    <string name="semester_added">Semester added. Add another semester or go back to view your semesters.</string>
+    <string name="semester_updated">Semester updated.</string>
+    <string name="semester_not_added">Name and/or color missing.</string>
+
     <!-- About Iuvo -->
+    <string name="title_activity_about">About Iuvo</string>
     <string name="about_pronounced"><i>(pronounced \"yoo-voh\")</i></string>
     <string name="about_version">Version</string>
     <string name="about_copyright">© Ruiz Akpan</string>
@@ -100,51 +132,58 @@
     <string name="about_email"><u>ruiz.akpan@gmail.com</u></string>
     <string name="about_rate_application"><u>Rate application</u></string>
     <string name="about_open_source"><u>Licenses</u></string>
-    
+
     <!-- Backup and Restore -->
+    <string name="title_activity_backup">Backup and Restore</string>
     <string name="backup_title">Better safe than sorry!</string>
     <string name="backup_instructions">Iuvo can save or restore your degree plan by using a backup located on your SD card. Please be sure to have an external (or \"internal\") SD card installed!\n\nThe backup file is named \"IuvoDatabase.db\" and can be found at \"[SD card]/Iuvo\". Iuvo will only save to or restore from this file only.\n\nFor the geeks that are wondering: Yes, this backup is indeed viewable in any SQLite viewer.</string>
     <string name="backup_backup_title">Backup</string>
     <string name="backup_backup_subtitle">Perhaps you\'ll thank yourself later.</string>
     <string name="backup_restore_title">Restore</string>
     <string name="backup_restore_subtitle">Be sure to take a deep breath first!</string>
-    
+
     <!-- Semesters Help -->
+    <string name="title_activity_semesters_help">Semesters Help</string>
     <string name="semester_help_title">\"When did I take that class again?\"</string>
-    <string name="semester_help_overview">Iuvo allows you to create semesters in order to match your college career path as closely as possible. You can name your semesters anything you want. \"Fall 2011\", \"May Minimester 2012\" or \"Greatest Semester Ever!\" are all fine!	\n\n
-        In addition, you can pick a color for your semester. Classes assigned to a semester will be displayed in that semester\’s color on your degree plan.\n\n
+    <string name="semester_help_overview">Iuvo allows you to create semesters in order to match your college career path as closely as possible.\n\n
+        Unlike groups, semesters are NOT a fundamental building block of your degree plan. You can construct your entire degree plan without adding a single semester, but using semesters will give your degree plan a more complete and detailed appearance.\n\n
+        You\'re allowed to name your semesters anything you want. \"Fall 2011\", \"May Minimester 2012\" or \"Greatest Semester Ever!\" are all fine! In addition, you can pick a color for your semester. Classes assigned to a semester will be displayed in that semester\'s color on your degree plan.\n\n
 		Tip: If you don’t want your degree plan to look too colorful, you can assign a single color to many semesters to indicate that they are completed, that you really liked those semesters, or for any other reason you want.</string>
     <string name="semester_help_add">Add a semester from the menu at the top. Enter the name, select a color, and then save. Easy peasy.</string>
     <string name="semester_help_delete">Delete a semester by swiping left or right. Courses assigned to that semester will have no semester assigned to them.</string>
     <string name="semester_help_arrange">Re-arrange your semesters by dragging their handles on the right side. This doesn\’t affect anything else, it simply helps organize your semesters.</string>
-    <string name="semester_help_edit">Edit a semester name or color by tapping on it.</string>
-    
+    <string name="semester_help_edit">You can either view the courses under a semester or edit a semester by tapping on it.</string>
+
     <!-- Groups Help -->
+    <string name="title_activity_groups_help">Groups Help</string>
     <string name="group_help_title">Not all degree plans are the same</string>
-    <string name="group_help_overview">Some degree plans will categorize your classes by subject, such as Math, Science, English, etc. Others will categorize them by year: Freshman, Junior, etc. Iuvo allows you to create groups in order to match your degree plan as closely as possible.</string>
+    <string name="group_help_overview">Some degree plans will categorize your classes by subject, such as Math, Science, English, etc. Others will categorize them by year: Freshman, Junior, etc. Iuvo allows you to create groups in order to match your degree plan as closely as possible.\n\n
+        The purpose of groups is to help Iuvo organize your courses the same way that your degree plan does. Groups are the fundamental building blocks of your degree plan and are needed to display your courses in an organized manner. You create your groups first, so that whenever you add a course, you can assign it to a group that you created. Your course then appears on your degree plan under that group.\n</string>
     <string name="group_help_add">Add a group from the menu at the top. Enter the name and then save. Easy peasy.</string>
     <string name="group_help_delete">Delete a group by swiping left or right. Courses assigned to that group will be hidden from your degree plan.</string>
-    <string name="group_help_arrange">Re-arrange your groups by dragging their handles on the right side. This affects how your groups appear on your degree plan.</string>
+    <string name="group_help_arrange">Re-arrange your groups by dragging their handles on the right side. This affects the order of how your groups appear on your degree plan.</string>
     <string name="group_help_edit">Edit a group name by tapping on it.</string>
-    
+
     <!-- Course Help -->
+    <string name="title_activity_course_help">Course Help</string>
     <string name="course_credit_image">A, B, C, D, F</string>
     <string name="course_help_title">Are you a student? Because you must have class.</string>
-	<string name="course_help_name">Adding courses to your degree plan is easy. Start off with the name. Call it whatever you want. \"ENGR 123\", \"Calculus II\" or \"[Professor name] sucks!\" are all perfectly acceptable.</string>
+    <string name="course_help_name">Adding courses to your degree plan is easy. Start off with the name. Call it whatever you want. \"ENGR 123\", \"Calculus II\" or \"[Professor name] sucks!\" are all perfectly acceptable!</string>
     <string name="course_help_credit">Next up are credit hours and grade. Iuvo should cover all of the possible values for U.S. post-secondary courses. If not, then let the developer know so that it can be included in an update.</string>
     <string name="course_help_exclude">Some institutions do not include transfer credit in your GPA calculation. If you don’t want Iuvo to include a course in your GPA calculations, just let it know.</string>
     <string name="course_help_group">Assign group that you created to your course. Your course will appear under that group in your degree plan. Courses that do not have a group assigned to them will be hidden from your degree plan. You can edit your hidden courses in the ‘more’ tab of the home screen.</string>
     <string name="course_help_semester">Finally, assign a semester that you created to your course. Your course will appear in your degree plan while rockin’ that semester’s color.</string>
-    
+
     <!-- Courses Help -->
-    <string name="courses_help_title">No creative title this time, just some simple help.</string>
-    <string name="courses_help_overview">You can manage your courses within a group the same way you manage your groups and semesters. </string>
+    <string name="title_activity_courses_help">Course Management Help</string>
+    <string name="courses_help_title">Manage like a boss.</string>
+    <string name="courses_help_overview">You can manage your courses within a group or semester the same way you manage your actual groups and semesters.</string>
     <string name="courses_help_delete">Delete a course by swiping left or right. That course will no longer appear on your degree plan.</string>
-    <string name="courses_help_arrange">Re-arrange your courses by dragging their handles on the right side. Your courses will appear in the same order within its assigned group on your degree plan.</string>
+    <string name="courses_help_arrange">If you\'re viewing your courses within a group, you can re-arrange your courses by dragging their handles on the right side. Your courses will appear in the same order within its assigned group on your degree plan.\n\n If you\'re viewing your courses within a semester, you cannot re-arrange your courses. Iuvo doesn\'t need the ordering for any practical purpose.</string>
     <string name="courses_help_edit">Edit a course by tapping on it.</string>
-    
-	<string name="toast_no_web">No web apps found.</string>
-	<string name="toast_no_email">No email apps found.</string>
-	<string name="toast_no_market">No market apps found?</string>
-	<string name="toast_error_version">Error: Couldn\'t get version number.</string>
+    <string name="toast_no_web">No web apps found.</string>
+    <string name="toast_no_email">No email apps found.</string>
+    <string name="toast_no_market">No market apps found?</string>
+    <string name="toast_error_version">Error: Couldn\'t get version number.</string>
+
 </resources>

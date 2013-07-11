@@ -17,7 +17,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +24,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -277,33 +275,33 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             textView = (TextView) rootView.findViewById(R.id.me_name);
             textView.setTypeface(typeFace);
             if(!userName.equals(""))
-            	textView.setText((CharSequence) userName);
+            	textView.setText((CharSequence) userName + " ");
             else
-            	textView.setText("[Name]");
+            	textView.setText("No Name");
             
             // Assign school...
             textView = (TextView) rootView.findViewById(R.id.me_school);
             textView.setTypeface(typeFace);
             if(!userSchool.equals(""))
-            	textView.setText((CharSequence) userSchool);
+            	textView.setText((CharSequence) userSchool + " ");
             else
-            	textView.setText("[School]");
+            	textView.setText("No School");
             
             // Major
             textView = (TextView) rootView.findViewById(R.id.me_major);
             textView.setTypeface(typeFace);
             if(!userMajor.equals(""))
-            	textView.setText((CharSequence) userMajor);
+            	textView.setText((CharSequence) userMajor + " ");
             else
-            	textView.setText("[Major]");
+            	textView.setText("No Major");
             
             // Classification
             textView = (TextView) rootView.findViewById(R.id.me_classification);
             textView.setTypeface(typeFace);
             if(!userClassification.equals(""))
-            	textView.setText((CharSequence) userClassification);
+            	textView.setText((CharSequence) userClassification + " ");
             else
-            	textView.setText("[Classification]");
+            	textView.setText("No Classification");
             
             // GPA
             String GPA = db.getGPA();
@@ -338,20 +336,24 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	view = (View) rootView.findViewById(R.id.me_progress_completed);
             	params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
             	view.setLayoutParams(params);
+            	view.setBackgroundColor(getResources().getColor(R.color.theme_teal));
             	
 	            view = (View) rootView.findViewById(R.id.me_progress_not_completed);
 	            params = (LayoutParams) view.getLayoutParams(); params.weight = 1.0f;
             	view.setLayoutParams(params);
+            	view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
             	
             } else { // Show X% completion
             	
             	view = (View) rootView.findViewById(R.id.me_progress_completed);
             	params = (LayoutParams) view.getLayoutParams(); params.weight = (float) courseCountCompleted;
             	view.setLayoutParams(params);
+            	view.setBackgroundColor(getResources().getColor(R.color.theme_teal));
             	
 	            view = (View) rootView.findViewById(R.id.me_progress_not_completed);
 	            params = (LayoutParams) view.getLayoutParams(); params.weight = (float) courseCount - (float) courseCountCompleted;
             	view.setLayoutParams(params);
+            	view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
             }
             
             // Grade distribution. This code to give the grade distribution bar its intended effect
@@ -370,7 +372,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            params = (LayoutParams) view.getLayoutParams(); params.weight = 1.0f;
 	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_blank);
             	view.setLayoutParams(params);
-            	textView.setText("(No Grades Yet)");
+            	view.setBackgroundColor(getResources().getColor(R.color.gray));
+            	textView.setText("No Grades Yet");
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_a);
 	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
@@ -418,6 +421,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_a);
             	if (aCount != 0) {
             		params.weight = (float) aCount;
+            		view.setBackgroundColor(getResources().getColor(R.color.theme_green));
             		textView.setText("A ");
             	} else {
             		params.weight = 0.0f;
@@ -429,6 +433,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_b);
             	if (bCount != 0) {
             		params.weight = (float) bCount;
+            		view.setBackgroundColor(getResources().getColor(R.color.theme_teal));
             		textView.setText("B ");
             	} else {
             		params.weight = 0.0f;
@@ -440,6 +445,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_c);
             	if (cCount != 0) {
             		params.weight = (float) cCount;
+            		view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
             		textView.setText("C ");
             	} else {
             		params.weight = 0.0f;
@@ -451,6 +457,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_d);
             	if (dCount != 0) {
             		params.weight = (float) dCount;
+            		view.setBackgroundColor(getResources().getColor(R.color.theme_gray));
             		textView.setText("D ");
             	} else {
             		params.weight = 0.0f;
@@ -462,6 +469,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_f);
             	if (fCount != 0) {
             		params.weight = (float) fCount;
+            		view.setBackgroundColor(getResources().getColor(R.color.android_dark_red));
             		textView.setText("F ");
             	} else {
             		params.weight = 0.0f;
@@ -490,6 +498,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    private static final Integer LIST_HEADER = 0;
 	    private static final Integer LIST_EMPTY = 1;
 	    private static final Integer LIST_ITEM = 2;
+	    private static final Integer LIST_TUTORIAL = 3;
 
 	    private ListView listView;
 
@@ -521,8 +530,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    	if (groups.size() == 0) {
 	    		
 	    		groupTitles.add(getString(R.string.plan_getting_started_header));
-	    		groupTitles.add(getString(R.string.plan_getting_started_note1));
-	    		groupTitles.add(getString(R.string.plan_getting_started_note2));
 	    		
 	    		listView = getListView(); 
 		        setListAdapter(new getStartedListAdapter(getActivity()));
@@ -578,6 +585,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		        setListAdapter(new DegreePlanListAdapter(getActivity()));
 	    	}
 	    }
+	    // End of onResume
 	    
 	    // BaseAdapter explicitly designed to show the "Let's get started" dialogue
 	    private class getStartedListAdapter extends BaseAdapter {
@@ -603,38 +611,36 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	        @Override
 	        public View getView(int position, View convertView, ViewGroup parent) {
 
-	            String headerText = groupTitles.get(position);
 	            View rootView = convertView;
 	            
-                if (convertView == null || convertView.getId() == LIST_ITEM || convertView.getId() == LIST_EMPTY) {
-                    rootView = LayoutInflater.from(mContext).inflate(
-                            R.layout.fragment_plan_list_header, parent, false);
-                    rootView.setId(LIST_HEADER);
-                }
+                rootView = LayoutInflater.from(mContext).inflate(
+                        R.layout.fragment_plan_list_tutorial, parent, false);
+                rootView.setId(LIST_TUTORIAL);
+
+                TextView headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_header);
+            	headerTextView.setTypeface(typeFace);
+            	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_semester_title);
+            	headerTextView.setTypeface(typeFace);
+            	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_group_title);
+            	headerTextView.setTypeface(typeFace);
+            	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_course_grade0);
+            	headerTextView.setTypeface(typeFace);
+            	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_sample_group1);
+            	headerTextView.setTypeface(typeFace);
+            	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_course_grade1);
+            	headerTextView.setTypeface(typeFace);
+            	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_course_grade2);
+            	headerTextView.setTypeface(typeFace);
+            	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_sample_group2);
+            	headerTextView.setTypeface(typeFace);
+            	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_course_grade3);
+            	headerTextView.setTypeface(typeFace);
                 
-                TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
-                headerTextView.setText(headerText);
-                headerTextView.setGravity(Gravity.CENTER);
-                
-                // Title text
-                if (position == 0) {
-	                headerTextView.setTypeface(typeFace);
-	                headerTextView.setTextSize(30);
-	                headerTextView.setPadding(0, 0, 0, 5);
-                } else { // Instructions text
-                	headerTextView.setTextSize(18);
-                	View dividerView = rootView.findViewById(R.id.item_separator);
-                	dividerView.setVisibility(View.INVISIBLE);
-                }
-                
-                headerTextView = (TextView) rootView.findViewById(R.id.header_edit_textview);
-                headerTextView.setText("");
-            	headerTextView.setVisibility(View.INVISIBLE);
-            	
-                return rootView;
+	            return rootView;
+
 	        }
 	        private final Context mContext;
-	    }
+	    } // End of getStartedListAdapter
 	    
 		// Plan section fragment. Designed to show the degree plan as a list with headers.
 	    private class DegreePlanListAdapter extends BaseAdapter {
@@ -682,7 +688,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	                    rootView.setId(LIST_HEADER);
 	                }
 
-                TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
+	                TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
                 
 
 	            	headerTextView.setTypeface(typeFace);
@@ -761,7 +767,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            }
 	        }
 	        private final Context mContext;
-	    }
+	    } // End of DegreePlanListAdapter
 	}
 
 	/**

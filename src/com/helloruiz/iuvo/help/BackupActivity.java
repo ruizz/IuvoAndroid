@@ -47,7 +47,7 @@ public class BackupActivity extends Activity {
 		// Not sure what's causing these views to change random colors. This ensures that they stay blue.
 		View view;
         view = findViewById(R.id.backup_backup_linearlayout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-        view = findViewById(R.id.backup_backup_linearlayout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+        view = findViewById(R.id.backup_restore_linearlayout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
 	}
 
 	/**

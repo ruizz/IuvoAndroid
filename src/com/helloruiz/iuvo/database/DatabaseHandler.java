@@ -319,7 +319,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Adding Row
 		SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_SEMESTER, null, values);
-        ;
     }
     
     // Move semester position in list.
@@ -708,7 +707,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<Course> getAllCoursesBySemester(int semesterID) {
         List<Course> courseList = new ArrayList<Course>();
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_SEMESTER_ID + "=" + String.valueOf(semesterID) + " ORDER BY " + KEY_POSITION;
+        String selectQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_SEMESTER_ID + "=" + String.valueOf(semesterID) + " ORDER BY " + KEY_GROUP_ID;
      
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

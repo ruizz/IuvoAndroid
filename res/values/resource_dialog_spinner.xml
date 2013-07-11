@@ -9,7 +9,6 @@
     </string-array>
     
     <string-array name="color_array">
-        <item>Select Color</item>
         <item>Android Dark Blue</item>
         <item>Android Dark Purple</item>
         <item>Android Dark Green</item>
@@ -60,6 +59,11 @@
     <string-array name="exclude_from_gpa_array">
         <item>Yes</item>
         <item>No</item>
+    </string-array>
+    
+    <string-array name="semester_option_array">
+        <item>View courses</item>
+        <item>Edit Semester</item>
     </string-array>
     
 </resources>
