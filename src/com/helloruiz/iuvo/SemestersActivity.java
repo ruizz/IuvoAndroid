@@ -3,7 +3,9 @@ package com.helloruiz.iuvo;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -93,6 +95,9 @@ public class SemestersActivity extends ListActivity {
 	// Strings defined globally here since they'll be used in a loop.
 	String SINGLE_COURSE = " Course";
 	String MULTIPLE_COURSES = " Courses";
+	
+	// Unique tags for passing an intent to another activity.
+    static String SEMESTERSACTIVITY_SEMESTER_ID = "com.helloruiz.iuvo.SemestersActivity.semesterID";
 		
 	/**
 	 * -- Overrides --
@@ -124,9 +129,16 @@ public class SemestersActivity extends ListActivity {
 	}
 	
 	@Override
+	public void onResume() {
+		super.onResume();
+		refreshListAdapter();
+	}
+	
+	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Semester item = semesterAdapter.getItem(position);
-		Dialogs.editSemester(this, item);
+		v.setTag(item.getID());
+		semesterOptionsDialog(v);
 	}
 	
 	@Override
@@ -148,15 +160,41 @@ public class SemestersActivity extends ListActivity {
 	/**
 	 * -- Voids --
 	 */
+	public void semesterOptionsDialog(final View view) {
+		DatabaseHandler db = new DatabaseHandler(this);
+		Semester semester = db.getSemester((Integer) view.getTag());
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle(semester.getName())
+	           .setItems(R.array.semester_option_array, new DialogInterface.OnClickListener() {
+	               public void onClick(DialogInterface dialog, int which) {
+	            	   Intent intent;
+	            	   int semesterID = (Integer) view.getTag();
+		            	if (which == 0) {
+		            	   intent = new Intent(getApplicationContext(), CoursesActivitySemester.class);
+		            	   intent.putExtra(SEMESTERSACTIVITY_SEMESTER_ID, semesterID);
+		            	   startActivity(intent); 
+		                } else {
+		            	   intent = new Intent(getApplicationContext(), SemesterActivity.class);
+		            	   intent.putExtra(SEMESTERSACTIVITY_SEMESTER_ID, semesterID);
+		            	   startActivity(intent); 
+		               }
+	           }
+	    });
+	    
+	    builder.show();
+	}
+	
 	// Pops up with dialog so that user can add a semester
     public void menuSemestersHelp() {
     	Intent intent = new Intent(getApplicationContext(), SemestersHelpActivity.class);
     	startActivity(intent);
     }
 	
-	// Pops up with dialog so that user can add a semester
+	// Starts add semester activity
     public void menuAddSemester() {
-    	Dialogs.addSemester(this);
+    	Intent intent = new Intent(this, SemesterActivity.class);
+    	startActivity(intent);
     }
     
     // Pops up with dialog so that user can confirm deletion

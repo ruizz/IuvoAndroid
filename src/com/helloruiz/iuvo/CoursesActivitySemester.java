@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,15 +23,15 @@ import com.helloruiz.iuvo.database.Semester;
 import com.helloruiz.iuvo.help.CoursesHelpActivity;
 import com.mobeta.android.dslv.DragSortListView;
 
-public class CoursesActivity extends ListActivity {
-	
+public class CoursesActivitySemester extends ListActivity {
+
 	/**
 	 * -- Classes --
 	 */
-	private class CourseAdapter extends ArrayAdapter<Course> {
+	private class CoursesAdapter extends ArrayAdapter<Course> {
 	      
-	    public CourseAdapter(List<Course> courses) {
-	    	super(CoursesActivity.this, R.layout.activity_courses_list_item,
+	    public CoursesAdapter(List<Course> courses) {
+	    	super(CoursesActivitySemester.this, R.layout.activity_courses_list_item,
 	    			R.id.course_name_textview, courses);
 	    }
 	    
@@ -41,17 +42,18 @@ public class CoursesActivity extends ListActivity {
 	        
 	        TextView textView = (TextView) v.findViewById(R.id.course_name_textview);
             //textView.setTypeface(typeface);
-	        textView.setText((CharSequence) course.getName() + " (" + String.valueOf(course.getHours()) + ")");
-	        
-	        textView = (TextView) v.findViewById(R.id.course_semester_textview);
+            textView.setText((CharSequence) course.getName() + " (" + String.valueOf(course.getHours()) + ")");
             
+            textView = (TextView) v.findViewById(R.id.course_semester_textview);
+            
+            // Set list item to color of semester
             if (course.getSemesterID() != -1) {
             	Semester semester = databaseHandler.getSemester(course.getSemesterID());
             	textView.setText(semester.getName());
             	v.setBackgroundColor(ColorHandler.getColor(getContext(), semester.getColor()));
             } else
             	v.setBackgroundColor(ColorHandler.getColor(getContext(), "gray"));
-            
+	        
             textView = (TextView) v.findViewById(R.id.course_grade_textview);
             textView.setTypeface(typeface);
             if (course.getGrade().equals("None"))
@@ -59,32 +61,27 @@ public class CoursesActivity extends ListActivity {
             else
             	textView.setText((CharSequence) course.getGrade());
             
+	        View dragHandleView = v.findViewById(R.id.drag_handle);
+	        LayoutParams params = (LayoutParams) dragHandleView.getLayoutParams();
+	        params.height = 0;
+	        params.width = 0;
+	        params.weight = 0.0f;
+	        dragHandleView.setLayoutParams(params);
+	        
 	        return v;
-	      }
 	    }
+	}
 	
 	/**
-	 * -- Variables --
+	 * Variables
 	 */
-	int groupID = -1;
+	int semesterID;
 	
 	DatabaseHandler databaseHandler;
 	
-	private CourseAdapter courseAdapter;
-
-    private ArrayList<Course> mCourses;
-    
-    private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
-                
-    	@Override
-    	public void drop(int from, int to) {
-    		
-			databaseHandler.moveCourse(from, to, groupID);      
-    		
-			refreshListAdapter();
-			getListView().setSelection(to - 2);
-    	}
-    };
+	private ArrayList<Course> mCourses;
+	
+	private CoursesAdapter coursesAdapter;
 	
 	// Whenever a user swipes an course item left or right to delete.
     private DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener() {
@@ -95,36 +92,40 @@ public class CoursesActivity extends ListActivity {
 		}
 	};
 	
-	// Typeface for pretty lobster front.
+	// Typeface for pretty lobster font.
 	Typeface typeface;
-
+	
 	/**
-	 * -- Overrides --
+	 * Overrides
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
-		
-		setContentView(R.layout.activity_courses);
+		setContentView(R.layout.activity_courses_activity_semester);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		databaseHandler = new DatabaseHandler(this);
-		
-		Intent intent = getIntent();
-		groupID = intent.getIntExtra(MainActivity.MAINACTIVITY_GROUP_ID, -1);
-		
-		if (groupID != -1)
-			setTitle(databaseHandler.getGroup(groupID).getName());
-		
-		// Set up our drag sort ListView
-		DragSortListView dragSortListView = (DragSortListView) getListView();
-		dragSortListView.setDropListener(onDrop);
-		dragSortListView.setRemoveListener(onRemove);
-		
-		refreshListAdapter();
+	    databaseHandler = new DatabaseHandler(this);
+	    typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
+	    
+	    // Set up our drag sort ListView
+	 	DragSortListView dragSortListView = (DragSortListView) getListView();
+	 	dragSortListView.setRemoveListener(onRemove);
+	 		
+	 	Intent intent = getIntent();
+		semesterID = intent.getIntExtra(SemestersActivity.SEMESTERSACTIVITY_SEMESTER_ID, -1);
+	 	
+	 	refreshListAdapter();
+	 	
+	 	setTitle(databaseHandler.getSemester(semesterID).getName());
+	}
+    	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.courses_activity_semester, menu);
+		return true;
 	}
 	
 	@Override
@@ -133,13 +134,6 @@ public class CoursesActivity extends ListActivity {
 		refreshListAdapter();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.courses, menu);
-		return true;
-	}
-	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Intent intent = new Intent(getApplicationContext(), CourseActivity.class);
@@ -153,7 +147,7 @@ public class CoursesActivity extends ListActivity {
 		case android.R.id.home:
 			onBackPressed();
 			return true;
-		case R.id.menu_courses_help:
+		case R.id.menu_courses_semester_help:
 			menuCoursesHelp();
 			return true;
 		}
@@ -161,43 +155,44 @@ public class CoursesActivity extends ListActivity {
 	}
 	
 	/**
-	 * -- Voids --
+	 * Voids
 	 */
 	// Pops up with dialog so that user get help
     public void menuCoursesHelp() {
     	Intent intent = new Intent(getApplicationContext(), CoursesHelpActivity.class);
     	startActivity(intent);
     }
-    
-    // Pops up with dialog so that user can confirm deletion
+	
+	// Pops up with dialog so that user can confirm deletion
     public void deleteCourseConfirm(int which) {
-    	Dialogs.deleteCourseConfirm(this, which);
+    	Dialogs.deleteCourseConfirmSemester(this, which);
     }
-	
-	// Executes after user has confirmed that they want to delete a course
-	public void deleteCourse(int which) {
+    
+    // Executes after user has confirmed that they want to delete a course
+ 	public void deleteCourse(int which) {
 
-		Course item = databaseHandler.getCourseByPosition(which, groupID);
-		
-		// Remove course from database
-		databaseHandler.deleteCourse(item);
-					
-		refreshListAdapter();
-	}	
+ 		Course item = mCourses.get(which);
+ 		
+ 		// Remove course from database
+ 		databaseHandler.deleteCourse(item);
+ 					
+ 		refreshListAdapter();
+ 	}	
 	
-	// Called whenever the Drag Sort ListView needs to be updated to reflect database changes
+	// Called whenever the ListView needs to be updated to reflect database changes
 	public void refreshListAdapter() {
-		// Refresh the ListAdapter to reflect the new changes in the database.
-		List<Course> coursesInDatabase = databaseHandler.getAllCoursesByGroup(groupID);
 		
-		Log.d("Course: ", "Updating ListAdapter...");
+		// Refresh the ListAdapter to reflect the new changes in the database.
+		List<Course> coursesInSemester = databaseHandler.getAllCoursesBySemester(semesterID);
+		
+		Log.d("Semester: ", "Updating ListAdapter...");
 		mCourses = new ArrayList<Course>();
-		for (Course c : coursesInDatabase) {
-			Log.d("All Courses Group", "Position: " + c.getPosition() + ", ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
+		for (Course c : coursesInSemester) {
+			Log.d("All Courses Semester", "Position: " + c.getPosition() + ", ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
 			mCourses.add(c);
 		}
 		
-		courseAdapter = new CourseAdapter(mCourses);
-		setListAdapter(courseAdapter);
+		coursesAdapter = new CoursesAdapter(mCourses);
+		setListAdapter(coursesAdapter);
 	}
 }

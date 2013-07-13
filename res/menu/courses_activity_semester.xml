@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+	
+    <item
+        android:id="@+id/menu_courses_semester_help"
+        android:orderInCategory="40"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_help"/>
+    
+</menu>

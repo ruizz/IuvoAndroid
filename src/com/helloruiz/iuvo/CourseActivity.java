@@ -81,7 +81,7 @@ public class CourseActivity extends Activity {
 			setTitle(name);
 		}
 		
-		EditText editText = (EditText) findViewById(R.id.course_name_edittext); editText.setTypeface(typeface);
+		EditText editText = (EditText) findViewById(R.id.course_name_edittext);
 		editText.setText((CharSequence) name);
 		
 		TextView textView;

@@ -1,0 +1,133 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_white"
+    android:clipToPadding="false"
+    android:padding="10dp"
+    android:scrollbars="none"
+    android:orientation="vertical"
+    tools:context=".SemesterActivity" >
+
+    <!-- Name Row -->
+    <LinearLayout
+        android:id="@+id/semester_name_linear_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_blue"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:padding="10sp"
+        android:paddingBottom="5sp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_name"
+            android:textColor="@color/white" />
+
+        <EditText
+            android:id="@+id/semester_name_edittext"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="26sp" />
+       	
+        <LinearLayout
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginTop="3dp"
+        	android:orientation="horizontal" >
+            
+            <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/semester_quick_fill"
+            android:textColor="@color/white" />
+            
+            <LinearLayout
+	            android:layout_width="0dp"
+	        	android:layout_height="wrap_content"
+	        	android:layout_weight="1"
+	        	android:orientation="vertical" >
+            
+	            <TextView
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="@string/semester_spring_20xx"
+	            android:textColor="@color/white" 
+	            android:clickable="true"
+	            android:onClick="springQuickFill" />
+	            
+	            <TextView
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="3dp"
+	            android:gravity="center"
+	            android:text="@string/semester_summer_20xx"
+	            android:textColor="@color/white"
+	            android:clickable="true"
+	            android:onClick="summerQuickFill" />
+            
+            </LinearLayout>
+            
+            <LinearLayout
+	            android:layout_width="0dp"
+	        	android:layout_height="wrap_content"
+	        	android:layout_weight="1"
+	        	android:orientation="vertical" >
+	            
+	            <TextView
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="@string/semester_fall_20xx"
+	            android:textColor="@color/white"
+	            android:clickable="true"
+	            android:onClick="fallQuickFill" />
+	            
+	            <TextView
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="3dp"
+	            android:gravity="center"
+	            android:text="@string/semester_winter_20xx"
+	            android:textColor="@color/white"
+	            android:clickable="true"
+	            android:onClick="winterQuickFill" />
+            
+        	</LinearLayout>
+
+        </LinearLayout>
+          	
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/semester_color_linear_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/theme_blue"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:padding="10sp"
+        android:paddingBottom="5sp" >
+        	
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/semester_color"
+            android:textColor="@color/white" />
+        
+        <fragment
+	        android:id="@+id/fragment_semester_color_list"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        class="com.helloruiz.iuvo.fragments.SemesterColorList" />
+        
+        </LinearLayout>
+</LinearLayout>
