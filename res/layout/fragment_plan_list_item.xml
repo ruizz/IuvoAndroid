@@ -17,7 +17,6 @@
       android:id="@+id/plan_item_title"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
-      android:text="@string/coming_soon"
       android:textColor="@color/white"
       android:textSize="22sp" />
     

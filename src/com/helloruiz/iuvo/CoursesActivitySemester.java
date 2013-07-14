@@ -75,9 +75,10 @@ public class CoursesActivitySemester extends ListActivity {
 	/**
 	 * Variables
 	 */
-	int semesterID;
-	
+	// Global DatabaseHandler for activity.
 	DatabaseHandler databaseHandler;
+	
+	int semesterID;
 	
 	private ArrayList<Course> mCourses;
 	

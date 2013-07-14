@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +22,8 @@ import com.helloruiz.iuvo.database.Group;
 /**
  * Stores all dialogs. Lots of lines just to display dialogs, but I'm sure that it's cleaner
  * to isolate them all and do the heavy lifting here than to pollute all of the other code.
+ * Not all dialogs used in the app are located here. This is here to simply reduce some lines in
+ * activities that have too much code.
  */
 public class Dialogs {
 	
@@ -183,34 +184,6 @@ public class Dialogs {
 			.setNegativeButton(activity.getString(R.string.dialog_button_cancel), cancelClickListener)
 			.setOnCancelListener(backClickListener)
 			.setTitle(dialogAddTitle)
-			.setView(textView);
-		
-		dialog.show();
-	}
-	
-	/** 
-	 * Dialog for 'help' item in the Semesters activity.
-	 */
-	public static void semestersHelp(Activity activity) {
-		// TODO: place this in XML.
-		String dialogAboutTitle = "Semesters Help";
-		String dialogAbout = 
-				"Iuvo allows you to create semesters in order to match your college career path as closely as possible. You can name your semesters whatever you want (e.g. \"Fall 2010\". \"SU 11\" or \"May Minimester 2012\") and order them however you like. In addition, you can pick a color for your semester. Classes assigned to a semester will be displayed in the semester’s color on your degree plan.\n\n" +
-				"Add a semester from the menu at the top\n\n" +
-				"Delete a semester by swiping it left or right. This will delete any classes that are in that semester.\n\n" +
-				"Re-arrange your semesters by dragging their handles on the right side.\n\n" +
-				"Edit a semester by tapping on it.";
-		
-		final TextView textView=new TextView(activity);
-		textView.setText(dialogAbout);
-		textView.setPadding(15, 15, 15, 15);
-		textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-		textView.setAutoLinkMask(Activity.RESULT_OK);
-		textView.setMovementMethod(LinkMovementMethod.getInstance());
-	    
-		final AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
-			.setPositiveButton(android.R.string.ok, null)
-			.setTitle(dialogAboutTitle)
 			.setView(textView);
 		
 		dialog.show();
@@ -409,7 +382,7 @@ public class Dialogs {
 		textView.setPadding(15, 15, 15, 15);
 		textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 		
-		// Listener for the 'export' button
+		// Listener for the 'import' button
 		DialogInterface.OnClickListener importClickListener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

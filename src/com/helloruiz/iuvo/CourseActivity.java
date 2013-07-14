@@ -42,26 +42,28 @@ public class CourseActivity extends Activity {
 	// Typeface for pretty lobster font.
 	Typeface typeface;
 
+	// Global DatabaseHandler for activity
+    static DatabaseHandler databaseHandler;
+	
 	/**
 	 * Overrides
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
-		
 		setContentView(R.layout.activity_course);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		Intent intent = getIntent();
+		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 		
+		databaseHandler = new DatabaseHandler(getApplicationContext());
+		
+		Intent intent = getIntent();
 		id = intent.getIntExtra(MainActivity.MAINACTIVITY_COURSE_ID, -1);
 		
 		if (id != -1) {
-			DatabaseHandler db = new DatabaseHandler(this);
-			Course course = db.getCourse(id);
+			Course course = databaseHandler.getCourse(id);
 			
 			position = course.getPosition();
 			name = course.getName();
@@ -73,9 +75,9 @@ public class CourseActivity extends Activity {
 			groupID = course.getGroupID();
 			oldGroupID = course.getGroupID();
 			if (semesterID != -1)
-				semester = db.getSemester(semesterID).getName();
+				semester = databaseHandler.getSemester(semesterID).getName();
 			if (groupID != -1) {
-				group = db.getGroup(groupID).getName();
+				group = databaseHandler.getGroup(groupID).getName();
 			}
 			
 			setTitle(name);
@@ -143,9 +145,6 @@ public class CourseActivity extends Activity {
 	}
 	
 	public void addCourse() {
-		DatabaseHandler db = new DatabaseHandler(this);
-		
-		
 		
 		EditText editText = (EditText) findViewById(R.id.course_name_edittext);
 		
@@ -158,25 +157,25 @@ public class CourseActivity extends Activity {
 			eFGPA = 0;
 		
 		if(id == -1)
-			db.addCourse(name, hours, grade, eFGPA, semesterID, groupID);
+			databaseHandler.addCourse(name, hours, grade, eFGPA, semesterID, groupID);
 		else {
 			if (oldGroupID != groupID) {
-				db.decrementCoursePositions(position + 1, oldGroupID);
-				position = db.getCourseCountByGroup(groupID);
+				databaseHandler.decrementCoursePositions(position + 1, oldGroupID);
+				position = databaseHandler.getCourseCountByGroup(groupID);
 			}
 			
 			Course course = new Course(id, position, name, hours, grade, eFGPA, semesterID, groupID);
-			db.updateCourse(course);
+			databaseHandler.updateCourse(course);
 		}
 		
 		Log.d("All Courses", "All Current Courses:");
-		List<Course> allCourses = db.getAllCourses();
+		List<Course> allCourses = databaseHandler.getAllCourses();
 		for(Course c : allCourses) {
 			Log.d("All Courses", "Position: " + c.getPosition() + ", ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
 		}
 		
 		Log.d("All Courses Group", "Courses the same group:");
-		List<Course> allCoursesGroup = db.getAllCoursesByGroup(groupID);
+		List<Course> allCoursesGroup = databaseHandler.getAllCoursesByGroup(groupID);
 		for(Course c : allCoursesGroup) {
 			Log.d("All Courses Group", "Position: " + c.getPosition() + ", ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
 		}
@@ -280,7 +279,6 @@ public class CourseActivity extends Activity {
 	public void editGroup(View view) {
 		String dialogTitle = getString(R.string.dialog_group);
 		
-		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 		List<Group> groupsInDatabase = databaseHandler.getAllGroups();
 		List<String> groupNames = new ArrayList<String>();
 		List<String> groupIDs = new ArrayList<String>();
@@ -317,7 +315,6 @@ public class CourseActivity extends Activity {
 	public void editSemester(View view) {
 		String dialogTitle = getString(R.string.dialog_semester);
 		
-		DatabaseHandler databaseHandler = new DatabaseHandler(this);
 		List<Semester> semestersInDatabase = databaseHandler.getAllSemesters();
 		List<String> semesterNames = new ArrayList<String>();
 		List<String> semesterIDs = new ArrayList<String>();

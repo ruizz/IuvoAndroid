@@ -29,7 +29,8 @@
             android:id="@+id/course_name_edittext"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="26sp" />
+            android:textSize="26sp"
+            android:inputType="textAutoComplete" />
     </LinearLayout>
 
     <!-- Hours and Grade Row -->
@@ -125,7 +126,6 @@
 				android:id="@+id/course_exclude_from_gpa_textview"
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
-				android:text="@string/coming_soon"
 				android:textColor="@color/white"
 				android:textSize="26sp" />
 		</LinearLayout>
@@ -155,7 +155,6 @@
 			android:id="@+id/course_group_textview"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			android:text="@string/coming_soon"
 			android:textColor="@color/white"
 			android:textSize="26sp" />
     </LinearLayout>
@@ -184,7 +183,6 @@
 			android:id="@+id/course_semester_textview"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			android:text="@string/coming_soon"
 			android:textColor="@color/white"
 			android:textSize="26sp" />
     </LinearLayout>

@@ -17,7 +17,6 @@
       android:id="@+id/course_name_textview"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/coming_soon"
       android:textColor="@color/white"
       android:textSize="22sp" />
     
@@ -40,8 +39,7 @@
     android:layout_gravity="center"
     android:gravity="right"
     android:textColor="@color/white"
-    android:textSize="36sp"
-	android:text="A" />
+    android:textSize="36sp" />
   
   <ImageView
     android:id="@id/drag_handle"
@@ -49,6 +47,7 @@
     android:layout_width="64dp"
     android:layout_height="64dp"
     android:layout_weight="0"
-    android:layout_gravity="center" />
+    android:layout_gravity="center"
+    android:contentDescription="@string/a_picture" />
   
 </LinearLayout>

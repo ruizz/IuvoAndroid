@@ -16,13 +16,14 @@ import com.helloruiz.iuvo.fragments.SemesterColorList;
 
 public class SemesterActivity extends FragmentActivity implements SemesterColorList.HeadlineSelection {
 	
+	// Global DatabaseHandler for activity
+	DatabaseHandler databaseHandler;
+	
 	int semesterID = -1;
 	
 	Semester semester;
 	
 	String[] colorArray;
-	
-	private DatabaseHandler databaseHandler;
 	
 	private String colorSelection;
 	

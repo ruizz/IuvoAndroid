@@ -41,6 +41,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	/**
 	 * Variables
 	 */
+	// Global DatabaseHandler for activity
+	static DatabaseHandler databaseHandler;
+
     //The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
     //three primary sections of the app. We use a {@link android.support.v4.app.FragmentPagerAdapter}
     //derivative, which will keep every loaded fragment in memory. If this becomes too memory
@@ -68,7 +71,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     // Typeface for pretty lobster font.
     static Typeface typeFace;
     
-    // Context
+    // Context. 
     static Context myContext;
     
     /**
@@ -80,6 +83,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         setContentView(R.layout.activity_main);
         
         myContext = getApplicationContext();
+        
+        databaseHandler = new DatabaseHandler(myContext);
         
         typeFace = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 
@@ -263,7 +268,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         	TextView textView;
         	View view;
         	LayoutParams params;
-        	DatabaseHandler db = new DatabaseHandler(myContext);
         	
             // TODO Get from string XML instead
         	String userName = iuvoSettings.getString("name", "");
@@ -304,15 +308,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	textView.setText("No Classification");
             
             // GPA
-            String GPA = db.getGPA();
+            String GPA = databaseHandler.getGPA();
             textView = (TextView) rootView.findViewById(R.id.me_gpa);
             textView.setTypeface(typeFace);
             textView.setText((CharSequence)GPA);
             
             // Progress
-            int courseCount = db.getCourseCountInDegreePlan();
-            int courseCountCompleted = db.getCourseCountInDegreePlanCompleted();
-            int courseCountAttempted = db.getCourseCountInDegreePlanAttempted();
+            int courseCount = databaseHandler.getCourseCountInDegreePlan();
+            int courseCountCompleted = databaseHandler.getCourseCountInDegreePlanCompleted();
+            int courseCountAttempted = databaseHandler.getCourseCountInDegreePlanAttempted();
             
             double completePercentage;
             if (courseCount == 0 && courseCountCompleted == 0)
@@ -413,8 +417,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	view.setLayoutParams(params);
             	textView.setText("");
             	
-            	int aCount = db.getACount(); int bCount = db.getBCount(); int cCount = db.getCCount();
-            	int dCount = db.getDCount(); int fCount = db.getFCount();
+            	int aCount = databaseHandler.getACount(); int bCount = databaseHandler.getBCount();
+            	int cCount = databaseHandler.getCCount(); int dCount = databaseHandler.getDCount();
+            	int fCount = databaseHandler.getFCount();
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_a);
             	params = (LayoutParams) view.getLayoutParams();
@@ -523,8 +528,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    	courseGrades.clear();
 	    	courseIDs.clear();
 
-	    	DatabaseHandler db = new DatabaseHandler(getActivity());
-	    	List<Group> groups = db.getAllGroups();
+	    	List<Group> groups = databaseHandler.getAllGroups();
 	    	
 	    	// If user didn't create any groups, populate "Let's get started" dialogue into the headers and display.
 	    	if (groups.size() == 0) {
@@ -546,7 +550,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		    		courseGrades.add(null);
 		    		courseIDs.add(null);
 		    		
-		    		if (db.getCourseCountByGroup(g.getID()) == 0) {
+		    		if (databaseHandler.getCourseCountByGroup(g.getID()) == 0) {
 		    			groupTitles.add(null);
 			    		groupIDs.add(null);
 			    		courseTitles.add(MAINACTIVITY_EMPTY_GROUP_KEY);
@@ -556,7 +560,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			    		courseIDs.add(null);
 		    		}
 		    		
-		    		List<Course> courses = db.getAllCoursesByGroup(g.getID());
+		    		List<Course> courses = databaseHandler.getAllCoursesByGroup(g.getID());
 		    		for (Course c : courses) {
 		    			
 		    			groupTitles.add(null);
@@ -567,7 +571,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			    			courseSemesters.add(getString(R.string.plan_no_semester_assigned));
 			    			courseSemesterColors.add("Gray");
 			    		} else {
-			    			Semester semester = db.getSemester(c.getSemesterID());
+			    			Semester semester = databaseHandler.getSemester(c.getSemesterID());
 			    			courseSemesters.add(semester.getName());
 			    			courseSemesterColors.add(semester.getColor());
 			    		}
@@ -701,10 +705,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 						@Override
 						public void onClick(View view) {
 							
-							DatabaseHandler db = new DatabaseHandler(mContext);
 							int groupID = (Integer) view.getTag();
 							
-							if (db.getCourseCountByGroup(groupID) == 0) {
+							if (databaseHandler.getCourseCountByGroup(groupID) == 0) {
 								Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
 							} else {
 								Intent intent = new Intent(mContext, CoursesActivity.class);
@@ -865,12 +868,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 						
 						int id = view.getId();
 						Intent intent;
-						DatabaseHandler db = new DatabaseHandler(getActivity());
 						
 						switch(id) {
 						case 0: // View hidden courses
 							
-							if (db.getCourseCountByGroup(-1) == 0) {
+							if (databaseHandler.getCourseCountByGroup(-1) == 0) {
 								Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
 							} else {
 								intent = new Intent(mContext, CoursesActivity.class);

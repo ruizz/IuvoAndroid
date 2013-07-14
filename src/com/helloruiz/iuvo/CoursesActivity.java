@@ -60,35 +60,34 @@ public class CoursesActivity extends ListActivity {
             	textView.setText((CharSequence) course.getGrade());
             
 	        return v;
-	      }
-	    }
+		}
+	}
 	
 	/**
 	 * -- Variables --
 	 */
+	// Global DatabaseHandler for activity
+	static DatabaseHandler databaseHandler;
+
+	// For determining what group we're loading a list of courses from.
 	int groupID = -1;
-	
-	DatabaseHandler databaseHandler;
 	
 	private CourseAdapter courseAdapter;
 
     private ArrayList<Course> mCourses;
     
+    // Listener for whenever a user drops a course in a new location
     private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
-                
     	@Override
     	public void drop(int from, int to) {
-    		
 			databaseHandler.moveCourse(from, to, groupID);      
-    		
 			refreshListAdapter();
 			getListView().setSelection(to - 2);
     	}
     };
 	
-	// Whenever a user swipes an course item left or right to delete.
+	// Listener for whenever a user swipes an course item left or right to delete.
     private DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener() {
-		
 		@Override
 		public void remove(int which) {
 			deleteCourseConfirm(which);			

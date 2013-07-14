@@ -59,6 +59,7 @@ public class GroupsActivity extends ListActivity {
 	/**
 	 * -- Variables --
 	 */
+	// Global DatabaesHandler
 	private DatabaseHandler databaseHandler;
 	
 	private GroupAdapter groupAdapter;

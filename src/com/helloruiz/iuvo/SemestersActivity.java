@@ -62,6 +62,7 @@ public class SemestersActivity extends ListActivity {
 	/**
 	 * -- Variables --
 	 */
+	// Global DatabaseHandler for activity.
 	private DatabaseHandler databaseHandler;
 	
 	private SemesterAdapter semesterAdapter;
@@ -161,8 +162,7 @@ public class SemestersActivity extends ListActivity {
 	 * -- Voids --
 	 */
 	public void semesterOptionsDialog(final View view) {
-		DatabaseHandler db = new DatabaseHandler(this);
-		Semester semester = db.getSemester((Integer) view.getTag());
+		Semester semester = databaseHandler.getSemester((Integer) view.getTag());
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle(semester.getName())

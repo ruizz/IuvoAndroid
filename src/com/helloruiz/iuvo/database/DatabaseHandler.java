@@ -23,14 +23,18 @@ import android.util.Log;
  * Database Handler for all group, semester, and class databases. Based on:
  * http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/
  * 
- * Handler operations assume that the all of the IDs for either group or semester sequential from 0 with no gaps.
+ * Handler operations assume that the positions for group, semester, or course items are sequential from 0 with no gaps.
  * ex. 0, 1, 2 or 0 1, 2, 3, 4, 5, 6
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
 
 	/**
-	 * -- Static Variables --
+	 * -- Variables --
 	 */
+	
+	// Database
+	SQLiteDatabase db;
+	
     // Database Version
     private static final int DATABASE_VERSION = 1;
  
@@ -55,22 +59,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Database location in file system.
     public static String DB_FILEPATH;
- 
-    static Context mContext;
     
     /**
      * Constructor
      */
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        mContext = context;
         DB_FILEPATH = context.getDatabasePath("IuvoDatabase.db").toString();
+        db = this.getWritableDatabase();
     }
     
     /**
 	 * -- Overrides --
 	 */
-    // Creating Tables
+    // Called only when getWritableDatabase() or getReadableDatabase() is called.
+    // In this case, called only in the constructor.
     @Override
     public void onCreate(SQLiteDatabase db) {
     	
@@ -119,14 +122,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, groupName);
      
         // Adding Row
-        SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_GROUP, null, values);
         ;
     }
     
     // Move group position in list.
     public void moveGroup(int from, int to) {
-    	SQLiteDatabase db = this.getWritableDatabase();
     	ContentValues values;
     	
     	if (from != to) {
@@ -161,8 +162,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get single group
     public Group getGroup(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-     
+    	
         Cursor cursor = db.query(TABLE_GROUP, new String[] {KEY_ID, KEY_POSITION, KEY_NAME}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
         		null, null, null, null);
         
@@ -179,7 +179,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get single group
     public Group getGroupByPosition(int position) {
-        SQLiteDatabase db = this.getReadableDatabase();
      
         Cursor cursor = db.query(TABLE_GROUP, new String[] {KEY_ID, KEY_POSITION, KEY_NAME}, KEY_POSITION + "=?", new String[] { String.valueOf( position ) },
         		null, null, null, null);
@@ -201,7 +200,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_GROUP + " ORDER BY " + KEY_POSITION;
      
-        SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
      
         // looping through all rows and adding to list
@@ -222,7 +220,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Update single group name.
     public void updateGroup(Group group) {
-        SQLiteDatabase db = this.getWritableDatabase();
      
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, group.getName());
@@ -241,7 +238,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	// Size of hidden group.
     	int hiddenGroupCount = getCourseCountByGroup(-1);
     	
-        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values;
         
         // Update all courses associated with this semester. First the position...
@@ -271,7 +267,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Get group count
 	public int getGroupCount() {
-		SQLiteDatabase db = this.getWritableDatabase();
 		
 	    String countQuery = "SELECT * FROM " + TABLE_GROUP;
 	    Cursor cursor = db.rawQuery(countQuery, null);
@@ -291,7 +286,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Get max group ID from database.
         String maxGroupIDQuery = "SELECT MAX(" + KEY_ID + ") AS maxGroupID FROM " + TABLE_GROUP;
         
-        SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(maxGroupIDQuery, null);
         
         if (cursor != null)
@@ -317,13 +311,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_COLOR, semesterColor);
      
         // Adding Row
-		SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_SEMESTER, null, values);
     }
     
     // Move semester position in list.
     public void moveSemester(int from, int to) {
-    	SQLiteDatabase db = this.getWritableDatabase();
     	ContentValues values;
     	
     	if (from != to) {
@@ -358,7 +350,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get single semester
     public Semester getSemester(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
      
         Cursor cursor = db.query(TABLE_SEMESTER, new String[] {KEY_ID, KEY_POSITION, KEY_NAME, KEY_COLOR}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
         		null, null, null, null);
@@ -376,7 +367,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get single semester by position
     public Semester getSemesterByPosition(int position) {
-        SQLiteDatabase db = this.getReadableDatabase();
      
         Cursor cursor = db.query(TABLE_SEMESTER, new String[] {KEY_ID, KEY_POSITION, KEY_NAME, KEY_COLOR}, KEY_POSITION + "=?", new String[] { String.valueOf( position ) },
         		null, null, null, null);
@@ -397,8 +387,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         List<Semester> semesterList = new ArrayList<Semester>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_SEMESTER + " ORDER BY " + KEY_POSITION;
-     
-        SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
      
         // looping through all rows and adding to list
@@ -419,7 +407,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Update single semester name and/or color.
     public void updateSemester(Semester semester) {
-        SQLiteDatabase db = this.getWritableDatabase();
 	 
         ContentValues values = new ContentValues();
         
@@ -435,8 +422,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteSemester(Semester semester) {
     	
     	int semesterCount = getSemesterCount() - 1;
-    	
-        SQLiteDatabase db = this.getWritableDatabase();
         
         // Update all courses associated with this semester
 		ContentValues values = new ContentValues();
@@ -456,7 +441,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Get semester count
 	public int getSemesterCount() {
-		SQLiteDatabase db = this.getWritableDatabase();
 		
 	    String countQuery = "SELECT * FROM " + TABLE_SEMESTER;
 	    Cursor cursor = db.rawQuery(countQuery, null);
@@ -476,7 +460,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Get max semester ID from database.
         String maxSemesterIDQuery = "SELECT MAX(" + KEY_ID + ") AS maxSemesterID FROM " + TABLE_SEMESTER;
         
-        SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(maxSemesterIDQuery, null);
         
         if (cursor != null)
@@ -507,14 +490,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_GROUP_ID, groupID);
      
         // Adding Row
-		SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_COURSE, null, values);
         ;
     }
     
     // Move course position in list. Position applies to group that the course is in.
     public void moveCourse(int from, int to, int groupID) {
-    	SQLiteDatabase db = this.getWritableDatabase();
     	ContentValues values;
     	
     	if (from != to) {
@@ -550,7 +531,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Decrements the positions of courses in a group by 1.
     // Used for when moving classes between groups.
     public void decrementCoursePositions(int startingPosition, int groupID) {
-    	SQLiteDatabase db = this.getWritableDatabase();
     	ContentValues values;
     	
     	// Decrement other courses
@@ -563,7 +543,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get single course
     public Course getCourse(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
      
         Cursor cursor = db.query(TABLE_COURSE, 
         		new String[] {KEY_ID, KEY_POSITION, KEY_NAME, KEY_HOURS, KEY_GRADE, KEY_EXCLUDED_FROM_GPA, KEY_SEMESTER_ID, KEY_GROUP_ID},
@@ -589,7 +568,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get single course by position
     public Course getCourseByPosition(int position, int groupID) {
-        SQLiteDatabase db = this.getReadableDatabase();
      
         Cursor cursor = db.query(TABLE_COURSE, 
         		new String[] {KEY_ID, KEY_POSITION, KEY_NAME, KEY_HOURS, KEY_GRADE, KEY_EXCLUDED_FROM_GPA, KEY_SEMESTER_ID, KEY_GROUP_ID},
@@ -619,7 +597,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_COURSE + " ORDER BY " + KEY_ID;
      
-        SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
      
         // looping through all rows and adding to list
@@ -649,7 +626,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_COURSE + " WHERE " + KEY_EXCLUDED_FROM_GPA + "=0" + " ORDER BY " + KEY_ID;
      
-        SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
      
         // looping through all rows and adding to list
@@ -679,7 +655,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "=" + String.valueOf(groupID) + " ORDER BY " + KEY_POSITION;
      
-        SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
      
         // looping through all rows and adding to list
@@ -709,7 +684,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_SEMESTER_ID + "=" + String.valueOf(semesterID) + " ORDER BY " + KEY_GROUP_ID;
      
-        SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
      
         // looping through all rows and adding to list
@@ -735,7 +709,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Update single course info
     public void updateCourse(Course course) {
-        SQLiteDatabase db = this.getWritableDatabase();
 	 
         ContentValues values = new ContentValues();
         
@@ -756,8 +729,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteCourse(Course course) {
     	
     	int courseCount = getCourseCountByGroup(course.getGroupID()) - 1;
-    	
-        SQLiteDatabase db = this.getWritableDatabase();
         
         // Delete the course
         db.delete(TABLE_COURSE, KEY_ID + " = ?",new String[] { String.valueOf(course.getID()) });
@@ -772,7 +743,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Get course count
 	public int getCourseCount() {
-		SQLiteDatabase db = this.getWritableDatabase();
 		
 	    String countQuery = "SELECT * FROM " + TABLE_COURSE;
 	    Cursor cursor = db.rawQuery(countQuery, null);
@@ -786,7 +756,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get course count by group ID
 	public int getCourseCountByGroup(int groupID) {
-		SQLiteDatabase db = this.getWritableDatabase();
 		
 	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "=" + String.valueOf(groupID);
 	    Cursor cursor = db.rawQuery(countQuery, null);
@@ -800,7 +769,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get course count by group position.
 	public int getCourseCountByGroupPosition(int groupPosition) {
-		SQLiteDatabase db = this.getWritableDatabase();
 		
 		int groupID = getGroupByPosition(groupPosition).getID();
 		
@@ -816,7 +784,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get course count by semester ID
 	public int getCourseCountBySemester(int semesterID) {
-		SQLiteDatabase db = this.getWritableDatabase();
 		
 	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_SEMESTER_ID + "=" + String.valueOf(semesterID);
 	    Cursor cursor = db.rawQuery(countQuery, null);
@@ -830,7 +797,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get course count by semester
 	public int getCourseCountBySemesterPosition(int semesterPosition) {
-		SQLiteDatabase db = this.getWritableDatabase();
 		
 		int semesterID = getSemesterByPosition(semesterPosition).getID();
 		
@@ -846,7 +812,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get course count in degree plan.
 	public int getCourseCountInDegreePlan() {
-		SQLiteDatabase db = this.getWritableDatabase();
 		
 	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "!=-1";
 	    Cursor cursor = db.rawQuery(countQuery, null);
@@ -860,7 +825,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get completed course count in degree plan.
 	public int getCourseCountInDegreePlanCompleted() {
-		SQLiteDatabase db = this.getWritableDatabase();
 		
 	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "!=? AND " + KEY_GRADE + "!=?";
 	    Cursor cursor = db.rawQuery(countQuery, new String[] {"-1", "None", "F "});
@@ -874,7 +838,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get completed course count in degree plan.
 	public int getCourseCountInDegreePlanAttempted() {
-		SQLiteDatabase db = this.getWritableDatabase();
 		
 	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "!=?";
 	    Cursor cursor = db.rawQuery(countQuery, new String[] {"-1", "None"});
@@ -894,7 +857,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Get max course ID from database.
         String maxCourseIDQuery = "SELECT MAX(" + KEY_ID + ") AS maxCourseID FROM " + TABLE_COURSE;
         
-        SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(maxCourseIDQuery, null);
         
         if (cursor != null)
@@ -1069,7 +1031,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get number of A's in degree plan
 	public int getACount() {
-		SQLiteDatabase db = this.getWritableDatabase();
 		int count = 0;
 		Cursor cursor;
 		
@@ -1088,7 +1049,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get number of B's in degree plan
 	public int getBCount() {
-		SQLiteDatabase db = this.getWritableDatabase();
 		int count = 0;
 		Cursor cursor;
 		
@@ -1108,7 +1068,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get number of C's in degree plan
 	public int getCCount() {
-		SQLiteDatabase db = this.getWritableDatabase();
 		int count = 0;
 		Cursor cursor;
 		
@@ -1128,7 +1087,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get number of D's in degree plan
 	public int getDCount() {
-		SQLiteDatabase db = this.getWritableDatabase();
 		int count = 0;
 		Cursor cursor;
 		
@@ -1148,7 +1106,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get number of F's in degree plan
 	public int getFCount() {
-		SQLiteDatabase db = this.getWritableDatabase();
 		int count = 0;
 		Cursor cursor;
 		
