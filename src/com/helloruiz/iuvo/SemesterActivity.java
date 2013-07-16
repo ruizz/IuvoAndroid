@@ -10,14 +10,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.helloruiz.iuvo.database.DatabaseHandler;
+import com.helloruiz.iuvo.database.IuvoApplication;
 import com.helloruiz.iuvo.database.Semester;
 import com.helloruiz.iuvo.fragments.SemesterColorList;
 
 public class SemesterActivity extends FragmentActivity implements SemesterColorList.HeadlineSelection {
-	
-	// Global DatabaseHandler for activity
-	DatabaseHandler databaseHandler;
 	
 	int semesterID = -1;
 	
@@ -44,8 +41,6 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 		colorArray = getResources().getStringArray(R.array.color_array); 
 		
 		colorSelection = "None";
-		
-		databaseHandler = new DatabaseHandler(this);
 		
 		nameView = findViewById(R.id.semester_name_linear_layout);
 		
@@ -85,7 +80,7 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
         nameView.setBackgroundColor(getResources().getColor(R.color.theme_blue));
         
 		if (semesterID != -1) {
-			semester = databaseHandler.getSemester(semesterID);
+			semester = IuvoApplication.db.getSemester(semesterID);
 			nameEditText.setText((CharSequence) semester.getName());
 			nameView.setBackgroundColor(ColorHandler.getColor(this, semester.getColor()));
 			colorSelection = semester.getColor();
@@ -103,6 +98,7 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 	@Override
 	public void colorSelected(int position) {
 		
+		IuvoApplication.hideKeyboard(this, nameEditText);
 		colorSelection = colorArray[position];
 		nameView.setBackgroundColor(ColorHandler.getColor(this, colorSelection));
 	}
@@ -150,9 +146,12 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 	
 	// User hits the save button.
 	public void saveSemester() {
+		
+		IuvoApplication.hideKeyboard(this, nameEditText);
+		
 		if (!colorSelection.equals("None") && !nameEditText.getText().toString().equals("")) {
 			if (semesterID == -1) {
-				databaseHandler.addSemester(nameEditText.getText().toString(), colorSelection);
+				IuvoApplication.db.addSemester(nameEditText.getText().toString(), colorSelection);
 				colorSelection = "None";
 				nameEditText.setText("");
 				nameView.setBackgroundColor(getResources().getColor(R.color.theme_blue));
@@ -160,7 +159,7 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 			} else {
 				semester.setName(nameEditText.getText().toString());
 				semester.setColor(colorSelection);
-				databaseHandler.updateSemester(semester);
+				IuvoApplication.db.updateSemester(semester);
 				Toast.makeText(this, getResources().getString(R.string.semester_updated), Toast.LENGTH_LONG).show();
 				onBackPressed();
 			}

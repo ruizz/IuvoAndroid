@@ -896,9 +896,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		File fileDir = new File(sdCard.getAbsolutePath() + "/Iuvo");
 		fileDir.mkdirs();
 		
-		// Close the SQLiteOpenHelper so it will commit the created empty database to internal storage.
-		close();
-		
 		// Create file of database to be imported.
 		File importedDatabase = new File(fileDir.getAbsolutePath() + "/IuvoDatabase.db");
 		File appDatabase = new File(DB_FILEPATH);
@@ -910,9 +907,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    // Overwrite the app's database.
 	    FileCopier.copyFile(new FileInputStream(importedDatabase), new FileOutputStream(appDatabase));
 	    
-	    // Access the copied database so SQLiteHelper will cache it and mark it as created.
-	    getWritableDatabase().close();
-	    
 	    return true;
 	}
 	
@@ -923,9 +917,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		File sdCard = Environment.getExternalStorageDirectory();
 		File fileDir = new File(sdCard.getAbsolutePath() + "/Iuvo");
 		fileDir.mkdirs();
-		
-		// Close the SQLiteOpenHelper so it will commit the created empty database to internal storage.
-		close();
 		
 		// Create file of the data to be exported
 		File exportedDatabase = new File(fileDir.getAbsolutePath() + "/IuvoDatabase.db");
@@ -956,8 +947,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Write the app's database to the exported file.
 	    FileCopier.copyFile(new FileInputStream(appDatabase), new FileOutputStream(exportedDatabase));
 	    
-	    // Access the copied database so SQLiteHelper will cache it and mark it as created.
-	    getWritableDatabase().close();
 	    return true;
 	}
 	

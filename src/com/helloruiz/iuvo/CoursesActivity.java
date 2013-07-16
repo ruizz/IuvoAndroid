@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.helloruiz.iuvo.database.Course;
-import com.helloruiz.iuvo.database.DatabaseHandler;
+import com.helloruiz.iuvo.database.IuvoApplication;
 import com.helloruiz.iuvo.database.Semester;
 import com.helloruiz.iuvo.help.CoursesHelpActivity;
 import com.mobeta.android.dslv.DragSortListView;
@@ -46,7 +46,7 @@ public class CoursesActivity extends ListActivity {
 	        textView = (TextView) v.findViewById(R.id.course_semester_textview);
             
             if (course.getSemesterID() != -1) {
-            	Semester semester = databaseHandler.getSemester(course.getSemesterID());
+            	Semester semester = IuvoApplication.db.getSemester(course.getSemesterID());
             	textView.setText(semester.getName());
             	v.setBackgroundColor(ColorHandler.getColor(getContext(), semester.getColor()));
             } else
@@ -66,8 +66,6 @@ public class CoursesActivity extends ListActivity {
 	/**
 	 * -- Variables --
 	 */
-	// Global DatabaseHandler for activity
-	static DatabaseHandler databaseHandler;
 
 	// For determining what group we're loading a list of courses from.
 	int groupID = -1;
@@ -80,7 +78,7 @@ public class CoursesActivity extends ListActivity {
     private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
     	@Override
     	public void drop(int from, int to) {
-			databaseHandler.moveCourse(from, to, groupID);      
+			IuvoApplication.db.moveCourse(from, to, groupID);      
 			refreshListAdapter();
 			getListView().setSelection(to - 2);
     	}
@@ -110,13 +108,11 @@ public class CoursesActivity extends ListActivity {
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		databaseHandler = new DatabaseHandler(this);
-		
 		Intent intent = getIntent();
 		groupID = intent.getIntExtra(MainActivity.MAINACTIVITY_GROUP_ID, -1);
 		
 		if (groupID != -1)
-			setTitle(databaseHandler.getGroup(groupID).getName());
+			setTitle(IuvoApplication.db.getGroup(groupID).getName());
 		
 		// Set up our drag sort ListView
 		DragSortListView dragSortListView = (DragSortListView) getListView();
@@ -176,10 +172,10 @@ public class CoursesActivity extends ListActivity {
 	// Executes after user has confirmed that they want to delete a course
 	public void deleteCourse(int which) {
 
-		Course item = databaseHandler.getCourseByPosition(which, groupID);
+		Course item = IuvoApplication.db.getCourseByPosition(which, groupID);
 		
 		// Remove course from database
-		databaseHandler.deleteCourse(item);
+		IuvoApplication.db.deleteCourse(item);
 					
 		refreshListAdapter();
 	}	
@@ -187,7 +183,7 @@ public class CoursesActivity extends ListActivity {
 	// Called whenever the Drag Sort ListView needs to be updated to reflect database changes
 	public void refreshListAdapter() {
 		// Refresh the ListAdapter to reflect the new changes in the database.
-		List<Course> coursesInDatabase = databaseHandler.getAllCoursesByGroup(groupID);
+		List<Course> coursesInDatabase = IuvoApplication.db.getAllCoursesByGroup(groupID);
 		
 		Log.d("Course: ", "Updating ListAdapter...");
 		mCourses = new ArrayList<Course>();

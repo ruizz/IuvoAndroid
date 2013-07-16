@@ -66,7 +66,7 @@
     <string name="semester_color">Color</string>
     <string name="semester_added">Semester added. Add another semester or go back to view your semesters.</string>
     <string name="semester_updated">Semester updated.</string>
-    <string name="semester_not_added">Name and/or color missing.</string>
+    <string name="semester_not_added">Semester name and/or color missing.</string>
     
     <!-- Courses Activity -->
     <string name="title_activity_courses">Hidden Courses</string>
@@ -83,6 +83,9 @@
     <string name="dialog_classification">Classification</string>
     <string name="dialog_hours">Hours</string>
     <string name="dialog_grade">Grade</string>
+    <string name="course_added">Course added. Add another course or go back to view your degree plan.</string>
+    <string name="course_updated">Course updated.</string>
+    <string name="course_not_added">Course name missing</string>
     
     <!-- Me Tab -->
     <string name="me_name">[Name]</string>

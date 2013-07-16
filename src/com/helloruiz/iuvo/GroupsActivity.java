@@ -16,8 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Group;
+import com.helloruiz.iuvo.database.IuvoApplication;
 import com.helloruiz.iuvo.help.GroupsHelpActivity;
 import com.mobeta.android.dslv.DragSortListView;
 
@@ -36,7 +36,7 @@ public class GroupsActivity extends ListActivity {
 	      public View getView(int position, View convertView, ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
 	        
-	        String courseCount = String.valueOf(databaseHandler.getCourseCountByGroupPosition(position));
+	        String courseCount = String.valueOf(IuvoApplication.db.getCourseCountByGroupPosition(position));
 	        
 	        if (courseCount.equals("1"))
 	        	courseCount = courseCount + SINGLE_COURSE;
@@ -60,7 +60,6 @@ public class GroupsActivity extends ListActivity {
 	 * -- Variables --
 	 */
 	// Global DatabaesHandler
-	private DatabaseHandler databaseHandler;
 	
 	private GroupAdapter groupAdapter;
 
@@ -71,7 +70,7 @@ public class GroupsActivity extends ListActivity {
     	@Override
     	public void drop(int from, int to) {
 
-			databaseHandler.moveGroup(from, to);     
+			IuvoApplication.db.moveGroup(from, to);     
     		
 			refreshListAdapter();
 			getListView().setSelection(to - 2);
@@ -107,7 +106,6 @@ public class GroupsActivity extends ListActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
-		databaseHandler = new DatabaseHandler(this);
 		
 		// Set up our drag sort ListView
 		DragSortListView dragSortListView = (DragSortListView) getListView();
@@ -167,31 +165,31 @@ public class GroupsActivity extends ListActivity {
 
     // Executes after user adds a group from addMenuGroup
 	public void addGroup(String name) {
-		databaseHandler.addGroup(name);
+		IuvoApplication.db.addGroup(name);
 		refreshListAdapter();
 	}
 	
 	// Called after a user has submitted an update for a group
 	public void editGroup(String newName, Group group) {
 		group.setName(newName);
-		databaseHandler.updateGroup(group);
+		IuvoApplication.db.updateGroup(group);
 		
 		refreshListAdapter();
 	}
 	
 	// Executes after user has confirmed that they want to delete a group
 	public void deleteGroup(int which) {
-		Group item = databaseHandler.getGroupByPosition(which);
+		Group item = IuvoApplication.db.getGroupByPosition(which);
 		
 		// Remove group from database
-		databaseHandler.deleteGroup(item);		
+		IuvoApplication.db.deleteGroup(item);		
 		refreshListAdapter();
 	}	
 	
 	// Called whenever the Drag Sort ListView needs to be updated to reflect database changes
 	public void refreshListAdapter() {
 		// Refresh the ListAdapter to reflect the new changes in the database.
-		List<Group> groupsInDatabase = databaseHandler.getAllGroups();
+		List<Group> groupsInDatabase = IuvoApplication.db.getAllGroups();
 		
 		Log.d("Group: ", "Updating ListAdapter...");
 		mGroups = new ArrayList<Group>();

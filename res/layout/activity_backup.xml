@@ -50,7 +50,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 				android:paddingLeft="16dp"
-				android:paddingTop="16dp"
+				android:paddingTop="12dp"
 		        android:textColor="@color/white"
 		        android:textSize="30sp"
 		        android:text="@string/backup_backup_title" />
@@ -81,7 +81,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 				android:paddingLeft="16dp"
-				android:paddingTop="16dp"
+				android:paddingTop="12dp"
 		        android:textColor="@color/white"
 		        android:textSize="30sp"
 		        android:text="@string/backup_restore_title" />

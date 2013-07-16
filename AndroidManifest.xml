@@ -15,7 +15,8 @@
         android:icon="@drawable/iuvo_launcher"
         android:label="@string/app_name"
         android:logo="@drawable/iuvo_logo"
-        android:theme="@style/Theme.Iuvo" >
+        android:theme="@style/Theme.Iuvo"
+        android:name="com.helloruiz.iuvo.database.IuvoApplication" >
         <activity
             android:name="com.helloruiz.iuvo.MainActivity"
             android:configChanges="orientation"

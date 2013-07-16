@@ -18,7 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.helloruiz.iuvo.database.DatabaseHandler;
+import com.helloruiz.iuvo.database.IuvoApplication;
 import com.helloruiz.iuvo.database.Semester;
 import com.helloruiz.iuvo.help.SemestersHelpActivity;
 import com.mobeta.android.dslv.DragSortListView;
@@ -38,7 +38,7 @@ public class SemestersActivity extends ListActivity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
 	        
-	        String courseCount = String.valueOf(databaseHandler.getCourseCountBySemesterPosition(position));
+	        String courseCount = String.valueOf(IuvoApplication.db.getCourseCountBySemesterPosition(position));
 	        
 	        if (courseCount.equals("1"))
 	        	courseCount = courseCount + SINGLE_COURSE;
@@ -52,7 +52,7 @@ public class SemestersActivity extends ListActivity {
             textView.setText((CharSequence) courseCount);
             
             // Set list item to color of semester
-            Semester semester = databaseHandler.getSemesterByPosition(position);
+            Semester semester = IuvoApplication.db.getSemesterByPosition(position);
 	        v.setBackgroundColor(ColorHandler.getColor(getContext(), semester.getColor()));
 	        
 	        return v;
@@ -62,8 +62,6 @@ public class SemestersActivity extends ListActivity {
 	/**
 	 * -- Variables --
 	 */
-	// Global DatabaseHandler for activity.
-	private DatabaseHandler databaseHandler;
 	
 	private SemesterAdapter semesterAdapter;
 
@@ -74,7 +72,7 @@ public class SemestersActivity extends ListActivity {
     	@Override
     	public void drop(int from, int to) {
     		
-			databaseHandler.moveSemester(from, to);      
+			IuvoApplication.db.moveSemester(from, to);      
     		
 			refreshListAdapter();
 			getListView().setSelection(to - 2);
@@ -112,7 +110,6 @@ public class SemestersActivity extends ListActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
-		databaseHandler = new DatabaseHandler(this);
 		
 		// Set up our drag sort ListView
 		DragSortListView dragSortListView = (DragSortListView) getListView();
@@ -162,7 +159,7 @@ public class SemestersActivity extends ListActivity {
 	 * -- Voids --
 	 */
 	public void semesterOptionsDialog(final View view) {
-		Semester semester = databaseHandler.getSemester((Integer) view.getTag());
+		Semester semester = IuvoApplication.db.getSemester((Integer) view.getTag());
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle(semester.getName())
@@ -204,7 +201,7 @@ public class SemestersActivity extends ListActivity {
 
     // Executes after user adds a semester from addMenuSemester
 	public void addSemester(String name, String color) {
-		databaseHandler.addSemester(name, color);
+		IuvoApplication.db.addSemester(name, color);
 
 		refreshListAdapter();
 	}
@@ -214,7 +211,7 @@ public class SemestersActivity extends ListActivity {
 		
 		item.setName(newName);
 		item.setColor(newColor);
-		databaseHandler.updateSemester(item);
+		IuvoApplication.db.updateSemester(item);
 		
 		refreshListAdapter();
 	}
@@ -222,10 +219,10 @@ public class SemestersActivity extends ListActivity {
 	// Executes after user has confirmed that they want to delete a semester
 	public void deleteSemester(int which) {
 
-		Semester item = databaseHandler.getSemesterByPosition(which);
+		Semester item = IuvoApplication.db.getSemesterByPosition(which);
 		
 		// Remove semester from database
-		databaseHandler.deleteSemester(item);
+		IuvoApplication.db.deleteSemester(item);
 					
 		refreshListAdapter();
 	}	
@@ -234,7 +231,7 @@ public class SemestersActivity extends ListActivity {
 	public void refreshListAdapter() {
 		
 		// Refresh the ListAdapter to reflect the new changes in the database.
-		List<Semester> semestersInDatabase = databaseHandler.getAllSemesters();
+		List<Semester> semestersInDatabase = IuvoApplication.db.getAllSemesters();
 		
 		Log.d("Semester: ", "Updating ListAdapter...");
 		mSemesters = new ArrayList<Semester>();

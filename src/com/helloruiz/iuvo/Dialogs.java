@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.helloruiz.iuvo.MainActivity.MeSectionFragment;
-import com.helloruiz.iuvo.database.DatabaseHandler;
 import com.helloruiz.iuvo.database.Group;
+import com.helloruiz.iuvo.database.IuvoApplication;
 
 /**
  * Stores all dialogs. Lots of lines just to display dialogs, but I'm sure that it's cleaner
@@ -348,10 +348,9 @@ public class Dialogs {
 		DialogInterface.OnClickListener exportClickListener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				DatabaseHandler db = new DatabaseHandler(activity);
 				
 				try {
-					if (db.exportDatabase())
+					if (IuvoApplication.db.exportDatabase())
 						Toast.makeText(activity, activity.getResources().getString(R.string.more_export_success), Toast.LENGTH_LONG).show();
 					else
 						Toast.makeText(activity, activity.getResources().getString(R.string.more_export_fail), Toast.LENGTH_LONG).show();
@@ -386,10 +385,9 @@ public class Dialogs {
 		DialogInterface.OnClickListener importClickListener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				DatabaseHandler db = new DatabaseHandler(activity);
 				
 				try {
-					if (db.importDatabase()) {
+					if (IuvoApplication.db.importDatabase()) {
 						Toast.makeText(activity, activity.getResources().getString(R.string.more_import_success), Toast.LENGTH_LONG).show();
 					} else
 						Toast.makeText(activity, activity.getResources().getString(R.string.more_import_fail), Toast.LENGTH_LONG).show();
