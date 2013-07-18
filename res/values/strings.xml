@@ -147,6 +147,8 @@
     <string name="about_version">Version</string>
     <string name="about_copyright">© Ruiz Akpan</string>
     <string name="about_web"><u>helloruiz.com</u></string>
+    <string name="about_follow">Follow me on Twitter!</string>
+    <string name="about_twitter"><u>@helloruiz</u></string>
     <string name="about_feedback">Bug reports and feedback are welcome.</string>
     <string name="about_email"><u>ruiz.akpan@gmail.com</u></string>
     <string name="about_rate_application"><u>Rate application</u></string>

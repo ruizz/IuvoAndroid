@@ -9,28 +9,37 @@
     </string-array>
     
     <string-array name="color_array">
+        <item>Navy</item>
+        <item>Cool Blue</item>
+        <item>Jeans</item>
+        <item>Cute Blue</item>
         <item>Android Dark Blue</item>
-        <item>Android Dark Purple</item>
-        <item>Android Dark Green</item>
-        <item>Android Dark Yellow</item>
-		<item>Android Dark Red </item>
-		<item>Plum</item>
-		<item>Wild Berry</item>
-		<item>Purple</item>
-		<item>Crimson</item>
-		<item>Maroon</item>
-		<item>Rust</item>
-		<item>Brick</item>
-		<item>Watermelon</item>
-		<item>Goldfish</item>
-		<item>Construction Zone</item>
-		<item>Mustard</item>
-		<item>Forest</item>
 		<item>Sea Green</item>
+		<item>Forest</item>
+        <item>Android Dark Green</item>
 		<item>Split Pea Soup</item>
+		<item>Mustard</item>
 		<item>Peru</item>
+		<item>Gold</item>
+        <item>Android Dark Yellow</item>
 		<item>Milk Chocolate</item>
 		<item>Dark Chocolate</item>
+		<item>Goldfish</item>
+		<item>Construction Zone</item>
+		<item>Orange</item>
+		<item>Rust</item>
+		<item>Maroon</item>
+		<item>Android Dark Red </item>
+		<item>Crimson</item>
+		<item>Brick</item>
+		<item>Barbie</item>
+		<item>Chaminade</item>
+		<item>Watermelon</item>
+		<item>Wild Berry</item>
+        <item>Android Dark Purple</item>
+		<item>Purple</item>
+		<item>Periwinkle</item>
+		<item>Plum</item>
     </string-array>
     
     <string-array name="hours_array">

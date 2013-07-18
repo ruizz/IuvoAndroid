@@ -25,6 +25,15 @@
             android:layout_height="wrap_content"
             android:text="@string/dialog_name"
             android:textColor="@color/white" />
+        
+        <!-- Used go grab focus after clearing the focus from the
+        EditText below it. Ignore the useless warning. DON'T LISTEN
+        TO IT LINEARLAYOUT, YOU'RE SO USEFUL AND SPECIAL. -->
+        <LinearLayout 
+			android:focusable="true"
+			android:focusableInTouchMode="true" 
+			android:layout_width="0px"
+			android:layout_height="0px" />
 
         <EditText
             android:id="@+id/semester_name_edittext"

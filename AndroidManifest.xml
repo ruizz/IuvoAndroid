@@ -53,7 +53,8 @@
             android:configChanges="orientation"
             android:label="@string/title_activity_course"
             android:parentActivityName="com.helloruiz.iuvo.MainActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.helloruiz.iuvo.MainActivity" />
@@ -133,7 +134,8 @@
             android:configChanges="orientation"
             android:label="@string/title_activity_semester"
             android:parentActivityName="com.helloruiz.iuvo.MainActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.helloruiz.iuvo.MainActivity" />

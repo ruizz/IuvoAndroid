@@ -77,11 +77,36 @@ public class ColorHandler {
 		if (colorName.equals("Dark Chocolate"))
 			return context.getResources().getColor(R.color.dark_chocolate);
 		
+		if (colorName.equals("Periwinkle"))
+			return context.getResources().getColor(R.color.periwinkle);
+		
+		if (colorName.equals("Navy"))
+			return context.getResources().getColor(R.color.theme_navy);
+		
+		if (colorName.equals("Cute Blue"))
+			return context.getResources().getColor(R.color.cute_blue);
+		
+		if (colorName.equals("Gold"))
+			return context.getResources().getColor(R.color.gold);
+		
+		if (colorName.equals("Jeans"))
+			return context.getResources().getColor(R.color.jeans);
+		
+		if (colorName.equals("Cool Blue"))
+			return context.getResources().getColor(R.color.cool_blue);
+		
+		if (colorName.equals("Orange"))
+			return context.getResources().getColor(R.color.orange);
+		
+		if (colorName.equals("Chaminade"))
+			return context.getResources().getColor(R.color.chaminade);
+		
+		if (colorName.equals("Barbie"))
+			return context.getResources().getColor(R.color.barbie);
+		
 		if (colorName.equals("Gray"))
 			return context.getResources().getColor(R.color.gray);
 		
-		
-
 		return context.getResources().getColor(R.color.gray);
 	}
 }

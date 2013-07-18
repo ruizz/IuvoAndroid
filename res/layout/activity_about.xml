@@ -90,6 +90,30 @@
 	        android:gravity="center_horizontal"
 	        android:textColor="@color/theme_gray"
 	        android:textSize="14sp"
+	        android:text="@string/about_follow"
+	        android:clickable="true"
+	        android:onClick="twitter" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/about_twitter"
+	        android:clickable="true"
+	        android:onClick="twitter" />
+	    
+	    <View
+	            android:layout_width="match_parent"
+	            android:layout_height="10dp" />
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
 	        android:text="@string/about_feedback"
 	        android:clickable="true"
 	        android:onClick="email" />

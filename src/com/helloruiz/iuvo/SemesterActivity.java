@@ -99,6 +99,7 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 	public void colorSelected(int position) {
 		
 		IuvoApplication.hideKeyboard(this, nameEditText);
+		nameEditText.clearFocus();
 		colorSelection = colorArray[position];
 		nameView.setBackgroundColor(ColorHandler.getColor(this, colorSelection));
 	}
@@ -127,21 +128,25 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 	public void springQuickFill(View view){
 		nameEditText.setText("Spring 20");
 		nameEditText.setSelection(nameEditText.getText().length());
+		nameEditText.requestFocus();
 	}
 	
 	public void summerQuickFill(View view){
 		nameEditText.setText("Summer 20");
 		nameEditText.setSelection(nameEditText.getText().length());
+		nameEditText.requestFocus();
 	}
 	
 	public void fallQuickFill(View view){
 		nameEditText.setText("Fall 20");
 		nameEditText.setSelection(nameEditText.getText().length());
+		nameEditText.requestFocus();
 	}
 		
 	public void winterQuickFill(View view){
 		nameEditText.setText("Winter 20");
 		nameEditText.setSelection(nameEditText.getText().length());
+		nameEditText.requestFocus();
 	}
 	
 	// User hits the save button.

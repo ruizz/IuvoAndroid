@@ -40,6 +40,7 @@ public class CourseActivity extends Activity {
 	String semester = "None";
 	String group = "None (Hidden)";
 	String semesterColor = "None";
+	EditText nameEditText;
 	
 	// Typeface for pretty lobster font.
 	Typeface typeface;
@@ -83,8 +84,8 @@ public class CourseActivity extends Activity {
 			setTitle(name);
 		}
 		
-		EditText editText = (EditText) findViewById(R.id.course_name_edittext);
-		editText.setText((CharSequence) name);
+		nameEditText = (EditText) findViewById(R.id.course_name_edittext);
+		nameEditText.setText((CharSequence) name);
 		
 		TextView textView;
 		textView = (TextView) findViewById(R.id.course_hours_textview); textView.setTypeface(typeface);
@@ -151,10 +152,9 @@ public class CourseActivity extends Activity {
 	}
 	
 	public void addCourse() {
-		EditText editText = (EditText) findViewById(R.id.course_name_edittext);
-		IuvoApplication.hideKeyboard(this, editText);
+		IuvoApplication.hideKeyboard(this, nameEditText);
 		
-		String name = editText.getText().toString();
+		String name = nameEditText.getText().toString();
 		if (name.equals("")) {
 			Toast.makeText(this, getResources().getString(R.string.course_not_added), Toast.LENGTH_LONG).show();
 			return;
@@ -171,14 +171,16 @@ public class CourseActivity extends Activity {
 			// Add the course to the database
 			IuvoApplication.db.addCourse(name, hours, grade, eFGPA, semesterID, groupID);
 			
-			// Clear all but the first word of the editText
+			// Clear all but the first word of the nameEditText
 			int spaceIndex = name.indexOf(" ");
 			if (spaceIndex == -1)
-				editText.setText("");
+				nameEditText.setText("");
 			else {
-				editText.setText((CharSequence) (name.substring(0, spaceIndex) + " "));
-				editText.setSelection(editText.getText().length());
+				nameEditText.setText((CharSequence) (name.substring(0, spaceIndex) + " "));
+				nameEditText.setSelection(nameEditText.getText().length());
 			}
+			
+			nameEditText.requestFocus();
 			
 			// Reset the grade. I feel that the others shouldn't be changed unless the user wants to change them.
 			grade = "None";
@@ -211,8 +213,8 @@ public class CourseActivity extends Activity {
 	}
 	
 	public void editHours(View view) {
-		EditText editText = (EditText) findViewById(R.id.course_name_edittext);
-		IuvoApplication.hideKeyboard(this, editText);
+		IuvoApplication.hideKeyboard(this, nameEditText);
+		nameEditText.clearFocus();
 		
 		String dialogTitle = getString(R.string.dialog_hours);
 		
@@ -231,8 +233,8 @@ public class CourseActivity extends Activity {
 	}
 	
 	public void editGrade(View view) {
-		EditText editText = (EditText) findViewById(R.id.course_name_edittext);
-		IuvoApplication.hideKeyboard(this, editText);
+		IuvoApplication.hideKeyboard(this, nameEditText);
+		nameEditText.clearFocus();
 		
 		String dialogTitle = getString(R.string.dialog_grade);
 		
@@ -291,8 +293,8 @@ public class CourseActivity extends Activity {
 	}
 	
 	public void editExcludeFromGPA(View view) {
-		EditText editText = (EditText) findViewById(R.id.course_name_edittext);
-		IuvoApplication.hideKeyboard(this, editText);
+		IuvoApplication.hideKeyboard(this, nameEditText);
+		nameEditText.clearFocus();
 		
 		String dialogTitle = getString(R.string.dialog_exclude_from_gpa);
 		
@@ -315,8 +317,8 @@ public class CourseActivity extends Activity {
 	}
 	
 	public void editGroup(View view) {
-		EditText editText = (EditText) findViewById(R.id.course_name_edittext);
-		IuvoApplication.hideKeyboard(this, editText);
+		IuvoApplication.hideKeyboard(this, nameEditText);
+		nameEditText.clearFocus();
 		
 		String dialogTitle = getString(R.string.dialog_group);
 		
@@ -354,8 +356,8 @@ public class CourseActivity extends Activity {
 	}
 	
 	public void editSemester(View view) {
-		EditText editText = (EditText) findViewById(R.id.course_name_edittext);
-		IuvoApplication.hideKeyboard(this, editText);
+		IuvoApplication.hideKeyboard(this, nameEditText);
+		nameEditText.clearFocus();
 		
 		String dialogTitle = getString(R.string.dialog_semester);
 		

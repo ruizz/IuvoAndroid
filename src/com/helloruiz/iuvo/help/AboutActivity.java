@@ -82,6 +82,22 @@ public class AboutActivity extends Activity {
 		}
 	}
 	
+	public void twitter(View view) {
+		Uri webpage = Uri.parse("http://twitter.com/helloruiz");
+		Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
+
+		// Verify that there is at least one compatible app
+		PackageManager packageManager = getPackageManager();
+		List<ResolveInfo> activities = packageManager.queryIntentActivities(webIntent, 0);
+
+		if(activities.size() > 0) {
+			startActivity(webIntent);
+		} else {
+			Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.toast_no_web), Toast.LENGTH_LONG).show();
+			return;
+		}
+	}
+	
 	public void email(View view) {
 		Uri email = Uri.parse("mailto:ruiz.akpan@gmail.com");
 		Intent emailIntent = new Intent(Intent.ACTION_SENDTO, email);
