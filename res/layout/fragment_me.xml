@@ -151,54 +151,90 @@
 		        android:background="@color/theme_blue" />
 		</LinearLayout>
 		
-		<TextView
-		    android:id="@+id/me_progress_percentage"
-		    android:layout_width="wrap_content"
+		<LinearLayout
+		    android:id="@+id/me_progress_text_linearlayout"
+		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:layout_alignParentLeft="true"
 		    android:layout_below="@+id/me_progress_linearlayout"
-		    android:text="@string/me_progress_percentage"
-		    android:textColor="@color/theme_gray"
-		    android:textSize="40sp" />
+		    android:orientation="horizontal" >
+		    
+			<TextView
+			    android:id="@+id/me_progress_fraction"
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="1"
+			    android:gravity="left"
+			    android:text="@string/me_progress_fraction"
+			    android:textColor="@color/theme_gray"
+			    android:textSize="30sp" />
+			
+			<TextView
+			    android:id="@+id/me_progress_fraction_hours"
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="1"
+			    android:gravity="center"
+			    android:text="@string/me_progress_fraction_hours"
+			    android:textColor="@color/theme_gray"
+			    android:textSize="30sp" />
 		
-		<TextView
-		    android:id="@+id/me_progress_percentage_desc"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentLeft="true"
-		    android:layout_below="@+id/me_progress_percentage"
-		    android:layout_marginTop="-5dp"
-		    android:text="@string/me_progress_percentage_desc"
-		    android:textColor="@color/theme_gray"
-		    android:textSize="14sp" />
+			<TextView
+			    android:id="@+id/me_progress_percentage"
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="1"
+				android:gravity="right"
+			    android:text="@string/me_progress_percentage"
+			    android:textColor="@color/theme_gray"
+			    android:textSize="30sp" />
+			
+		</LinearLayout>
 		
-		<TextView
-		    android:id="@+id/me_progress_fraction"
-		    android:layout_width="wrap_content"
+		<LinearLayout
+		    android:id="@+id/me_progress_text_desc_linearlayout"
+		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:layout_alignParentRight="true"
-		    android:layout_below="@+id/me_progress_linearlayout"
-		    android:text="@string/me_progress_fraction"
-		    android:textColor="@color/theme_gray"
-		    android:textSize="40sp" />
+		    android:layout_below="@+id/me_progress_text_linearlayout"
+		    android:orientation="horizontal" >
+		    
+			<TextView
+			    android:id="@+id/me_progress_fraction_desc"
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="1"
+			    android:gravity="left"
+			    android:text="@string/me_progress_fraction_desc"
+			    android:textColor="@color/theme_gray"
+			    android:textSize="14sp" />
+			
+			<TextView
+			    android:id="@+id/me_progress_fraction_hours_desc"
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="1"
+			    android:gravity="center"
+			    android:text="@string/me_progress_fraction_hours_desc"
+			    android:textColor="@color/theme_gray"
+			    android:textSize="14sp" />
 		
-		<TextView
-		    android:id="@+id/me_progress_fraction_desc"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentRight="true"
-		    android:layout_below="@+id/me_progress_fraction"
-		    android:layout_marginTop="-5dp"
-		    android:text="@string/me_progress_fraction_desc"
-		    android:textColor="@color/theme_gray"
-		    android:textSize="14sp" />
+			<TextView
+			    android:id="@+id/me_progress_percentage_desc"
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="1"
+				android:gravity="right"
+			    android:text="@string/me_progress_percentage_desc"
+			    android:textColor="@color/theme_gray"
+			    android:textSize="14sp" />
+			
+		</LinearLayout>
 		
 		<LinearLayout
 		    android:id="@+id/me_grade_dist_linearlayout"
 		    android:layout_width="match_parent"
 		    android:layout_height="50dp"
 		    android:layout_marginTop="15dp"
-		    android:layout_below="@+id/me_progress_percentage_desc"
+		    android:layout_below="@+id/me_progress_text_desc_linearlayout"
 		    android:orientation="horizontal" >
 		    
 		    <View

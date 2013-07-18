@@ -104,18 +104,18 @@ public class CourseActivity extends Activity {
         
         // Not sure what's causing these views to change random colors. This ensures that they stay blue.
         View view;
-        view = findViewById(R.id.course_name_linear_layout); 
+        
+        view = findViewById(R.id.course_name_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	    view = findViewById(R.id.course_hours_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	    view = findViewById(R.id.course_grade_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	    view = findViewById(R.id.course_exclude_from_gpa_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	    view = findViewById(R.id.course_group_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	    view = findViewById(R.id.course_semester_linear_layout); 
         if (semesterID == -1) {
         	view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
         } else {
         	view.setBackgroundColor(ColorHandler.getColor(getApplicationContext(), semesterColor)); 
         }
-        
-	    view = findViewById(R.id.course_hours_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-	    view = findViewById(R.id.course_grade_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-	    view = findViewById(R.id.course_exclude_from_gpa_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-	    view = findViewById(R.id.course_group_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-	    view = findViewById(R.id.course_semester_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
 	}
 	
 	@Override
@@ -166,27 +166,19 @@ public class CourseActivity extends Activity {
 		else
 			eFGPA = 0;
 		
-		if(id == -1) // If user is adding a new course
-			IuvoApplication.db.addCourse(name, hours, grade, eFGPA, semesterID, groupID);
-		else { // If user is updating an old course
-			if (oldGroupID != groupID) { // If user changed the group of the course
-				IuvoApplication.db.decrementCoursePositions(position + 1, oldGroupID);
-				position = IuvoApplication.db.getCourseCountByGroup(groupID);
-			}
+		if(id == -1) { // If user is adding a new course
 			
-			Course course = new Course(id, position, name, hours, grade, eFGPA, semesterID, groupID);
-			IuvoApplication.db.updateCourse(course);
-		}
-		
-		Log.d("All Courses", "All Current Courses:");
-		List<Course> allCourses = IuvoApplication.db.getAllCourses();
-		for(Course c : allCourses) {
-			Log.d("All Courses", "Position: " + c.getPosition() + ", ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
-		}
-		
-		if(id == -1) {
-			// Clear the EditText
-			editText.setText("");
+			// Add the course to the database
+			IuvoApplication.db.addCourse(name, hours, grade, eFGPA, semesterID, groupID);
+			
+			// Clear all but the first word of the editText
+			int spaceIndex = name.indexOf(" ");
+			if (spaceIndex == -1)
+				editText.setText("");
+			else {
+				editText.setText((CharSequence) (name.substring(0, spaceIndex) + " "));
+				editText.setSelection(editText.getText().length());
+			}
 			
 			// Reset the grade. I feel that the others shouldn't be changed unless the user wants to change them.
 			grade = "None";
@@ -195,10 +187,27 @@ public class CourseActivity extends Activity {
      	   	textView.setText(grade);
      	   	
 			Toast.makeText(this, getResources().getString(R.string.course_added), Toast.LENGTH_LONG).show();
-		} else {
+		
+		} else { // If user is updating an old course
+			
+			if (oldGroupID != groupID) { // If user changed the group of the course
+				IuvoApplication.db.decrementCoursePositions(position + 1, oldGroupID);
+				position = IuvoApplication.db.getCourseCountByGroup(groupID);
+			}
+			
+			Course course = new Course(id, position, name, hours, grade, eFGPA, semesterID, groupID);
+			IuvoApplication.db.updateCourse(course);
 			Toast.makeText(this, getResources().getString(R.string.course_updated), Toast.LENGTH_LONG).show();
-			onBackPressed();
 		}
+		
+		Log.d("All Courses", "All Current Courses:");
+		List<Course> allCourses = IuvoApplication.db.getAllCourses();
+		for(Course c : allCourses) {
+			Log.d("All Courses", "Position: " + c.getPosition() + ", ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
+		}
+		
+		if(id != -1) // If user is updating an old course, take them back.
+			onBackPressed();
 	}
 	
 	public void editHours(View view) {
@@ -379,7 +388,7 @@ public class CourseActivity extends Activity {
 	            	   textView.setText(semester);
 	            	   
 	            	   View view;
-	            	   view = findViewById(R.id.course_name_linear_layout);
+	            	   view = findViewById(R.id.course_semester_linear_layout);
 	            	   if (semester.equals("None")) {
 	            		   semesterColor = "None";
 	            		   view.setBackgroundColor(getResources().getColor(R.color.theme_blue));

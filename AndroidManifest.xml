@@ -11,12 +11,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name="com.helloruiz.iuvo.database.IuvoApplication"
         android:allowBackup="true"
         android:icon="@drawable/iuvo_launcher"
         android:label="@string/app_name"
         android:logo="@drawable/iuvo_logo"
-        android:theme="@style/Theme.Iuvo"
-        android:name="com.helloruiz.iuvo.database.IuvoApplication" >
+        android:theme="@style/Theme.Iuvo" >
         <activity
             android:name="com.helloruiz.iuvo.MainActivity"
             android:configChanges="orientation"
@@ -144,6 +144,14 @@
             android:label="@string/title_activity_courses_activity_semester"
             android:parentActivityName="com.helloruiz.iuvo.MainActivity"
             android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.helloruiz.iuvo.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.helloruiz.iuvo.help.StartHelpActivity"
+            android:label="@string/title_activity_start_help"
+            android:parentActivityName="com.helloruiz.iuvo.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.helloruiz.iuvo.MainActivity" />

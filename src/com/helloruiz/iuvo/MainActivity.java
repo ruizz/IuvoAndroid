@@ -35,6 +35,7 @@ import com.helloruiz.iuvo.database.IuvoApplication;
 import com.helloruiz.iuvo.database.Semester;
 import com.helloruiz.iuvo.help.AboutActivity;
 import com.helloruiz.iuvo.help.BackupActivity;
+import com.helloruiz.iuvo.help.StartHelpActivity;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -317,6 +318,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             int courseCount = IuvoApplication.db.getCourseCountInDegreePlan();
             int courseCountCompleted = IuvoApplication.db.getCourseCountInDegreePlanCompleted();
             int courseCountAttempted = IuvoApplication.db.getCourseCountInDegreePlanAttempted();
+            int courseHoursCompleted = IuvoApplication.db.getCompletedHours();
+            int courseHoursTotal = IuvoApplication.db.getTotalHours();
             
             double completePercentage;
             if (courseCount == 0 && courseCountCompleted == 0)
@@ -334,6 +337,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             textView = (TextView) rootView.findViewById(R.id.me_progress_fraction);
             textView.setTypeface(typeFace);
             textView.setText((CharSequence) String.valueOf(courseCountCompleted) + "/" + String.valueOf(courseCount));
+            
+            textView = (TextView) rootView.findViewById(R.id.me_progress_fraction_hours);
+            textView.setTypeface(typeFace);
+            textView.setText((CharSequence) String.valueOf(courseHoursCompleted) + "/" + String.valueOf(courseHoursTotal));
             
             if (courseCountCompleted == 0) { // Show 0% completion
             	
@@ -857,6 +864,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            case 2:
 	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_teal));
 	            	break;
+	            case 3:
+	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_green));
+	            	break;
 	            }
 	            
 	            rootView.setId(position);
@@ -885,7 +895,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    					startActivity(intent);
 							break;
 							
-						case 2: // About
+						case 2: // Tutorial
+							intent = new Intent(mContext, StartHelpActivity.class);
+	    					startActivity(intent);
+							break;
+						case 3: // About
 							intent = new Intent(mContext, AboutActivity.class);
 	    					startActivity(intent);
 							break;

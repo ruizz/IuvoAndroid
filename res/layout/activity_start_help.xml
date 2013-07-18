@@ -1,0 +1,489 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin"
+    android:clipToPadding="false"
+	android:scrollbars="none"
+    android:background="@color/theme_white"
+    tools:context=".AboutActivity" >
+    
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:clickable="false"
+	    >
+	
+	    <!-- Title -->
+	   	<TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/activity_plan_getting_started_header"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="26sp"
+	        android:text="@string/plan_getting_started_header"
+	        />
+	        
+	
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/lvDividerHeight"
+	        android:background="@color/theme_gray"
+	        />
+	    
+	    <!-- First Note -->
+	    <TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/activity_plan_getting_started_note1"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/plan_getting_started_note1"
+	    	/>
+	    
+	    <TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/activity_plan_getting_started_note1_1"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/plan_getting_started_note1_1"
+	    	/>
+	    
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="15dp"
+	        />
+	    
+	    <!-- Semester Sample -->
+		<LinearLayout
+		  android:layout_width="fill_parent"
+		  android:layout_height="wrap_content"
+		  android:orientation="horizontal"
+		  android:background="@color/android_dark_green" >
+		  
+		  <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:orientation="vertical"
+		    android:padding="16sp" >
+		    
+		    <TextView
+		      android:id="@+id/activity_plan_getting_started_semester_title"
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_getting_started_semester_title"
+		      android:textColor="@color/white"
+		      android:textSize="26sp" />
+		    
+		    <TextView
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_getting_started_semester_subtitle"
+		      android:textColor="@color/theme_white"
+		      android:textSize="14sp" />
+		
+		  </LinearLayout>
+		  
+		  <ImageView
+		    android:background="@drawable/drag"
+		    android:layout_width="75dp"
+		    android:layout_height="75dp"
+		    android:layout_weight="0"
+		    android:layout_gravity="center" />
+		  
+		</LinearLayout>
+		
+		<!-- Semester Caption -->
+	    <TextView
+	        android:textIsSelectable="false"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/plan_getting_started_semester_caption"
+	        />
+	    
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="10dp"
+	        />
+		
+		<!-- Semester Description -->
+	    <TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/activity_plan_getting_started_note2"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/plan_getting_started_note2"
+	        />
+	    
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="15dp"
+	        />
+	    
+		<!-- Group Sample -->
+		<LinearLayout
+		  android:layout_width="fill_parent"
+		  android:layout_height="wrap_content"
+		  android:orientation="horizontal"
+		  android:background="@color/theme_blue" >
+		  
+		  <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:orientation="vertical"
+		    android:padding="16sp" >
+		    
+		    <TextView
+		      android:id="@+id/activity_plan_getting_started_group_title"
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_getting_started_group_title"
+		      android:textColor="@color/white"
+		      android:textSize="26sp" />
+		    
+		    <TextView
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_getting_started_semester_subtitle"
+		      android:textColor="@color/theme_white"
+		      android:textSize="14sp" />
+		
+		  </LinearLayout>
+		  
+		  <ImageView
+		    android:id="@id/drag_handle"
+		    android:background="@drawable/drag"
+		    android:layout_width="75dp"
+		    android:layout_height="75dp"
+		    android:layout_weight="0"
+		    android:layout_gravity="center" />
+		  
+		</LinearLayout>
+	    
+		<!-- Group Caption -->
+	    <TextView
+	        android:textIsSelectable="false"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/plan_getting_started_group_caption"
+	        />
+	    
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="10dp"
+	        />
+		
+		<!-- Group Description -->
+	    <TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/activity_plan_getting_started_note3"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/plan_getting_started_note3"
+	        />
+	    
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="15dp"
+	        />
+	    
+	    <!-- Course Sample -->
+		<LinearLayout
+		  android:layout_width="fill_parent"
+		  android:layout_height="wrap_content"
+		  android:orientation="horizontal"
+		  android:background="@color/gray" >
+		  
+		  <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:orientation="vertical"
+		    android:padding="12sp" >
+		    
+		    <TextView
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_getting_started_course_title"
+		      android:textColor="@color/white"
+		      android:textSize="22sp" />
+		    
+		    <TextView
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_no_semester_assigned"
+		      android:textColor="@color/white"
+		      android:textSize="12sp" />
+		
+		  </LinearLayout>
+		  
+		  <TextView
+		    android:id="@+id/activity_plan_getting_started_course_grade0"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginRight="6dp"
+		    android:textColor="@color/white"
+		    android:textSize="36sp"
+		    android:text="@string/plan_getting_started_course_grade"
+		    android:layout_weight="0"
+		    android:layout_gravity="center" />
+		  
+		</LinearLayout>
+	    
+		<!-- Course Caption -->
+	    <TextView
+	        android:textIsSelectable="false"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/plan_getting_started_course_caption"
+	        />
+	    
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="10dp"
+	        />
+		
+	    <!-- Course Description -->
+	    <TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/activity_plan_getting_started_note4"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/plan_getting_started_note4"
+	        />
+	    
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="15dp"
+	        />
+	    
+	    <TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/activity_plan_getting_started_note5"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="14sp"
+	        android:text="@string/plan_getting_started_note5"
+	        />
+	    
+	    
+	    <!-- Sample Degree Plan -->
+	    <!-- First Group -->
+	    <TextView
+	        android:id="@+id/activity_plan_getting_sample_group1"
+	        android:textIsSelectable="false"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="26sp"
+	        android:text="@string/plan_getting_started_sample_group1"
+	        />
+	        
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/lvDividerHeight"
+	        android:background="@color/theme_gray"
+	        />
+	    
+	    <!-- Space -->
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="10dp"
+	        />
+	    
+	    <!-- First Course -->
+		<LinearLayout
+		  android:layout_width="fill_parent"
+		  android:layout_height="wrap_content"
+		  android:orientation="horizontal"
+		  android:background="@color/android_dark_blue" >
+		  
+		  <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:orientation="vertical"
+		    android:padding="12sp" >
+		    
+		    <TextView
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_getting_started_sample_course1"
+		      android:textColor="@color/white"
+		      android:textSize="22sp" />
+		    
+		    <TextView
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_getting_started_sample_semester1"
+		      android:textColor="@color/white"
+		      android:textSize="12sp" />
+		
+		  </LinearLayout>
+	
+		  <TextView
+		    android:id="@+id/activity_plan_getting_started_course_grade1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginRight="6dp"
+		    android:textColor="@color/white"
+		    android:textSize="36sp"
+		    android:text="@string/plan_getting_started_course_grade1"
+		    android:layout_weight="0"
+		    android:layout_gravity="center" />
+		  
+		</LinearLayout>
+	    
+	    <!-- Space -->
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="10dp"
+	        />
+		
+	    <!-- Second Course -->
+		<LinearLayout
+		  android:layout_width="fill_parent"
+		  android:layout_height="wrap_content"
+		  android:orientation="horizontal"
+		  android:background="@color/android_dark_green" >
+		  
+		  <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:orientation="vertical"
+		    android:padding="12sp" >
+		    
+		    <TextView
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_getting_started_sample_course2"
+		      android:textColor="@color/white"
+		      android:textSize="22sp" />
+		    
+		    <TextView
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_getting_started_sample_semester2"
+		      android:textColor="@color/white"
+		      android:textSize="12sp" />
+		
+		  </LinearLayout>
+	
+		  <TextView
+		    android:id="@+id/activity_plan_getting_started_course_grade2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginRight="6dp"
+		    android:textColor="@color/white"
+		    android:textSize="36sp"
+		    android:text="@string/plan_getting_started_course_grade2"
+		    android:layout_weight="0"
+		    android:layout_gravity="center" />
+		  
+		</LinearLayout>
+		
+		<!-- Space -->
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="10dp"
+	        />
+	    
+	    <!-- Second Group -->
+	    <TextView
+	        android:id="@+id/activity_plan_getting_sample_group2"
+	        android:textIsSelectable="false"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/theme_gray"
+	        android:textSize="26sp"
+	        android:text="@string/plan_getting_started_sample_group2"
+	        />
+	        
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/lvDividerHeight"
+	        android:background="@color/theme_gray"
+	        />
+	    
+	    <!-- Space -->
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="10dp"
+	        />
+	    
+	    <!-- Third Course -->
+		<LinearLayout
+		  android:layout_width="fill_parent"
+		  android:layout_height="wrap_content"
+		  android:orientation="horizontal"
+		  android:background="@color/android_dark_green" >
+		  
+		  <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:orientation="vertical"
+		    android:padding="12sp" >
+		    
+		    <TextView
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_getting_started_sample_course3"
+		      android:textColor="@color/white"
+		      android:textSize="22sp" />
+		    
+		    <TextView
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/plan_getting_started_sample_semester2"
+		      android:textColor="@color/white"
+		      android:textSize="12sp" />
+		
+		  </LinearLayout>
+	
+		  <TextView
+		    android:id="@+id/activity_plan_getting_started_course_grade3"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginRight="6dp"
+		    android:textColor="@color/white"
+		    android:textSize="36sp"
+		    android:text="@string/plan_getting_started_course_grade3"
+		    android:layout_weight="0"
+		    android:layout_gravity="center" />
+		  
+		</LinearLayout>
+	</LinearLayout>
+    
+</ScrollView>

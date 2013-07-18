@@ -1109,4 +1109,50 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    
 	    return count;
 	}
+	
+	// Get completed number of hours in degree plan
+	public int getCompletedHours() {
+		int hours = 0;
+		Cursor cursor;
+		
+	    String countQuery = "SELECT " + KEY_HOURS + " FROM " + TABLE_COURSE + " WHERE " + 
+	    		KEY_GRADE + "!=? AND " + KEY_GRADE + "!=? AND " + KEY_GROUP_ID + "!=?";
+	    
+	    
+	    cursor = db.rawQuery(countQuery, new String[] {"None", "F ", "-1"});
+	    
+	    // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+            	hours += Integer.parseInt(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        
+        cursor.close();
+	    
+	    return hours;
+	}
+	
+	// Get total number of hours in degree plan
+	public int getTotalHours() {
+		int hours = 0;
+		Cursor cursor;
+		
+	    String countQuery = "SELECT " + KEY_HOURS + " FROM " + TABLE_COURSE + " WHERE " + 
+	    		 KEY_GROUP_ID + "!=?";
+	    
+	    
+	    cursor = db.rawQuery(countQuery, new String[] {"-1"});
+	    
+	    // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+            	hours += Integer.parseInt(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        
+        cursor.close();
+	    
+	    return hours;
+	}
 }
