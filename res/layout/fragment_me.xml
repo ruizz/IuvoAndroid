@@ -95,45 +95,70 @@
 	          android:textColor="@color/theme_gray"
 	          android:textSize="14sp" />
 		
-		<TextView
-		    android:id="@+id/me_gpa"
-		    android:layout_width="wrap_content"
+		<LinearLayout
+		    android:id="@+id/me_gpa_linearlayout"
+		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:layout_alignParentRight="true"
-		    android:layout_below="@+id/me_classification"
-		    android:text="@string/me_gpa"
-		    android:textColor="@color/theme_gray"
-		    android:textSize="60sp" />
-	
-		<TextView
-		    android:id="@+id/me_gpa_desc"
-		    android:layout_width="wrap_content"
+		    android:layout_below="@+id/me_classification_desc"
+		    android:orientation="horizontal" >
+		    
+		    <TextView
+			    android:id="@+id/me_gpa"
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="1"
+			    android:text="@string/me_gpa"
+			    android:textColor="@color/theme_gray"
+			    android:textSize="60sp" />
+		    
+		    <TextView
+			    android:id="@+id/me_gpa_with_exclusions"
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="1"
+			    android:gravity="right"
+			    android:text="@string/me_gpa"
+			    android:textColor="@color/theme_gray"
+			    android:textSize="40sp" />
+		</LinearLayout>
+		
+		<LinearLayout
+		    android:id="@+id/me_gpa_text_linearlayout"
+		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:layout_alignParentRight="true"
-		    android:layout_below="@+id/me_gpa"
+		    android:layout_below="@+id/me_gpa_linearlayout"
 		    android:layout_marginTop="-10dp"
+		    android:orientation="horizontal" >
+			
+		    <TextView
+		    android:id="@+id/me_gpa_desc"
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
 		    android:text="@string/me_gpa_desc"
 		    android:textColor="@color/theme_gray"
 		    android:textSize="14sp" />
-		
-		<!-- Add in future update
-		<TextView
-		    android:id="@+id/me_gpa_desc_link"
-		    android:layout_width="wrap_content"
+		    
+		    <TextView
+		    android:id="@+id/me_gpa_with_exclusions_desc"
+		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
-		    android:layout_alignParentLeft="true"
-		    android:layout_below="@+id/me_gpa_desc"
-		    android:layout_marginTop="-3dp"
-		    android:text="@string/me_view_more_details"
+		    android:layout_weight="1"
+		    android:gravity="right"
+		    android:text="@string/me_gpa_with_exclusions_desc"
 		    android:textColor="@color/theme_gray"
-		    android:textSize="14sp" /> -->
+		    android:textSize="14sp" />
+		    
+		</LinearLayout>
+	
 		
+
 		<LinearLayout
 		    android:id="@+id/me_progress_linearlayout"
 		    android:layout_width="match_parent"
 		    android:layout_height="50dp"
 		    android:layout_marginTop="10dp"
-		    android:layout_below="@+id/me_gpa_desc"
+		    android:layout_below="@+id/me_gpa_text_linearlayout"
 		    android:orientation="horizontal" >
 		    
 		    <View

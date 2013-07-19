@@ -42,9 +42,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	/**
 	 * Variables
 	 */
-	// Global DatabaseHandler for activity
-	//static DatabaseHandler IuvoApplication.db;
-
     //The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
     //three primary sections of the app. We use a {@link android.support.v4.app.FragmentPagerAdapter}
     //derivative, which will keep every loaded fragment in memory. If this becomes too memory
@@ -73,7 +70,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     static Typeface typeFace;
     
     // Context. 
-    static Context myContext;
+    static Context mContext;
     
     /**
      * Overrides
@@ -83,9 +80,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        myContext = getApplicationContext();
-        
-        //IuvoApplication.db = new DatabaseHandler(myContext);
+        mContext = getApplicationContext();
         
         typeFace = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 
@@ -309,10 +304,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	textView.setText("No Classification");
             
             // GPA
-            String GPA = IuvoApplication.db.getGPA();
+            String GPA = IuvoApplication.db.getGPA(false);
+            String GPAWithExclusions = IuvoApplication.db.getGPA(true);
+            
             textView = (TextView) rootView.findViewById(R.id.me_gpa);
             textView.setTypeface(typeFace);
-            textView.setText((CharSequence)GPA);
+            textView.setText((CharSequence) GPA);
+            
+            textView = (TextView) rootView.findViewById(R.id.me_gpa_with_exclusions);
+            textView.setTypeface(typeFace);
+            textView.setText((CharSequence) GPAWithExclusions);
             
             // Progress
             int courseCount = IuvoApplication.db.getCourseCountInDegreePlan();
@@ -543,7 +544,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    		groupTitles.add(getString(R.string.plan_getting_started_header));
 	    		
 	    		listView = getListView(); 
-		        setListAdapter(new getStartedListAdapter(getActivity()));
+		        setListAdapter(new getStartedListAdapter());
 		        
 	    	} else { // User created groups, populate the appropriate headers, titles, etc and display them.
 	    		
@@ -593,16 +594,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		    	}
 		    	
 		    	listView = getListView();
-		        setListAdapter(new DegreePlanListAdapter(getActivity()));
+		        setListAdapter(new DegreePlanListAdapter());
 	    	}
 	    }
 	    // End of onResume
 	    
 	    // BaseAdapter explicitly designed to show the "Let's get started" dialogue
 	    private class getStartedListAdapter extends BaseAdapter {
-	        public getStartedListAdapter(Context context) {
-	            mContext = context;
-	        }
+	        public getStartedListAdapter() { }
 
 	        @Override
 	        public int getCount() { return groupTitles.size(); }
@@ -650,14 +649,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            return rootView;
 
 	        }
-	        private final Context mContext;
 	    } // End of getStartedListAdapter
 	    
 		// Plan section fragment. Designed to show the degree plan as a list with headers.
 	    private class DegreePlanListAdapter extends BaseAdapter {
-	        public DegreePlanListAdapter(Context context) {
-	            mContext = context;
-	        }
+	        public DegreePlanListAdapter() { }
 
 	        @Override
 	        public int getCount() {
@@ -776,7 +772,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		            
 	            }
 	        }
-	        private final Context mContext;
 	    } // End of DegreePlanListAdapter
 	}
 
@@ -813,14 +808,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		    	}
 	    	}
 	    	listView = getListView();
-	        setListAdapter(new moreListAdapter(getActivity()));
+	        setListAdapter(new moreListAdapter());
 	    }
         
 	    // BaseAdapter that shows the list seen in the 'more' tab.
 	    private class moreListAdapter extends BaseAdapter {
-	        public moreListAdapter(Context context) {
-	            mContext = context;
-	        }
+	        public moreListAdapter() { }
 
 	        @Override
 	        public int getCount() { return moreTitles.size(); }
@@ -909,8 +902,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            
                 return rootView;
 	        }
-
-	        private final Context mContext;
 	    }
     }
     

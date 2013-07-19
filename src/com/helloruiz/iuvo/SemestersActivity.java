@@ -44,12 +44,15 @@ public class SemestersActivity extends ListActivity {
 	        	courseCount = courseCount + SINGLE_COURSE;
 	        else
 	        	courseCount = courseCount + MULTIPLE_COURSES;
+	        
+	        String semesterGPA = String.valueOf(IuvoApplication.db.getGPABySemesterPosition(position));
+	        semesterGPA = ", " + semesterGPA + " GPA";
 
 	        TextView textView = (TextView) v.findViewById(R.id.semester_name_textview);
             textView.setTypeface(typeface);
             
             textView = (TextView) v.findViewById(R.id.semester_class_count_textview);
-            textView.setText((CharSequence) courseCount);
+            textView.setText((CharSequence) (courseCount + semesterGPA));
             
             // Set list item to color of semester
             Semester semester = IuvoApplication.db.getSemesterByPosition(position);

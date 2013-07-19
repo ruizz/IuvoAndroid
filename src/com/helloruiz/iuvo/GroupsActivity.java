@@ -42,12 +42,15 @@ public class GroupsActivity extends ListActivity {
 	        	courseCount = courseCount + SINGLE_COURSE;
 	        else
 	        	courseCount = courseCount + MULTIPLE_COURSES;
+	        
+	        String groupGPA = String.valueOf(IuvoApplication.db.getGPAByGroupPosition(position));
+	        groupGPA = ", " + groupGPA + " GPA";
 
 	        TextView textView = (TextView) v.findViewById(R.id.group_name_textview);
             textView.setTypeface(typeface);
             
             textView = (TextView) v.findViewById(R.id.group_class_count_textview);
-            textView.setText((CharSequence) courseCount);
+            textView.setText((CharSequence) (courseCount + groupGPA));
 	        
             // Background color would change after messing with semesters. Band-Aid fix.
             v.setBackgroundColor(getResources().getColor(R.color.theme_blue));
@@ -59,8 +62,6 @@ public class GroupsActivity extends ListActivity {
 	/**
 	 * -- Variables --
 	 */
-	// Global DatabaesHandler
-	
 	private GroupAdapter groupAdapter;
 
     private ArrayList<Group> mGroups;

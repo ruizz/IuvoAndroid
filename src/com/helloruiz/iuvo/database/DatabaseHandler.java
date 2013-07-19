@@ -109,7 +109,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
  
     // I'll worry about this if I ever have to upgrade the database. Leave clear for now.
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { ; }
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { }
     
     /**
 	 * -- Group Operations --
@@ -950,11 +950,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    return true;
 	}
 	
-	public String getGPA() {
+	// Get overall GPA with or without exclusions
+	public String getGPA(boolean includeExclusions) {
 		int hours = 0;
 		double points = 0.00;
 		int courseHours = 0;
-		List<Course> courses = getAllCoursesNotExcludedFromGPA();
+		List<Course> courses;
+		
+		if (includeExclusions)
+			courses = getAllCourses();
+		else
+			courses = getAllCoursesNotExcludedFromGPA();
 		
 		if (courses.size() == 0) {
 			return "0.0";
@@ -963,42 +969,96 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		for(Course c : courses) {
 			courseHours = c.getHours();
 			
-			// Can't use switch on strings. Shame.
-			if (c.getGrade().equals("A ")) {
-				points += 4.00 * courseHours;
+			if (!c.getGrade().equals("None")) {
 				hours += courseHours;
-			} else if (c.getGrade().equals("A-")) {
-				points += 3.67 * courseHours;
+				
+				if (!c.getGrade().equals("F "))
+					points += gradeToPoints(c.getGrade(), courseHours);
+				
+			}
+		}
+		
+		if (hours == 0)
+			return "0.0";
+		
+		double finalGPA = points / (double) hours;
+		DecimalFormat format = new DecimalFormat("#.##");
+		String finalGPAString = format.format(finalGPA);
+		
+		if (finalGPAString.equals("1") ||
+				finalGPAString.equals("2") ||
+				finalGPAString.equals("3") ||
+				finalGPAString.equals("4"))
+			finalGPAString += ".0";
+		
+		return finalGPAString;
+	}
+	
+	// Get overall GPA by semester without exclusions
+	public String getGPABySemesterPosition(int semesterPosition) {
+		int hours = 0;
+		double points = 0.00;
+		int courseHours = 0;
+		List<Course> courses;
+		
+		int semesterID = getSemesterByPosition(semesterPosition).getID();
+		courses = getAllCoursesBySemester(semesterID);
+
+		if (courses.size() == 0) {
+			return "0.0";
+		}
+		
+		for(Course c : courses) {
+			courseHours = c.getHours();
+			
+			if (!c.getGrade().equals("None")) {
 				hours += courseHours;
-			} else if (c.getGrade().equals("B+")) {
-				points += 3.33 * courseHours;
+				
+				if (!c.getGrade().equals("F "))
+					points += gradeToPoints(c.getGrade(), courseHours);
+				
+			}
+		}
+		
+		if (hours == 0)
+			return "0.0";
+		
+		double finalGPA = points / (double) hours;
+		DecimalFormat format = new DecimalFormat("#.##");
+		String finalGPAString = format.format(finalGPA);
+		
+		if (finalGPAString.equals("1") ||
+				finalGPAString.equals("2") ||
+				finalGPAString.equals("3") ||
+				finalGPAString.equals("4"))
+			finalGPAString += ".0";
+		
+		return finalGPAString;
+	}
+	
+	// Get overall GPA by semester without exclusions
+	public String getGPAByGroupPosition(int groupPosition) {
+		int hours = 0;
+		double points = 0.00;
+		int courseHours = 0;
+		List<Course> courses;
+		
+		int semesterID = getGroupByPosition(groupPosition).getID();
+		courses = getAllCoursesByGroup(semesterID);
+	
+		if (courses.size() == 0) {
+			return "0.0";
+		}
+		
+		for(Course c : courses) {
+			courseHours = c.getHours();
+			
+			if (!c.getGrade().equals("None")) {
 				hours += courseHours;
-			} else if (c.getGrade().equals("B ")) {
-				points += 3.00 * courseHours;
-				hours += courseHours;
-			} else if (c.getGrade().equals("B-")) {
-				points += 2.67 * courseHours;
-				hours += courseHours;
-			} else if (c.getGrade().equals("C+")) {
-				points += 2.33 * courseHours;
-				hours += courseHours;
-			} else if (c.getGrade().equals("C ")) {
-				points += 2.00 * courseHours;
-				hours += courseHours;
-			} else if (c.getGrade().equals("C-")) {
-				points += 1.67 * courseHours;
-				hours += courseHours;
-			} else if (c.getGrade().equals("D+")) {
-				points += 1.33 * courseHours;
-				hours += courseHours;
-			} else if (c.getGrade().equals("D ")) {
-				points += 1.00 * courseHours;
-				hours += courseHours;
-			} else if (c.getGrade().equals("D-")) {
-				points += 0.67 * courseHours;
-				hours += courseHours;
-			} else if (c.getGrade().equals("F ")) {
-				hours += courseHours;
+				
+				if (!c.getGrade().equals("F "))
+					points += gradeToPoints(c.getGrade(), courseHours);
+				
 			}
 		}
 		
@@ -1154,5 +1214,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
 	    
 	    return hours;
+	}
+	
+	// Get the number of points out of a course.
+	public double gradeToPoints(String grade, int hours) {
+		// Can't use switch on strings. Shame.
+		if (grade.equals("A ")) {
+			return 4.00 * hours;
+		} else if (grade.equals("A-")) {
+			return 3.67 * hours;
+		} else if (grade.equals("B+")) {
+			return 3.33 * hours;
+		} else if (grade.equals("B ")) {
+			return 3.00 * hours;
+		} else if (grade.equals("B-")) {
+			return 2.67 * hours;
+		} else if (grade.equals("C+")) {
+			return 2.33 * hours;
+		} else if (grade.equals("C ")) {
+			return 2.00 * hours;
+		} else if (grade.equals("C-")) {
+			return 1.67 * hours;
+		} else if (grade.equals("D+")) {
+			return 1.33 * hours;
+		} else if (grade.equals("D ")) {
+			return 1.00 * hours;
+		} else if (grade.equals("D-")) {
+			return 0.67 * hours;
+		} else
+			return 0.00;
 	}
 }
