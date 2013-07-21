@@ -1,43 +1,29 @@
  package com.helloruiz.iuvo.help;
 
 import android.app.Activity;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.helloruiz.iuvo.R;
+import com.helloruiz.iuvo.database.IuvoApplication;
 
 public class CourseHelpActivity extends Activity {
 
 	/**
-	 * Variables
+	 * Overrides
 	 */
-	// Typeface for pretty lobster font.
-    static Typeface typeFace;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_course_help);
 		// Show the Up button in the action bar.
-		setupActionBar();
-		
-		typeFace = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		TextView textView;
-		textView = (TextView) findViewById(R.id.course_help_title_textview); textView.setTypeface(typeFace);
-		textView = (TextView) findViewById(R.id.course_credit_image_textview); textView.setTypeface(typeFace);
-	}
-
-	/**
-	 * Set up the {@link android.app.ActionBar}.
-	 */
-	private void setupActionBar() {
-
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-
+		textView = (TextView) findViewById(R.id.course_help_title_textview); textView.setTypeface(IuvoApplication.typeface);
+		textView = (TextView) findViewById(R.id.course_credit_image_textview); textView.setTypeface(IuvoApplication.typeface);
 	}
 
 	@Override
@@ -56,5 +42,4 @@ public class CourseHelpActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 }

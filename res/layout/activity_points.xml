@@ -1,0 +1,412 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin"
+    android:clipToPadding="false"
+	android:scrollbars="none"
+    android:background="@color/theme_white"
+    tools:context=".PointsActivity" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+	    <!-- Row A -->
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        
+	        <!-- Block A+ -->
+	        <LinearLayout
+	            android:id="@+id/points_aplus_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_aplus"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_aplus_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	        
+	        <View
+	            android:layout_width="10dp"
+	            android:layout_height="fill_parent" />
+	        
+	        <!-- Block A -->
+	        <LinearLayout
+	            android:id="@+id/points_a_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_a"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_a_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	        
+	        <View
+	            android:layout_width="10dp"
+	            android:layout_height="fill_parent" />
+	        
+	        <!-- Block A- -->
+	        <LinearLayout
+	            android:id="@+id/points_aminus_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_aminus"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_aminus_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	    </LinearLayout>
+	    
+	    <View 
+	        android:layout_width="fill_parent"
+	        android:layout_height="10dp " />
+	
+	    <!-- Row B -->
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        
+	        <!-- Block B+ -->
+	        <LinearLayout
+	            android:id="@+id/points_bplus_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_bplus"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_bplus_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	        
+	        <View
+	            android:layout_width="10dp"
+	            android:layout_height="fill_parent" />
+	        
+	        <!-- Block B -->
+	        <LinearLayout
+	            android:id="@+id/points_b_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_b"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_b_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	        
+	        <View
+	            android:layout_width="10dp"
+	            android:layout_height="fill_parent" />
+	        
+	        <!-- Block B- -->
+	        <LinearLayout
+	            android:id="@+id/points_bminus_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_bminus"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_bminus_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	    </LinearLayout>
+	    
+	    <View 
+	        android:layout_width="fill_parent"
+	        android:layout_height="10dp " />
+	    
+	    <!-- Row C -->
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        
+	        <!-- Block C+ -->
+	        <LinearLayout
+	            android:id="@+id/points_cplus_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_cplus"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_cplus_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	        
+	        <View
+	            android:layout_width="10dp"
+	            android:layout_height="fill_parent" />
+	        
+	        <!-- Block C -->
+	        <LinearLayout
+	            android:id="@+id/points_c_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_c"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_c_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	        
+	        <View
+	            android:layout_width="10dp"
+	            android:layout_height="fill_parent" />
+	        
+	        <!-- Block C- -->
+	        <LinearLayout
+	            android:id="@+id/points_cminus_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_cminus"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_cminus_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	    </LinearLayout>
+	    
+	    <View 
+	        android:layout_width="fill_parent"
+	        android:layout_height="10dp " />
+	    
+	    <!-- Row D -->
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        
+	        <!-- Block D+ -->
+	        <LinearLayout
+	            android:id="@+id/points_dplus_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_dplus"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_dplus_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	        
+	        <View
+	            android:layout_width="10dp"
+	            android:layout_height="fill_parent" />
+	        
+	        <!-- Block D -->
+	        <LinearLayout
+	            android:id="@+id/points_d_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_d"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_d_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	        
+	        <View
+	            android:layout_width="10dp"
+	            android:layout_height="fill_parent" />
+	        
+	        <!-- Block D- -->
+	        <LinearLayout
+	            android:id="@+id/points_dminus_linearlayout"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:padding="10dp"
+	            android:orientation="vertical"
+	            android:background="@color/theme_blue" >
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="14sp"
+	                android:text="@string/points_dminus"
+	                android:textColor="@color/white" />
+	                
+	            <EditText
+		            android:id="@+id/points_dminus_edittext"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="26sp"
+		            android:inputType="numberDecimal"
+		            android:maxLength="4" />
+	            
+	        </LinearLayout>
+	    </LinearLayout>
+    </LinearLayout>
+</ScrollView>

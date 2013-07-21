@@ -1,7 +1,6 @@
 package com.helloruiz.iuvo;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -28,9 +27,6 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 	
 	View nameView;
 	
-	// Typeface for pretty lobster font.
-	Typeface typeface;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,9 +42,7 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 		
 		nameEditText = (EditText) findViewById(R.id.semester_name_edittext);
 		
-		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
-		
-		nameEditText.setTypeface(typeface);
+		nameEditText.setTypeface(IuvoApplication.typeface);
 		
 		// Check whether the activity is using the layout version with
         // the fragment_container FrameLayout. If so, we must add the first fragment

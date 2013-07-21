@@ -988,7 +988,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (finalGPAString.equals("1") ||
 				finalGPAString.equals("2") ||
 				finalGPAString.equals("3") ||
-				finalGPAString.equals("4"))
+				finalGPAString.equals("4") ||
+				finalGPAString.equals("5") ||
+				finalGPAString.equals("0"))
 			finalGPAString += ".0";
 		
 		return finalGPAString;
@@ -1030,7 +1032,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (finalGPAString.equals("1") ||
 				finalGPAString.equals("2") ||
 				finalGPAString.equals("3") ||
-				finalGPAString.equals("4"))
+				finalGPAString.equals("4") ||
+				finalGPAString.equals("5") ||
+				finalGPAString.equals("0"))
 			finalGPAString += ".0";
 		
 		return finalGPAString;
@@ -1072,7 +1076,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (finalGPAString.equals("1") ||
 				finalGPAString.equals("2") ||
 				finalGPAString.equals("3") ||
-				finalGPAString.equals("4"))
+				finalGPAString.equals("4") ||
+				finalGPAString.equals("5") ||
+				finalGPAString.equals("0"))
 			finalGPAString += ".0";
 		
 		return finalGPAString;
@@ -1219,28 +1225,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Get the number of points out of a course.
 	public double gradeToPoints(String grade, int hours) {
 		// Can't use switch on strings. Shame.
-		if (grade.equals("A ")) {
-			return 4.00 * hours;
+		if (grade.equals("A+")) {
+			return IuvoApplication.pointsAPlus * hours;
+		} else if (grade.equals("A ")) {
+			return IuvoApplication.pointsA * hours;
 		} else if (grade.equals("A-")) {
-			return 3.67 * hours;
+			return IuvoApplication.pointsAMinus * hours;
 		} else if (grade.equals("B+")) {
-			return 3.33 * hours;
+			return IuvoApplication.pointsBPlus * hours;
 		} else if (grade.equals("B ")) {
-			return 3.00 * hours;
+			return IuvoApplication.pointsB * hours;
 		} else if (grade.equals("B-")) {
-			return 2.67 * hours;
+			return IuvoApplication.pointsBMinus * hours;
 		} else if (grade.equals("C+")) {
-			return 2.33 * hours;
+			return IuvoApplication.pointsCPlus * hours;
 		} else if (grade.equals("C ")) {
-			return 2.00 * hours;
+			return IuvoApplication.pointsC * hours;
 		} else if (grade.equals("C-")) {
-			return 1.67 * hours;
+			return IuvoApplication.pointsCMinus * hours;
 		} else if (grade.equals("D+")) {
-			return 1.33 * hours;
+			return IuvoApplication.pointsDPlus * hours;
 		} else if (grade.equals("D ")) {
-			return 1.00 * hours;
+			return IuvoApplication.pointsD * hours;
 		} else if (grade.equals("D-")) {
-			return 0.67 * hours;
+			return IuvoApplication.pointsDMinus * hours;
 		} else
 			return 0.00;
 	}

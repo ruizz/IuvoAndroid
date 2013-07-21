@@ -2,6 +2,7 @@
 <resources>
     <string-array name="fragment_more_titles_array">
         <item>Hidden Courses</item>
+        <item>GPA Scale</item>
         <item>Backup and Restore</item>
         <item>Getting Started</item>
         <item>About</item>
@@ -9,6 +10,7 @@
     
     <string-array name="fragment_more_subtitles_array">
         <item>Edit courses hidden from your degree plan.</item>
+        <item>Adjust the points in your GPA Scale</item>
         <item>Import or export your degree plan.</item>
         <item>Instructions for new users.</item>
         <item>Iuvo information and credits.</item>

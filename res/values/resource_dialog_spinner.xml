@@ -51,6 +51,7 @@
     
     <string-array name="grade_array">
         <item>None</item>
+        <item>A+</item>
         <item>A</item>
         <item>A-</item>
         <item>B+</item>

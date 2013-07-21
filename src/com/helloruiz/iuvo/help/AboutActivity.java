@@ -23,12 +23,15 @@ import com.helloruiz.iuvo.R;
 
 public class AboutActivity extends Activity {
 
+	/**
+	 * Overrides
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		// Set the app version number, so that I don't have to every time I update the app. Convenience!
 		try {
@@ -38,15 +41,6 @@ public class AboutActivity extends Activity {
 		} catch (NameNotFoundException e) {
 			Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.toast_error_version), Toast.LENGTH_LONG).show();
 		}
-	}
-
-	/**
-	 * Set up the {@link android.app.ActionBar}.
-	 */
-	private void setupActionBar() {
-
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-
 	}
 
 	@Override
@@ -66,6 +60,9 @@ public class AboutActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Voids
+	 */
 	public void website(View view) {
 		Uri webpage = Uri.parse("http://helloruiz.com");
 		Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);

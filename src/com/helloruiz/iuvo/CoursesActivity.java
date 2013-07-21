@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -53,7 +52,7 @@ public class CoursesActivity extends ListActivity {
             	v.setBackgroundColor(ColorHandler.getColor(getContext(), "gray"));
             
             textView = (TextView) v.findViewById(R.id.course_grade_textview);
-            textView.setTypeface(typeface);
+            textView.setTypeface(IuvoApplication.typeface);
             if (course.getGrade().equals("None"))
             	textView.setText("");
             else
@@ -91,9 +90,6 @@ public class CoursesActivity extends ListActivity {
 			deleteCourseConfirm(which);			
 		}
 	};
-	
-	// Typeface for pretty lobster front.
-	Typeface typeface;
 
 	/**
 	 * -- Overrides --
@@ -101,8 +97,6 @@ public class CoursesActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 		
 		setContentView(R.layout.activity_courses);
 		// Show the Up button in the action bar.

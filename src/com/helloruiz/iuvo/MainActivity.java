@@ -9,7 +9,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -35,6 +34,7 @@ import com.helloruiz.iuvo.database.IuvoApplication;
 import com.helloruiz.iuvo.database.Semester;
 import com.helloruiz.iuvo.help.AboutActivity;
 import com.helloruiz.iuvo.help.BackupActivity;
+import com.helloruiz.iuvo.help.PointsActivity;
 import com.helloruiz.iuvo.help.StartHelpActivity;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -55,19 +55,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     // For keeping track of the currently selected tab.
     int currentTabIndex = 0;
     
-    // Application preferences
-    static SharedPreferences iuvoSettings;
-    
     // Unique tags for passing an intent to another activity.
     static String MAINACTIVITY_COURSE_ID = "com.helloruiz.iuvo.MainActivity.courseID";
     static String MAINACTIVITY_GROUP_ID = "com.helloruiz.iuvo.MainActivity.groupID";
     static String MAINACTIVITY_EMPTY_GROUP_KEY = "com.helloruiz.iuvo.MainActivity.emptyGroupKey";
-    
-    // We'll use this do display any dialogs. All the heavy lifting done in Dialogs.java
-    static Dialogs dialogs = new Dialogs();
-    
-    // Typeface for pretty lobster font.
-    static Typeface typeFace;
     
     // Context. 
     static Context mContext;
@@ -81,8 +72,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         setContentView(R.layout.activity_main);
         
         mContext = getApplicationContext();
-        
-        typeFace = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -122,9 +111,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setText(mAppSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
-        
-        // Retrieve user info from settings.
-        iuvoSettings = getSharedPreferences("User", 0);
     }
 	
 	@Override
@@ -266,14 +252,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         	LayoutParams params;
         	
             // TODO Get from string XML instead
-        	String userName = iuvoSettings.getString("name", "");
-            String userSchool = iuvoSettings.getString("school", "");
-            String userMajor = iuvoSettings.getString("major", "");
-            String userClassification = iuvoSettings.getString("classification", "");
+        	String userName = IuvoApplication.settings.getString("name", "");
+            String userSchool = IuvoApplication.settings.getString("school", "");
+            String userMajor = IuvoApplication.settings.getString("major", "");
+            String userClassification = IuvoApplication.settings.getString("classification", "");
             
             // Assign name according to application settings.
             textView = (TextView) rootView.findViewById(R.id.me_name);
-            textView.setTypeface(typeFace);
+            textView.setTypeface(IuvoApplication.typeface);
             if(!userName.equals(""))
             	textView.setText((CharSequence) userName + " ");
             else
@@ -281,7 +267,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             
             // Assign school...
             textView = (TextView) rootView.findViewById(R.id.me_school);
-            textView.setTypeface(typeFace);
+            textView.setTypeface(IuvoApplication.typeface);
             if(!userSchool.equals(""))
             	textView.setText((CharSequence) userSchool + " ");
             else
@@ -289,7 +275,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             
             // Major
             textView = (TextView) rootView.findViewById(R.id.me_major);
-            textView.setTypeface(typeFace);
+            textView.setTypeface(IuvoApplication.typeface);
             if(!userMajor.equals(""))
             	textView.setText((CharSequence) userMajor + " ");
             else
@@ -297,7 +283,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             
             // Classification
             textView = (TextView) rootView.findViewById(R.id.me_classification);
-            textView.setTypeface(typeFace);
+            textView.setTypeface(IuvoApplication.typeface);
             if(!userClassification.equals(""))
             	textView.setText((CharSequence) userClassification + " ");
             else
@@ -308,11 +294,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             String GPAWithExclusions = IuvoApplication.db.getGPA(true);
             
             textView = (TextView) rootView.findViewById(R.id.me_gpa);
-            textView.setTypeface(typeFace);
+            textView.setTypeface(IuvoApplication.typeface);
             textView.setText((CharSequence) GPA);
             
             textView = (TextView) rootView.findViewById(R.id.me_gpa_with_exclusions);
-            textView.setTypeface(typeFace);
+            textView.setTypeface(IuvoApplication.typeface);
             textView.setText((CharSequence) GPAWithExclusions);
             
             // Progress
@@ -332,15 +318,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             String completePercentageString = format.format(completePercentage);
             
             textView = (TextView) rootView.findViewById(R.id.me_progress_percentage);
-            textView.setTypeface(typeFace);
+            textView.setTypeface(IuvoApplication.typeface);
             textView.setText((CharSequence) completePercentageString + "%");
             
             textView = (TextView) rootView.findViewById(R.id.me_progress_fraction);
-            textView.setTypeface(typeFace);
+            textView.setTypeface(IuvoApplication.typeface);
             textView.setText((CharSequence) String.valueOf(courseCountCompleted) + "/" + String.valueOf(courseCount));
             
             textView = (TextView) rootView.findViewById(R.id.me_progress_fraction_hours);
-            textView.setTypeface(typeFace);
+            textView.setTypeface(IuvoApplication.typeface);
             textView.setText((CharSequence) String.valueOf(courseHoursCompleted) + "/" + String.valueOf(courseHoursTotal));
             
             if (courseCountCompleted == 0) { // Show 0% completion
@@ -370,12 +356,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             
             // Grade distribution. This code to give the grade distribution bar its intended effect
             // looks like a horrible 'gum over the pipe leak' approach. If I find better methods, I'll change it.
-            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_blank); textView.setTypeface(typeFace);
-            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_a); textView.setTypeface(typeFace);
-            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_b); textView.setTypeface(typeFace);
-            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_c); textView.setTypeface(typeFace);
-            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_d); textView.setTypeface(typeFace);
-            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_f); textView.setTypeface(typeFace);
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_blank); textView.setTypeface(IuvoApplication.typeface);
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_a); textView.setTypeface(IuvoApplication.typeface);
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_b); textView.setTypeface(IuvoApplication.typeface);
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_c); textView.setTypeface(IuvoApplication.typeface);
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_d); textView.setTypeface(IuvoApplication.typeface);
+            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_f); textView.setTypeface(IuvoApplication.typeface);
             
             
             if(courseCountAttempted == 0) { // Show the gray bar only to indicate no grades.
@@ -628,23 +614,23 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 rootView.setId(LIST_TUTORIAL);
 
                 TextView headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_header);
-            	headerTextView.setTypeface(typeFace);
+            	headerTextView.setTypeface(IuvoApplication.typeface);
             	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_semester_title);
-            	headerTextView.setTypeface(typeFace);
+            	headerTextView.setTypeface(IuvoApplication.typeface);
             	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_group_title);
-            	headerTextView.setTypeface(typeFace);
+            	headerTextView.setTypeface(IuvoApplication.typeface);
             	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_course_grade0);
-            	headerTextView.setTypeface(typeFace);
+            	headerTextView.setTypeface(IuvoApplication.typeface);
             	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_sample_group1);
-            	headerTextView.setTypeface(typeFace);
+            	headerTextView.setTypeface(IuvoApplication.typeface);
             	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_course_grade1);
-            	headerTextView.setTypeface(typeFace);
+            	headerTextView.setTypeface(IuvoApplication.typeface);
             	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_course_grade2);
-            	headerTextView.setTypeface(typeFace);
+            	headerTextView.setTypeface(IuvoApplication.typeface);
             	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_sample_group2);
-            	headerTextView.setTypeface(typeFace);
+            	headerTextView.setTypeface(IuvoApplication.typeface);
             	headerTextView = (TextView)rootView.findViewById(R.id.plan_getting_started_course_grade3);
-            	headerTextView.setTypeface(typeFace);
+            	headerTextView.setTypeface(IuvoApplication.typeface);
                 
 	            return rootView;
 
@@ -698,7 +684,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	                TextView headerTextView = (TextView)rootView.findViewById(R.id.header_name_textview);
                 
 
-	            	headerTextView.setTypeface(typeFace);
+	            	headerTextView.setTypeface(IuvoApplication.typeface);
 	                headerTextView.setText(headerText);
 	                
 	                rootView.setTag(groupIDs.get(position));
@@ -750,7 +736,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		            
 		            TextView gradeText = (TextView)rootView.findViewById(R.id.plan_item_grade);
 		            
-	                gradeText.setTypeface(typeFace);
+	                gradeText.setTypeface(IuvoApplication.typeface);
 		            gradeText.setText(courseGrades.get(position));
 		            
 		            rootView.setTag(courseIDs.get(position));
@@ -845,7 +831,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 
                 TextView headerTextView = (TextView)rootView.findViewById(R.id.more_item_title);
                 headerTextView.setText(headerTitle);
-	            headerTextView.setTypeface(typeFace);
+	            headerTextView.setTypeface(IuvoApplication.typeface);
                 
 	            headerTextView = (TextView)rootView.findViewById(R.id.more_item_subtitle);
 	            headerTextView.setText(headerSubtitle);
@@ -859,6 +845,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	            	break;
 	            case 3:
 	            	rootView.setBackgroundColor(getResources().getColor(R.color.theme_green));
+	            	break;
+	            case 4:
+	            	rootView.setBackgroundColor(getResources().getColor(R.color.gray));
 	            	break;
 	            }
 	            
@@ -883,16 +872,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 								startActivity(intent);
 							}
 							break;
-						case 1: // Backup/Restore
+						case 1: // GPA Scale
+							intent = new Intent(mContext, PointsActivity.class);
+	    					startActivity(intent);
+							break;
+						case 2: // Backup/Restore
 							intent = new Intent(mContext, BackupActivity.class);
 	    					startActivity(intent);
 							break;
-							
-						case 2: // Tutorial
+						case 3: // Tutorial
 							intent = new Intent(mContext, StartHelpActivity.class);
 	    					startActivity(intent);
 							break;
-						case 3: // About
+						case 4: // About
 							intent = new Intent(mContext, AboutActivity.class);
 	    					startActivity(intent);
 							break;
@@ -909,7 +901,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * Pops up with a dialog so that user can edit their profile.
      */
     public void menuEditProfile() {
-    	Dialogs.editProfile(this, this.getLayoutInflater(), iuvoSettings).show();
+    	Dialogs.editProfile(this, this.getLayoutInflater(), IuvoApplication.settings).show();
     }
     
     /**
@@ -945,7 +937,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
     public void saveProfileChanges(String name, String school, String major, String classification) {
     	
-    	SharedPreferences.Editor iuvoSettingsEditor = iuvoSettings.edit();
+    	SharedPreferences.Editor iuvoSettingsEditor = IuvoApplication.settings.edit();
     	iuvoSettingsEditor.putString("name", name);
     	iuvoSettingsEditor.putString("school", school);
     	iuvoSettingsEditor.putString("major", major);

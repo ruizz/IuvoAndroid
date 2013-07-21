@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -47,7 +46,7 @@ public class GroupsActivity extends ListActivity {
 	        groupGPA = ", " + groupGPA + " GPA";
 
 	        TextView textView = (TextView) v.findViewById(R.id.group_name_textview);
-            textView.setTypeface(typeface);
+            textView.setTypeface(IuvoApplication.typeface);
             
             textView = (TextView) v.findViewById(R.id.group_class_count_textview);
             textView.setText((CharSequence) (courseCount + groupGPA));
@@ -88,9 +87,6 @@ public class GroupsActivity extends ListActivity {
 		}
 	};
 	
-	// Typeface for pretty lobster font.
-	Typeface typeface;
-	
 	// Strings defined globally here since they'll be used in a loop.
 	String SINGLE_COURSE = " Course";
 	String MULTIPLE_COURSES = " Courses";
@@ -105,8 +101,6 @@ public class GroupsActivity extends ListActivity {
 		
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
-		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 		
 		// Set up our drag sort ListView
 		DragSortListView dragSortListView = (DragSortListView) getListView();

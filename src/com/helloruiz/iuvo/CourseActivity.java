@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -42,10 +41,6 @@ public class CourseActivity extends Activity {
 	String semesterColor = "None";
 	EditText nameEditText;
 	
-	// Typeface for pretty lobster font.
-	Typeface typeface;
-
-	
 	/**
 	 * Overrides
 	 */
@@ -55,8 +50,6 @@ public class CourseActivity extends Activity {
 		setContentView(R.layout.activity_course);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
-		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 		
 		Intent intent = getIntent();
 		id = intent.getIntExtra(MainActivity.MAINACTIVITY_COURSE_ID, -1);
@@ -88,19 +81,19 @@ public class CourseActivity extends Activity {
 		nameEditText.setText((CharSequence) name);
 		
 		TextView textView;
-		textView = (TextView) findViewById(R.id.course_hours_textview); textView.setTypeface(typeface);
+		textView = (TextView) findViewById(R.id.course_hours_textview); textView.setTypeface(IuvoApplication.typeface);
 		textView.setText(String.valueOf(hours));
 		
-        textView = (TextView) findViewById(R.id.course_grade_textview); textView.setTypeface(typeface);
+        textView = (TextView) findViewById(R.id.course_grade_textview); textView.setTypeface(IuvoApplication.typeface);
         textView.setText(grade);
         
-        textView = (TextView) findViewById(R.id.course_exclude_from_gpa_textview); textView.setTypeface(typeface);
+        textView = (TextView) findViewById(R.id.course_exclude_from_gpa_textview); textView.setTypeface(IuvoApplication.typeface);
         textView.setText(excludeFromGPA);
 
-        textView = (TextView) findViewById(R.id.course_group_textview); textView.setTypeface(typeface);
+        textView = (TextView) findViewById(R.id.course_group_textview); textView.setTypeface(IuvoApplication.typeface);
         textView.setText(group);
         
-        textView = (TextView) findViewById(R.id.course_semester_textview); textView.setTypeface(typeface);
+        textView = (TextView) findViewById(R.id.course_semester_textview); textView.setTypeface(IuvoApplication.typeface);
         textView.setText(semester);
         
         // Not sure what's causing these views to change random colors. This ensures that they stay blue.
@@ -244,39 +237,42 @@ public class CourseActivity extends Activity {
 	               public void onClick(DialogInterface dialog, int which) {
 	               switch(which) {
 	               case 1:
-	            	   grade = "A ";
+	            	   grade = "A+";
 	            	   break;
 	               case 2:
-	            	   grade = "A-";
+	            	   grade = "A ";
 	            	   break;
 	               case 3:
-	            	   grade = "B+";
+	            	   grade = "A-";
 	            	   break;
 	               case 4:
-	            	   grade = "B ";
+	            	   grade = "B+";
 	            	   break;
 	               case 5:
-	            	   grade = "B-";
+	            	   grade = "B ";
 	            	   break;
 	               case 6:
-	            	   grade = "C+";
+	            	   grade = "B-";
 	            	   break;
 	               case 7:
-	            	   grade = "C ";
+	            	   grade = "C+";
 	            	   break;
 	               case 8:
-	            	   grade = "C-";
+	            	   grade = "C ";
 	            	   break;
 	               case 9:
-	            	   grade = "D+";
+	            	   grade = "C-";
 	            	   break;
 	               case 10:
-	            	   grade = "D ";
+	            	   grade = "D+";
 	            	   break;
 	               case 11:
-	            	   grade = "D-";
+	            	   grade = "D ";
 	            	   break;
 	               case 12:
+	            	   grade = "D-";
+	            	   break;
+	               case 13:
 	            	   grade = "F ";
 	            	   break;
 	               default:

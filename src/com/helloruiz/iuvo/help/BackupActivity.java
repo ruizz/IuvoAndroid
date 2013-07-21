@@ -3,7 +3,6 @@ package com.helloruiz.iuvo.help;
 import java.io.IOException;
 
 import android.app.Activity;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,50 +12,29 @@ import android.widget.Toast;
 
 import com.helloruiz.iuvo.Dialogs;
 import com.helloruiz.iuvo.R;
-import com.helloruiz.iuvo.database.DatabaseHandler;
+import com.helloruiz.iuvo.database.IuvoApplication;
 
 public class BackupActivity extends Activity {
-
-	/**
-	 * Variables
-	 */
-	// Typeface for pretty lobster font.
-    static Typeface typeFace;
-    
-    // DatabaseHandler for backup/restore. May take backup/restore out of DatabaseHandler one day.
-    DatabaseHandler db;
-    
-    // We'll use this do display any dialogs. All the heavy lifting done in Dialogs.java
-    static Dialogs dialogs = new Dialogs();
 	
+    /**
+     * Overrides
+     */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_backup);
 		// Show the Up button in the action bar.
-		setupActionBar();
-		
-		db = new DatabaseHandler(this);
-		typeFace = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		TextView textView;
-		textView = (TextView) findViewById(R.id.backup_title_textview); textView.setTypeface(typeFace);
-		textView = (TextView) findViewById(R.id.backup_backup_title_textview); textView.setTypeface(typeFace);
-		textView = (TextView) findViewById(R.id.backup_restore_title_textview); textView.setTypeface(typeFace);
+		textView = (TextView) findViewById(R.id.backup_title_textview); textView.setTypeface(IuvoApplication.typeface);
+		textView = (TextView) findViewById(R.id.backup_backup_title_textview); textView.setTypeface(IuvoApplication.typeface);
+		textView = (TextView) findViewById(R.id.backup_restore_title_textview); textView.setTypeface(IuvoApplication.typeface);
 		
 		// Not sure what's causing these views to change random colors. This ensures that they stay blue.
 		View view;
         view = findViewById(R.id.backup_backup_linearlayout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
         view = findViewById(R.id.backup_restore_linearlayout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-	}
-
-	/**
-	 * Set up the {@link android.app.ActionBar}.
-	 */
-	private void setupActionBar() {
-
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-
 	}
 
 	@Override
@@ -75,13 +53,16 @@ public class BackupActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
+	/**
+	 * Voids
+	 */
 	public void backup(View view) {
-		if (db.doesBackupExist()) {
-			dialogs.exportConfirm(this);
+		if (IuvoApplication.db.doesBackupExist()) {
+			Dialogs.exportConfirm(this);
 		} else {
 			try {
-				db.exportDatabase();
+				IuvoApplication.db.exportDatabase();
 			} catch (IOException e) {
 				Toast.makeText(getApplicationContext(), view.getResources().getString(R.string.more_export_fail), Toast.LENGTH_LONG).show();
 			} finally {
@@ -91,8 +72,8 @@ public class BackupActivity extends Activity {
 	}
 	
 	public void restore(View view) {
-		if (db.doesBackupExist()) {
-			dialogs.importConfirm(this);
+		if (IuvoApplication.db.doesBackupExist()) {
+			Dialogs.importConfirm(this);
 		} else {
 			Toast.makeText(getApplicationContext(), view.getResources().getString(R.string.more_import_not_found), Toast.LENGTH_LONG).show();
 		}

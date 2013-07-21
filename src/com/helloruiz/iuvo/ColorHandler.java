@@ -4,7 +4,6 @@ import android.content.Context;
 
 /**
  * For handling colors. Give it a string such as "Sweet Pea Green", and it'll turn the color value.
- * @author Ruiz
  *
  */
 public class ColorHandler {

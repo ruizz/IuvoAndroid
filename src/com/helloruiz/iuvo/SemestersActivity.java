@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -49,7 +48,7 @@ public class SemestersActivity extends ListActivity {
 	        semesterGPA = ", " + semesterGPA + " GPA";
 
 	        TextView textView = (TextView) v.findViewById(R.id.semester_name_textview);
-            textView.setTypeface(typeface);
+            textView.setTypeface(IuvoApplication.typeface);
             
             textView = (TextView) v.findViewById(R.id.semester_class_count_textview);
             textView.setText((CharSequence) (courseCount + semesterGPA));
@@ -90,9 +89,6 @@ public class SemestersActivity extends ListActivity {
 			deleteSemesterConfirm(which);			
 		}
 	};
-	
-	// Typeface for pretty lobster font.
-	Typeface typeface;
 
 	// Strings defined globally here since they'll be used in a loop.
 	String SINGLE_COURSE = " Course";
@@ -111,8 +107,6 @@ public class SemestersActivity extends ListActivity {
 		
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
-		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/lobster.otf");
 		
 		// Set up our drag sort ListView
 		DragSortListView dragSortListView = (DragSortListView) getListView();

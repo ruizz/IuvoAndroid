@@ -20,7 +20,7 @@ import com.helloruiz.iuvo.database.Group;
 import com.helloruiz.iuvo.database.IuvoApplication;
 
 /**
- * Stores all dialogs. Lots of lines just to display dialogs, but I'm sure that it's cleaner
+ * Stores dialogs. Lots of lines just to display dialogs, but I'm sure that it's cleaner
  * to isolate them all and do the heavy lifting here than to pollute all of the other code.
  * Not all dialogs used in the app are located here. This is here to simply reduce some lines in
  * activities that have too much code.
@@ -334,7 +334,7 @@ public class Dialogs {
 	/** 
 	 * Dialog for confirming export
 	 */
-	public void exportConfirm(final Activity activity) {
+	public static void exportConfirm(final Activity activity) {
 		
 		String dialogAddTitle = activity.getString(R.string.dialog_title_backup_found);
 		String dialogText1 = activity.getString(R.string.dialog_backup_found_export);
@@ -371,7 +371,7 @@ public class Dialogs {
 	/** 
 	 * Dialog for confirming export
 	 */
-	public void importConfirm(final Activity activity) {
+	public static void importConfirm(final Activity activity) {
 		
 		String dialogAddTitle = activity.getString(R.string.dialog_title_backup_found);
 		String dialogText1 = activity.getString(R.string.dialog_backup_found_import);

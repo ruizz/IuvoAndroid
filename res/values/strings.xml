@@ -39,7 +39,7 @@
     <string name="me_classification_desc">Classification</string>
     <string name="me_gpa">0.00</string>
     <string name="me_gpa_desc">Overall GPA</string>
-   	<string name="me_gpa_with_exclusions_desc">GPA with exclusions</string>
+    <string name="me_gpa_with_exclusions_desc">GPA with exclusions</string>
     <string name="me_progress_percentage">0%</string>
     <string name="me_progress_percentage_desc">Completion</string>
     <string name="me_progress_fraction">0/0</string>
@@ -73,6 +73,23 @@
     <string name="dialog_button_import">Import</string>
     <string name="dialog_button_export">Export</string>
 
+    <!-- Points Activity -->
+    <string name="title_activity_points">GPA Scale</string>
+	<string name="points_aplus">A+</string>
+	<string name="points_a">A</string>
+	<string name="points_aminus">A-</string>
+	<string name="points_bplus">B+</string>
+	<string name="points_b">B</string>
+	<string name="points_bminus">B-</string>
+	<string name="points_cplus">C+</string>
+	<string name="points_c">C</string>
+	<string name="points_cminus">C-</string>
+	<string name="points_dplus">D+</string>
+	<string name="points_d">D</string>
+	<string name="points_dminus">D-</string>
+	<string name="points_f">F</string>
+	<string name="toast_points_not_saved">Points not saved. One or more entries were left blank.</string>
+    
     <!-- Groups Activity -->
     <string name="title_activity_groups">Groups</string>
     <string name="dialog_delete_group_confirm_text">Are you sure that you want to delete this group? Any courses under this group will be hidden. This cannot be undone.</string>
@@ -112,20 +129,17 @@
     <string name="course_updated">Course updated.</string>
     <string name="course_not_added">Course name missing</string>
 
-    <!-- GPA Activity -->
-    <string name="title_activity_gpa">GPA Breakdowns</string>
-    
     <!-- Get Started Page -->
     <string name="title_activity_start_help">Getting Started</string>
     <string name="plan_getting_started_header">Welcome to your degree plan.</string>
     <string name="plan_getting_started_note1">Let\'s face it, placing your ENTIRE college career into an app probably won\'t be the fastest thing you\'ll ever do, but Iuvo\'s simple interface should make it as easy and quick as possible. With a good amount of effort and a LOT of data entry, we should have a beautiful, flexible, and detailed degree plan set up in no time!</string>
     <string name="plan_getting_started_note1_1"><i>(You should back up your degree plan in the \'more\' tab afterwards so that you don\'t lose all of your hard earned work!)</i></string>
     <string name="plan_getting_started_note2">First, start off by adding semesters. These aren\'t needed to construct your degree plan, but Iuvo uses your semesters to help \'color-code\' your your courses. (It will make more sense later!) If you need help while adding or managing your semesters, hit the \'help\' button that displays at the top of the semesters screen.</string>
-    <string name="plan_getting_started_note3">Next, we\'ll add groups. Now this is important. Groups are the fundamental building block of your degree plan and are used to organize your courses. The courses that you create in the next step will appear in these groups. Without groups, you can\'t construct a degree plan at all! If still need help with understanding and using groups, hit the \'help\' button that displays at the top of the groups screen. Once you add your first group, this tutorial will disappear and your degree plan will take its place. You can view this tutorial in the \'more\' tab if you need to read it again.</string>
+    <string name="plan_getting_started_note3">Next, we\'ll add groups. Groups are the fundamental building block of your degree plan and are used to organize your courses the same that way your degree plan does. The courses that you create in the next step will appear in these groups. Without groups, none of your courses will be able to appear on your degree plan at all! If still need help with understanding and using groups, hit the \'help\' button that displays at the top of the groups screen. Once you add your first group, this tutorial will disappear and your degree plan will take its place. You can view this tutorial in the \'more\' tab if you need to read it again.</string>
     <string name="plan_getting_started_note4">Finally, we\'ll complete the degree plan by adding every single course from your curriculum. Courses contiain a lot more information than semesters or groups, and are therefore explained in more detail through the \'help\' button in the course screen. You should read this so that you can add all of your courses properly, including transfer credit and credit that is not part of your degree plan. Adding your courses is the final step. Once you\'re done, Iuvo will be able to give you detailed breakdowns about your GPA, grade distribution, and other information in the \'me\' tab.</string>
     <string name="plan_getting_started_note5">Below is a small sample of what your degree plan should look like. It includes a two semesters, two groups, and three courses. Remember, this tutorial will disappear after adding your first group. You can always view it in the \'more\' tab if you need to read it again. Good luck!</string>
     <string name="plan_getting_started_semester_title">Spring 20XX</string>
-    <string name="plan_getting_started_semester_subtitle">X Courses</string>
+    <string name="plan_getting_started_semester_subtitle">X Courses, X GPA</string>
     <string name="plan_getting_started_group_title">Mathematics</string>
     <string name="plan_getting_started_course_title">MATH 151</string>
     <string name="plan_getting_started_course_grade">B+</string>
@@ -192,7 +206,7 @@
     <string name="course_credit_image">A, B, C, D, F</string>
     <string name="course_help_title">Are you a student? Because you must have class.</string>
     <string name="course_help_name">Adding courses to your degree plan is easy. Start off with the name. Call it whatever you want. \"ENGR 123\", \"Calculus II\" or \"[Professor name] sucks!\" are all perfectly acceptable!</string>
-    <string name="course_help_credit">Next up are credit hours and grade. Iuvo should cover all of the possible values for U.S. post-secondary courses. If not, then let the developer know so that it can be included in an update.</string>
+    <string name="course_help_credit">Next up are credit hours and grade. Iuvo should cover all of the possible values for U.S. post-secondary courses. If not, then let the developer know so that it can be included in an update. Some international institutions use grades such as \'O\', \'T\', or \'AA\'. For those, please consider using \'A+\'</string>
     <string name="course_help_exclude">Some institutions do not include transfer credit in your GPA calculation. If you don’t want Iuvo to include a course in your GPA calculations, just let it know.</string>
     <string name="course_help_group">Assign group that you created to your course. Your course will appear under that group in your degree plan. Courses that do not have a group assigned to them will be hidden from your degree plan. You can edit your hidden courses in the ‘more’ tab of the home screen.</string>
     <string name="course_help_semester">Finally, assign a semester that you created to your course. Your course will appear in your degree plan while rockin’ that semester’s color.</string>
@@ -208,4 +222,5 @@
     <string name="toast_no_email">No email apps found.</string>
     <string name="toast_no_market">No market apps found?</string>
     <string name="toast_error_version">Error: Couldn\'t get version number.</string>
+
 </resources>
