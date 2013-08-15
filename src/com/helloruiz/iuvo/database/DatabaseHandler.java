@@ -1091,10 +1091,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	    String countQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + 
 	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?) OR " +
+	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?) OR " +
 	    		"(" + KEY_GROUP_ID + "!=? AND " + KEY_GRADE + "=?)";
 	    
 	    
-	    cursor = db.rawQuery(countQuery, new String[] {"-1", "A ", "-1", "A-"});
+	    cursor = db.rawQuery(countQuery, new String[] {"-1", "A+", "-1", "A ", "-1", "A-"});
 	    
 	    count += cursor.getCount();
 	    cursor.close();

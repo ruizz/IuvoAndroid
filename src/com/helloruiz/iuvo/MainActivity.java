@@ -187,15 +187,18 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			mManageGroups.setVisible(false);
 			mManageSemesters.setVisible(false);
 			mAddCourse.setVisible(false);
+			setTitle("Iuvo");
 			break;
 		case 1:
 			mEditProfile.setVisible(false);
+			setTitle("");
 			break;
 		default:
 			mEditProfile.setVisible(false);
 			mManageGroups.setVisible(false);
 			mManageSemesters.setVisible(false);
 			mAddCourse.setVisible(false);
+			setTitle("Iuvo");
 			break;
 		}
 		

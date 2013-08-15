@@ -31,14 +31,16 @@ public class CourseActivity extends Activity {
 	int position = -1;
 	String name = "";
 	int hours = 3;
-	String grade = "None";
+	String grade = "-";
 	String excludeFromGPA = "No";
 	int semesterID = -1;
 	int oldGroupID = -1;
 	int groupID = -1;
 	String semester = "None";
-	String group = "None (Hidden)";
+	String group = "None";
 	String semesterColor = "None";
+	String groupSubText = "Course will be hidden.";
+	String semesterSubText = "No semester assigned.";
 	EditText nameEditText;
 	
 	/**
@@ -60,7 +62,8 @@ public class CourseActivity extends Activity {
 			position = course.getPosition();
 			name = course.getName();
 			hours = course.getHours();
-			grade = course.getGrade();
+			if (!course.getGrade().equals("None"))
+				grade = course.getGrade();
 			if (course.getExcludedFromGPA() == 1)
 				excludeFromGPA = "Yes";
 			semesterID = course.getSemesterID();
@@ -69,9 +72,15 @@ public class CourseActivity extends Activity {
 			if (semesterID != -1) {
 				semester = IuvoApplication.db.getSemester(semesterID).getName();
 				semesterColor = IuvoApplication.db.getSemester(semesterID).getColor();
+				semesterSubText = String.valueOf(IuvoApplication.db.getCourseCountBySemester(semesterID)) + " Course";
+				if (IuvoApplication.db.getCourseCountBySemester(semesterID) != 1)
+					semesterSubText += "s";
 			}
 			if (groupID != -1) {
 				group = IuvoApplication.db.getGroup(groupID).getName();
+				groupSubText = String.valueOf(IuvoApplication.db.getCourseCountByGroup(groupID)) + " Course";
+				if (IuvoApplication.db.getCourseCountByGroup(groupID) != 1)
+					groupSubText += "s";
 			}
 			
 			setTitle(name);
@@ -93,8 +102,18 @@ public class CourseActivity extends Activity {
         textView = (TextView) findViewById(R.id.course_group_textview); textView.setTypeface(IuvoApplication.typeface);
         textView.setText(group);
         
+        textView = (TextView) findViewById(R.id.course_group_class_count_textview);
+        textView.setText(groupSubText);
+        
         textView = (TextView) findViewById(R.id.course_semester_textview); textView.setTypeface(IuvoApplication.typeface);
         textView.setText(semester);
+        
+        textView = (TextView) findViewById(R.id.course_semester_class_count_textview);
+        textView.setText(semesterSubText);
+        
+        textView = (TextView) findViewById(R.id.course_group_header_textview); textView.setTypeface(IuvoApplication.typeface);
+        
+        textView = (TextView) findViewById(R.id.course_semester_header_textview); textView.setTypeface(IuvoApplication.typeface);
         
         // Not sure what's causing these views to change random colors. This ensures that they stay blue.
         View view;
@@ -104,9 +123,15 @@ public class CourseActivity extends Activity {
 	    view = findViewById(R.id.course_grade_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
 	    view = findViewById(R.id.course_exclude_from_gpa_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
 	    view = findViewById(R.id.course_group_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	    if (groupID == -1) {
+        	view.setBackgroundColor(getResources().getColor(R.color.gray));
+        } else {
+        	view.setBackgroundColor(getResources().getColor(R.color.theme_blue)); 
+        }
+	    
 	    view = findViewById(R.id.course_semester_linear_layout); 
-        if (semesterID == -1) {
-        	view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	    if (semesterID == -1) {
+        	view.setBackgroundColor(getResources().getColor(R.color.gray));
         } else {
         	view.setBackgroundColor(ColorHandler.getColor(getApplicationContext(), semesterColor)); 
         }
@@ -161,6 +186,9 @@ public class CourseActivity extends Activity {
 		
 		if(id == -1) { // If user is adding a new course
 			
+			if (grade.equals("-"))
+				grade = "None";
+			
 			// Add the course to the database
 			IuvoApplication.db.addCourse(name, hours, grade, eFGPA, semesterID, groupID);
 			
@@ -176,7 +204,7 @@ public class CourseActivity extends Activity {
 			nameEditText.requestFocus();
 			
 			// Reset the grade. I feel that the others shouldn't be changed unless the user wants to change them.
-			grade = "None";
+			grade = "-";
 			TextView textView;
      	   	textView = (TextView) findViewById(R.id.course_grade_textview);
      	   	textView.setText(grade);
@@ -184,6 +212,9 @@ public class CourseActivity extends Activity {
 			Toast.makeText(this, getResources().getString(R.string.course_added), Toast.LENGTH_LONG).show();
 		
 		} else { // If user is updating an old course
+			
+			if (grade.equals("-"))
+				grade = "None";
 			
 			if (oldGroupID != groupID) { // If user changed the group of the course
 				IuvoApplication.db.decrementCoursePositions(position + 1, oldGroupID);
@@ -276,7 +307,7 @@ public class CourseActivity extends Activity {
 	            	   grade = "F ";
 	            	   break;
 	               default:
-	            	   grade = "None";
+	            	   grade = "-";
 	               }
 	               
 	               TextView textView;
@@ -322,7 +353,7 @@ public class CourseActivity extends Activity {
 		List<String> groupNames = new ArrayList<String>();
 		List<String> groupIDs = new ArrayList<String>();
 		
-		groupNames.add("None (Hidden)");
+		groupNames.add("None");
 		groupIDs.add("-1");
 		for (Group g : groupsInDatabase) {
 			groupNames.add(g.getName());
@@ -345,6 +376,21 @@ public class CourseActivity extends Activity {
 	            	   TextView textView;
 	            	   textView = (TextView) findViewById(R.id.course_group_textview);
 	            	   textView.setText(group);
+	            	   
+	            	   View view;
+	            	   view = findViewById(R.id.course_group_linear_layout);
+	            	   if (group.equals("None")) {
+	            		   view.setBackgroundColor(getResources().getColor(R.color.gray));
+	            		   groupSubText = "Course will be hidden.";
+	            	   } else {
+	            		   view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	            		   groupSubText = String.valueOf(IuvoApplication.db.getCourseCountByGroup(groupID)) + " Course";
+	            		   if (IuvoApplication.db.getCourseCountByGroup(groupID) != 1)
+	            			   groupSubText += "s";
+	            	   } 
+	            	   
+	            	   textView = (TextView) findViewById(R.id.course_group_class_count_textview);
+	            	   textView.setText(groupSubText);
 	               }
 	    });
 	    
@@ -389,12 +435,18 @@ public class CourseActivity extends Activity {
 	            	   view = findViewById(R.id.course_semester_linear_layout);
 	            	   if (semester.equals("None")) {
 	            		   semesterColor = "None";
-	            		   view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	            		   view.setBackgroundColor(getResources().getColor(R.color.gray));
+	            		   semesterSubText = "No semester assigned.";
 	            	   } else {
 	            		   semesterColor = IuvoApplication.db.getSemester(semesterID).getColor();
 	            		   view.setBackgroundColor(ColorHandler.getColor(getApplicationContext(), semesterColor)); 
-	            	   }
+	            		   semesterSubText = String.valueOf(IuvoApplication.db.getCourseCountBySemester(semesterID)) + " Course";
+	            		   if (IuvoApplication.db.getCourseCountBySemester(semesterID) != 1)
+	            			   semesterSubText += "s";
+	            	   } 
 	            	   
+	            	   textView = (TextView) findViewById(R.id.course_semester_class_count_textview);
+	            	   textView.setText(semesterSubText);
 	               }
 	    });
 	    

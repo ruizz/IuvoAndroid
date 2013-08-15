@@ -1,199 +1,282 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/theme_white"
-    android:clipToPadding="false"
     android:padding="10dp"
-    android:scrollbars="none"
+    android:clipToPadding="false"
+	android:scrollbars="none"
+    android:background="@color/theme_white"
     tools:context=".CourseActivity" >
 
-    <!-- Name Row -->
-    <LinearLayout
-        android:id="@+id/course_name_linear_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/theme_blue"
-        android:baselineAligned="false"
-        android:orientation="vertical"
-        android:padding="10sp"
-        android:paddingBottom="5sp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_name"
-            android:textColor="@color/white" />
-        
-        <!-- Used go grab focus after clearing the focus from the
-        EditText below it. Ignore the useless warning. DON'T LISTEN
-        TO IT LINEARLAYOUT, YOU'RE SO USEFUL AND SPECIAL. -->
-        <LinearLayout 
-			android:focusable="true"
-			android:focusableInTouchMode="true" 
-			android:layout_width="0px"
-			android:layout_height="0px" />
-
-        <EditText
-            android:id="@+id/course_name_edittext"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="26sp"
-            android:inputType="textAutoComplete" />
-    </LinearLayout>
-
-    <!-- Hours and Grade Row -->
-    <LinearLayout
-        android:id="@+id/course_hours_grade_gpa_linear_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/course_name_linear_layout"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:baselineAligned="false" >
-    	
-        <!-- Hours -->
-    	<LinearLayout
-			android:id="@+id/course_hours_linear_layout"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:layout_marginRight="5dp"
-			android:background="@color/theme_blue"
-			android:baselineAligned="false"
-			android:orientation="vertical"
-			android:padding="10sp"
-			android:clickable="true"
-			android:onClick="editHours" >
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
 	
-			<TextView
+	    <!-- Name Row -->
+	    <LinearLayout
+	        android:id="@+id/course_name_linear_layout"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@color/theme_blue"
+	        android:baselineAligned="false"
+	        android:orientation="vertical"
+	        android:padding="10sp"
+	        android:paddingBottom="5sp" >
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/dialog_name"
+	            android:textColor="@color/white" />
+	        
+	        <!-- Used go grab focus after clearing the focus from the
+	        EditText below it. Ignore the useless warning. DON'T LISTEN
+	        TO IT LINEARLAYOUT, YOU'RE SO USEFUL AND SPECIAL. -->
+	        <LinearLayout 
+				android:focusable="true"
+				android:focusableInTouchMode="true" 
+				android:layout_width="0px"
+				android:layout_height="0px" />
+	
+	        <EditText
+	            android:id="@+id/course_name_edittext"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:textSize="26sp"
+	            android:inputType="textAutoComplete" />
+	    </LinearLayout>
+	
+	    <!-- Hours and Grade Row -->
+	    <LinearLayout
+	        android:id="@+id/course_hours_grade_gpa_linear_layout"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/course_name_linear_layout"
+	        android:orientation="horizontal"
+	        android:paddingTop="10dp"
+	        android:baselineAligned="false" >
+	    	
+	        <!-- Hours -->
+	    	<LinearLayout
+				android:id="@+id/course_hours_linear_layout"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/dialog_hours"
-				android:textColor="@color/white" />
-	
-			<TextView
-				android:id="@+id/course_hours_textview"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
-				android:text="@string/dialog_none"
-				android:textColor="@color/white"
-				android:textSize="26sp" />
-    	</LinearLayout>
+				android:layout_weight="1"
+				android:layout_marginRight="5dp"
+				android:background="@color/theme_blue"
+				android:baselineAligned="false"
+				android:orientation="vertical"
+				android:padding="10sp"
+				android:clickable="true"
+				android:onClick="editHours" >
 		
-    	<!-- Grade -->
-		<LinearLayout
-			android:id="@+id/course_grade_linear_layout"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:layout_marginLeft="5dp"
-			android:layout_marginRight="5dp"
-			android:background="@color/theme_blue"
-			android:baselineAligned="false"
-			android:orientation="vertical"
-			android:padding="10sp"
-			android:clickable="true"
-			android:onClick="editGrade" >
-	
-			<TextView
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/dialog_hours"
+					android:textColor="@color/white" />
+		
+				<TextView
+					android:id="@+id/course_hours_textview"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:text="@string/dialog_none"
+					android:textColor="@color/white"
+					android:textSize="26sp" />
+	    	</LinearLayout>
+			
+	    	<!-- Grade -->
+			<LinearLayout
+				android:id="@+id/course_grade_linear_layout"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/dialog_grade"
-				android:textColor="@color/white" />
-	
-			<TextView
-				android:id="@+id/course_grade_textview"
-				android:layout_width="fill_parent"
+				android:layout_weight="1"
+				android:layout_marginLeft="5dp"
+				android:layout_marginRight="5dp"
+				android:background="@color/theme_blue"
+				android:baselineAligned="false"
+				android:orientation="vertical"
+				android:padding="10sp"
+				android:clickable="true"
+				android:onClick="editGrade" >
+		
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/dialog_grade"
+					android:textColor="@color/white" />
+		
+				<TextView
+					android:id="@+id/course_grade_textview"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:text="@string/dialog_none"
+					android:textColor="@color/white"
+					android:textSize="26sp" />
+			</LinearLayout>
+			
+			<!-- Exclude From GPA -->
+			<LinearLayout
+				android:id="@+id/course_exclude_from_gpa_linear_layout"
+				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
-				android:text="@string/dialog_none"
-				android:textColor="@color/white"
-				android:textSize="26sp" />
+				android:layout_weight="1"
+				android:layout_marginLeft="5dp"
+				android:background="@color/theme_blue"
+				android:baselineAligned="false"
+				android:orientation="vertical"
+				android:padding="10dp"
+				android:clickable="true"
+				android:onClick="editExcludeFromGPA" >
+	
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/dialog_exclude_from_gpa"
+					android:textColor="@color/white" />
+		
+				<TextView
+					android:id="@+id/course_exclude_from_gpa_textview"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:textColor="@color/white"
+					android:textSize="26sp" />
+			</LinearLayout>
+	    </LinearLayout>
+	    
+	    <!-- Group Row -->
+	    <TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/course_group_header_textview"
+	        android:textColor="@color/theme_gray"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/course_hours_grade_gpa_linear_layout"
+	        android:layout_marginTop="15dp"
+	        android:text="@string/course_group"
+	        android:textSize="26sp" />
+	    
+	    <View
+	        android:id="@+id/course_group_separator"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/lvDividerHeight"
+	        android:layout_below="@+id/course_group_header_textview"
+	        android:background="@color/theme_gray"
+	        />
+	    
+	    <!-- Group -->
+	    <LinearLayout
+	      android:id="@+id/course_group_linear_layout"
+		  android:layout_width="fill_parent"
+		  android:layout_height="wrap_content"
+		  android:layout_below="@+id/course_group_separator"
+		  android:layout_marginTop="10dp"
+		  android:orientation="horizontal"
+		  android:background="@color/gray"
+		  android:clickable="true"
+		  android:onClick="editGroup" >
+	  
+		  <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:orientation="vertical"
+		    android:padding="16sp" >
+		    
+		    <TextView
+		      android:id="@+id/course_group_textview"
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:textColor="@color/white"
+		      android:textSize="26sp" />
+		    
+		    <TextView
+		      android:id="@+id/course_group_class_count_textview"
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/course_count_dummy"
+		      android:textColor="@color/white"
+		      android:textSize="14sp" />
+		
+		  </LinearLayout>
+		  
+		  <ImageView
+		    android:id="@id/drag_handle"
+		    android:background="@drawable/drag"
+		    android:layout_width="75dp"
+		    android:layout_height="75dp"
+		    android:layout_weight="0"
+		    android:layout_gravity="center"
+		    android:contentDescription="@string/a_picture" />
+		  
 		</LinearLayout>
 		
-		<!-- Exclude From GPA -->
-		<LinearLayout
-			android:id="@+id/course_exclude_from_gpa_linear_layout"
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
-			android:layout_weight="1"
-			android:layout_marginLeft="5dp"
-			android:background="@color/theme_blue"
-			android:baselineAligned="false"
-			android:orientation="vertical"
-			android:padding="10dp"
-			android:clickable="true"
-			android:onClick="editExcludeFromGPA" >
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/dialog_exclude_from_gpa"
-				android:textColor="@color/white" />
-	
-			<TextView
-				android:id="@+id/course_exclude_from_gpa_textview"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
-				android:textColor="@color/white"
-				android:textSize="26sp" />
+		<!-- Semester Header -->
+		<TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/course_semester_header_textview"
+	        android:textColor="@color/theme_gray"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/course_group_linear_layout"
+	        android:layout_marginTop="15dp"
+	        android:text="@string/course_semester"
+	        android:textSize="26sp" />
+	    
+	    <View
+	        android:id="@+id/course_semester_separator"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/lvDividerHeight"
+	        android:layout_below="@+id/course_semester_header_textview"
+	        android:background="@color/theme_gray"
+	        />
+	    
+	    <!-- Semester -->
+	    <LinearLayout
+		  android:id="@+id/course_semester_linear_layout"
+		  android:layout_width="fill_parent"
+		  android:layout_height="wrap_content"
+		  android:layout_below="@+id/course_semester_separator"
+		  android:layout_marginTop="10dp"
+		  android:orientation="horizontal"
+		  android:background="@color/theme_blue"
+		  android:clickable="true"
+		  android:onClick="editSemester" >
+	  
+		  <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:orientation="vertical"
+		    android:padding="16sp" >
+		    
+		    <TextView
+		      android:id="@+id/course_semester_textview"
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:textColor="@color/white"
+		      android:textSize="26sp" />
+		    
+		    <TextView
+		      android:id="@+id/course_semester_class_count_textview"
+		      android:layout_width="fill_parent"
+		      android:layout_height="fill_parent"
+		      android:text="@string/course_count_dummy"
+		      android:textColor="@color/white"
+		      android:textSize="14sp" />
+		
+		  </LinearLayout>
+		  
+		  <ImageView
+		    android:id="@id/drag_handle"
+		    android:background="@drawable/drag"
+		    android:layout_width="75dp"
+		    android:layout_height="75dp"
+		    android:layout_weight="0"
+		    android:layout_gravity="center"
+		    android:contentDescription="@string/a_picture" />
+		  
 		</LinearLayout>
-    </LinearLayout>
-    
-    <!-- Group Row -->
-    <LinearLayout
-        android:id="@+id/course_group_linear_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/course_hours_grade_gpa_linear_layout"
-        android:layout_marginTop="10dp"
-        android:background="@color/theme_blue"
-        android:baselineAligned="false"
-        android:orientation="vertical"
-        android:padding="10sp"
-        android:clickable="true"
-        android:onClick="editGroup" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_group"
-            android:textColor="@color/white" />
-
-        <TextView
-			android:id="@+id/course_group_textview"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:textColor="@color/white"
-			android:textSize="26sp" />
-    </LinearLayout>
-	
-	<!-- Semester Row -->
-    <LinearLayout
-        android:id="@+id/course_semester_linear_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/course_group_linear_layout"
-        android:layout_marginTop="10dp"
-        android:background="@color/theme_blue"
-        android:baselineAligned="false"
-        android:orientation="vertical"
-        android:padding="10sp"
-        android:clickable="true"
-        android:onClick="editSemester" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_semester"
-            android:textColor="@color/white" />
-
-        <TextView
-			android:id="@+id/course_semester_textview"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:textColor="@color/white"
-			android:textSize="26sp" />
-    </LinearLayout>
-
-</RelativeLayout>
+	    
+	</RelativeLayout>
+</ScrollView>
