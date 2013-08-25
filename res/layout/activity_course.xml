@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:clipToPadding="false"
-	android:scrollbars="none"
+	android:scrollbarStyle="outsideOverlay"
     android:background="@color/theme_white"
     tools:context=".CourseActivity" >
 
@@ -12,22 +12,37 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content" >
 	
+	    <!-- Name Header -->
+		<TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/course_name_header"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="26sp"
+	        android:textColor="@color/theme_gray"
+	        android:text="@string/dialog_name"
+	        />
+		
+		<View
+		    android:id="@+id/course_name_divider"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/lvDividerHeight"
+	        android:layout_below="@+id/course_name_header"
+	        android:background="@color/theme_gray"
+	        />
+	    
 	    <!-- Name Row -->
 	    <LinearLayout
 	        android:id="@+id/course_name_linear_layout"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/course_name_divider"
+	        android:layout_marginTop="10dp"
 	        android:background="@color/theme_blue"
 	        android:baselineAligned="false"
 	        android:orientation="vertical"
 	        android:padding="10sp"
 	        android:paddingBottom="5sp" >
-	
-	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/dialog_name"
-	            android:textColor="@color/white" />
 	        
 	        <!-- Used go grab focus after clearing the focus from the
 	        EditText below it. Ignore the useless warning. DON'T LISTEN
@@ -46,14 +61,36 @@
 	            android:inputType="textAutoComplete" />
 	    </LinearLayout>
 	
+	    
+	    <!-- Hours and Grade Header -->
+		<TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/course_details_header"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/course_name_linear_layout"
+	        android:layout_marginTop="15dp"
+	        android:textSize="26sp"
+	        android:textColor="@color/theme_gray"
+	        android:text="@string/dialog_details"
+	        />
+		
+		<View
+		    android:id="@+id/course_details_divider"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/lvDividerHeight"
+	        android:layout_below="@+id/course_details_header"
+	        android:background="@color/theme_gray"
+	        />
+	    
 	    <!-- Hours and Grade Row -->
 	    <LinearLayout
 	        android:id="@+id/course_hours_grade_gpa_linear_layout"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@+id/course_name_linear_layout"
+	        android:layout_below="@+id/course_details_divider"
+	        android:layout_marginTop="10dp"
 	        android:orientation="horizontal"
-	        android:paddingTop="10dp"
 	        android:baselineAligned="false" >
 	    	
 	        <!-- Hours -->

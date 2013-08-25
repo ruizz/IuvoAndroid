@@ -4,9 +4,9 @@
 	android:id="@android:id/list"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:padding="10dp"
+	android:padding="7dp"
 	android:clipToPadding="false"
-	android:scrollbars="none"
+	android:scrollbarStyle="outsideOverlay"
 	android:background="@color/theme_white"
 	android:divider="@color/transparent"
-	android:dividerHeight="10dp" />
+	android:dividerHeight="7dp" />

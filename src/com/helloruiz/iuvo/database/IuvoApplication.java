@@ -44,7 +44,7 @@ public class IuvoApplication extends Application {
 		
 		// Define everything
 		db = new DatabaseHandler(this);
-		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/lobster.otf");
+		typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Roboto-LightItalic.ttf");
         settings = getSharedPreferences("User", 0);
         updatePoints();
 	}

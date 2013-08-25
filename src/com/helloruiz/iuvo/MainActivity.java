@@ -177,7 +177,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_home, menu);
 		
-		MenuItem mEditProfile = menu.findItem(R.id.menu_edit_profile);
 		MenuItem mManageGroups = menu.findItem(R.id.menu_manage_groups);
 		MenuItem mManageSemesters = menu.findItem(R.id.menu_manage_semesters);
 		MenuItem mAddCourse = menu.findItem(R.id.menu_add_course);
@@ -190,11 +189,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			setTitle("Iuvo");
 			break;
 		case 1:
-			mEditProfile.setVisible(false);
 			setTitle("");
 			break;
 		default:
-			mEditProfile.setVisible(false);
 			mManageGroups.setVisible(false);
 			mManageSemesters.setVisible(false);
 			mAddCourse.setVisible(false);
@@ -210,9 +207,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    
 		// Handle item selection
 	    switch (item.getItemId()) {
-	        case R.id.menu_edit_profile:
-	            menuEditProfile();
-	            return true;
+	    	// Scrapping Profile Information
+	        //case R.id.menu_edit_profile:
+	            //menuEditProfile();
+	            //return true;
 	        case R.id.menu_manage_groups:
 	        	menuManageGroups();
 	        	return true;
@@ -254,6 +252,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         	View view;
         	LayoutParams params;
         	
+        	// Setting typeface for all headers
+        	textView = (TextView) rootView.findViewById(R.id.me_gpa_header); textView.setTypeface(IuvoApplication.typeface);
+        	textView = (TextView) rootView.findViewById(R.id.me_progress_header); textView.setTypeface(IuvoApplication.typeface);
+        	textView = (TextView) rootView.findViewById(R.id.me_grade_dist_header); textView.setTypeface(IuvoApplication.typeface);
+        	textView = (TextView) rootView.findViewById(R.id.me_database_header); textView.setTypeface(IuvoApplication.typeface);
+        	
+        	/* Scrapping profile information 
             // TODO Get from string XML instead
         	String userName = IuvoApplication.settings.getString("name", "");
             String userSchool = IuvoApplication.settings.getString("school", "");
@@ -291,6 +296,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	textView.setText((CharSequence) userClassification + " ");
             else
             	textView.setText("No Classification");
+            	
+            */
             
             // GPA
             String GPA = IuvoApplication.db.getGPA(false);
@@ -359,7 +366,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             
             // Grade distribution. This code to give the grade distribution bar its intended effect
             // looks like a horrible 'gum over the pipe leak' approach. If I find better methods, I'll change it.
-            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_blank); textView.setTypeface(IuvoApplication.typeface);
             textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_a); textView.setTypeface(IuvoApplication.typeface);
             textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_b); textView.setTypeface(IuvoApplication.typeface);
             textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_c); textView.setTypeface(IuvoApplication.typeface);
@@ -371,52 +377,51 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_blank);
 	            params = (LayoutParams) view.getLayoutParams(); params.weight = 1.0f;
-	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_blank);
             	view.setLayoutParams(params);
             	view.setBackgroundColor(getResources().getColor(R.color.gray));
-            	textView.setText("No Grades Yet");
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_a);
 	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
 	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_a);
             	view.setLayoutParams(params);
-            	textView.setText("");
+            	textView.setText(this.getString(R.string.me_grade_dist_key_a));
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_b);
 	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
 	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_b);
             	view.setLayoutParams(params);
-            	textView.setText("");
+            	textView.setText(this.getString(R.string.me_grade_dist_key_b));
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_c);
 	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
 	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_c);
             	view.setLayoutParams(params);
-            	textView.setText("");
+            	textView.setText(this.getString(R.string.me_grade_dist_key_c));
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_d);
 	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
 	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_d);
             	view.setLayoutParams(params);
-            	textView.setText("");
+            	textView.setText(this.getString(R.string.me_grade_dist_key_d));
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_f);
 	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
 	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_f);
             	view.setLayoutParams(params);
-            	textView.setText("");
+            	textView.setText(this.getString(R.string.me_grade_dist_key_f));
             	
             } else {
 
             	view = (View) rootView.findViewById(R.id.me_grade_dist_blank);
 	            params = (LayoutParams) view.getLayoutParams(); params.weight = 0.0f;
-	            textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_blank);
             	view.setLayoutParams(params);
-            	textView.setText("");
             	
             	int aCount = IuvoApplication.db.getACount(); int bCount = IuvoApplication.db.getBCount();
             	int cCount = IuvoApplication.db.getCCount(); int dCount = IuvoApplication.db.getDCount();
             	int fCount = IuvoApplication.db.getFCount();
+            	
+            	double gradePercentage;
+            	String gradePercentageString;
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_a);
             	params = (LayoutParams) view.getLayoutParams();
@@ -424,10 +429,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	if (aCount != 0) {
             		params.weight = (float) aCount;
             		view.setBackgroundColor(getResources().getColor(R.color.theme_green));
-            		textView.setText("A ");
+            		
+            		gradePercentage = ((double) aCount / (double) courseCountCompleted) * 100;
+                    gradePercentageString = format.format(gradePercentage);
+            		textView.setText(gradePercentageString + "% A ");
             	} else {
             		params.weight = 0.0f;
-            		textView.setText("");
+            		textView.setText(this.getString(R.string.me_grade_dist_key_a));
             	}
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_b);
@@ -436,10 +444,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	if (bCount != 0) {
             		params.weight = (float) bCount;
             		view.setBackgroundColor(getResources().getColor(R.color.theme_teal));
-            		textView.setText("B ");
+            		
+            		gradePercentage = ((double) bCount / (double) courseCountCompleted) * 100;
+                    gradePercentageString = format.format(gradePercentage);
+            		textView.setText(gradePercentageString + "% B ");
             	} else {
             		params.weight = 0.0f;
-            		textView.setText("");
+            		textView.setText(this.getString(R.string.me_grade_dist_key_b));
             	}
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_c);
@@ -448,10 +459,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	if (cCount != 0) {
             		params.weight = (float) cCount;
             		view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-            		textView.setText("C ");
+
+            		gradePercentage = ((double) cCount / (double) courseCountCompleted) * 100;
+                    gradePercentageString = format.format(gradePercentage);
+            		textView.setText(gradePercentageString + "% C ");
             	} else {
             		params.weight = 0.0f;
-            		textView.setText("");
+            		textView.setText(this.getString(R.string.me_grade_dist_key_c));
             	}
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_d);
@@ -460,10 +474,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	if (dCount != 0) {
             		params.weight = (float) dCount;
             		view.setBackgroundColor(getResources().getColor(R.color.theme_gray));
-            		textView.setText("D ");
+            		
+            		gradePercentage = ((double) dCount / (double) courseCountCompleted) * 100;
+                    gradePercentageString = format.format(gradePercentage);
+            		textView.setText(gradePercentageString + "% D ");
             	} else {
             		params.weight = 0.0f;
-            		textView.setText("");
+            		textView.setText(this.getString(R.string.me_grade_dist_key_d));
             	}
             	
             	view = (View) rootView.findViewById(R.id.me_grade_dist_f);
@@ -472,13 +489,50 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	if (fCount != 0) {
             		params.weight = (float) fCount;
             		view.setBackgroundColor(getResources().getColor(R.color.android_dark_red));
-            		textView.setText("F ");
+            		
+            		gradePercentage = ((double) fCount / (double) courseCountCompleted) * 100;
+                    gradePercentageString = format.format(gradePercentage);
+            		textView.setText(gradePercentageString + "% F ");
             	} else {
             		params.weight = 0.0f;
-            		textView.setText("");
+            		textView.setText(this.getString(R.string.me_grade_dist_key_f));
             	}
-            	
             }
+            
+            // Database
+            int databaseSemesterCount = IuvoApplication.db.getSemesterCount();
+            int databaseGroupCount = IuvoApplication.db.getGroupCount();
+            int databaseCourseCount = IuvoApplication.db.getCourseCount();
+            
+            textView = (TextView) rootView.findViewById(R.id.me_database_semester_count);
+            textView.setTypeface(IuvoApplication.typeface);
+            textView.setText((CharSequence) String.valueOf(databaseSemesterCount));
+            
+            textView = (TextView) rootView.findViewById(R.id.me_database_semester_count_desc);
+            if (databaseSemesterCount == 1)
+            	textView.setText((CharSequence) "Semester");
+            else
+            	textView.setText((CharSequence) "Semesters");
+            
+            textView = (TextView) rootView.findViewById(R.id.me_database_group_count);
+            textView.setTypeface(IuvoApplication.typeface);
+            textView.setText((CharSequence) String.valueOf(databaseGroupCount));
+            
+            textView = (TextView) rootView.findViewById(R.id.me_database_group_count_desc);
+            if (databaseGroupCount == 1)
+            	textView.setText((CharSequence) "Group");
+            else
+            	textView.setText((CharSequence) "Groups");
+            
+            textView = (TextView) rootView.findViewById(R.id.me_database_course_count);
+            textView.setTypeface(IuvoApplication.typeface);
+            textView.setText((CharSequence) String.valueOf(databaseCourseCount));
+            
+            textView = (TextView) rootView.findViewById(R.id.me_database_course_count_desc);
+            if (databaseCourseCount == 1)
+            	textView.setText((CharSequence) "Course");
+            else
+            	textView.setText((CharSequence) "Courses");
         }
     }
     
@@ -901,11 +955,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
     
     /**
-     * Pops up with a dialog so that user can edit their profile.
-     */
+     * SCRAPPED. Pops up with a dialog so that user can edit their profile.
     public void menuEditProfile() {
     	Dialogs.editProfile(this, this.getLayoutInflater(), IuvoApplication.settings).show();
     }
+    */
     
     /**
      * Starts the group manager activity.

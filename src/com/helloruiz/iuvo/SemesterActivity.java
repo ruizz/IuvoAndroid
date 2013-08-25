@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.helloruiz.iuvo.database.IuvoApplication;
@@ -33,6 +34,11 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 		setContentView(R.layout.activity_semester);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		// Set all necessary typefaces
+		TextView textView = (TextView) findViewById(R.id.semester_name_header); textView.setTypeface(IuvoApplication.typeface);
+		textView = (TextView) findViewById(R.id.semester_quick_fill); textView.setTypeface(IuvoApplication.typeface);
+		textView = (TextView) findViewById(R.id.semester_color_header); textView.setTypeface(IuvoApplication.typeface);
 		
 		colorArray = getResources().getStringArray(R.array.color_array); 
 		

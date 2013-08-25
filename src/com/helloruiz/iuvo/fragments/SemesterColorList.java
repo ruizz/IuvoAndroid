@@ -39,7 +39,7 @@ public class SemesterColorList extends ListFragment{
 		// According to the Open Source Project, it's done at onStart() because listview isn't available during onCreate().
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
-		getListView().setVerticalScrollBarEnabled(false);
+		getListView().setVerticalScrollBarEnabled(true);
 	}
 
 	@Override

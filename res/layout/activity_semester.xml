@@ -9,22 +9,35 @@
     android:orientation="vertical"
     tools:context=".SemesterActivity" >
 
+    <!-- Name Header -->
+		<TextView
+	        android:textIsSelectable="false"
+	        android:id="@+id/semester_name_header"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="26sp"
+	        android:textColor="@color/theme_gray"
+	        android:text="@string/dialog_name"
+	        />
+		
+		<View
+		    android:id="@+id/semester_name_divider"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/lvDividerHeight"
+	        android:background="@color/theme_gray"
+	        />
+    
     <!-- Name Row -->
     <LinearLayout
         android:id="@+id/semester_name_linear_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:background="@color/theme_blue"
-        android:baselineAligned="false"
-        android:orientation="vertical"
-        android:padding="10sp"
-        android:paddingBottom="5sp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_name"
-            android:textColor="@color/white" />
+        android:orientation="horizontal"
+        android:paddingLeft="10sp"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp" >
         
         <!-- Used go grab focus after clearing the focus from the
         EditText below it. Ignore the useless warning. DON'T LISTEN
@@ -39,21 +52,35 @@
             android:id="@+id/semester_name_edittext"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="26sp" />
-       	
-        <LinearLayout
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textSize="26sp" /> 
+            
+        <ImageView
+		    android:id="@+id/semester_drag_handle"
+		    android:background="@drawable/drag"
+		    android:layout_width="75dp"
+		    android:layout_height="75dp"
+		    android:layout_weight="0"
+		    android:layout_gravity="center"
+		    android:contentDescription="@string/a_picture" />
+    </LinearLayout>
+    
+    <LinearLayout
             android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
         	android:layout_marginTop="3dp"
         	android:orientation="horizontal" >
             
             <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/semester_quick_fill"
-            android:textColor="@color/white" />
+            	android:id="@+id/semester_quick_fill"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:gravity="center"
+	            android:text="@string/semester_quick_fill"
+	            android:textSize="22sp"
+	            android:textColor="@color/theme_gray" />
             
             <LinearLayout
 	            android:layout_width="0dp"
@@ -66,7 +93,7 @@
 	            android:layout_height="wrap_content"
 	            android:gravity="center"
 	            android:text="@string/semester_spring_20xx"
-	            android:textColor="@color/white" 
+	            android:textColor="@color/theme_gray" 
 	            android:clickable="true"
 	            android:onClick="springQuickFill" />
 	            
@@ -76,7 +103,7 @@
 	            android:layout_marginTop="3dp"
 	            android:gravity="center"
 	            android:text="@string/semester_summer_20xx"
-	            android:textColor="@color/white"
+	            android:textColor="@color/theme_gray"
 	            android:clickable="true"
 	            android:onClick="summerQuickFill" />
             
@@ -93,7 +120,7 @@
 	            android:layout_height="wrap_content"
 	            android:gravity="center"
 	            android:text="@string/semester_fall_20xx"
-	            android:textColor="@color/white"
+	            android:textColor="@color/theme_gray"
 	            android:clickable="true"
 	            android:onClick="fallQuickFill" />
 	            
@@ -103,15 +130,32 @@
 	            android:layout_marginTop="3dp"
 	            android:gravity="center"
 	            android:text="@string/semester_winter_20xx"
-	            android:textColor="@color/white"
+	            android:textColor="@color/theme_gray"
 	            android:clickable="true"
 	            android:onClick="winterQuickFill" />
             
         	</LinearLayout>
 
         </LinearLayout>
-          	
-    </LinearLayout>
+        
+    <!-- Color Header -->
+	<TextView
+        android:textIsSelectable="false"
+        android:id="@+id/semester_color_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textSize="26sp"
+        android:textColor="@color/theme_gray"
+        android:text="@string/semester_color"
+        />
+	
+	<View
+	    android:id="@+id/semester_color_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lvDividerHeight"
+        android:background="@color/theme_gray"
+	        />
     
     <LinearLayout
         android:id="@+id/semester_color_linear_layout"
@@ -124,13 +168,6 @@
         android:layout_marginTop="10dp"
         android:padding="10sp"
         android:paddingBottom="5sp" >
-        	
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="@string/semester_color"
-            android:textColor="@color/white" />
         
         <fragment
 	        android:id="@+id/fragment_semester_color_list"

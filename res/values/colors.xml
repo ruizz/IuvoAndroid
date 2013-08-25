@@ -21,7 +21,8 @@
     <color name="theme_teal">#3CA2A2</color>
     <color name="theme_teal_shaded">#366461</color>
     <color name="theme_white">#DFECE6</color>
-    <color name="theme_white_shaded">#7d837e</color>
+    <color name="theme_white_light">#e6f5ee</color>
+    <color name="theme_white_shaded">#bdcbc5</color>
     <color name="theme_gray">#2D2D29</color>
     <color name="theme_light_gray">#7a8585</color>
     

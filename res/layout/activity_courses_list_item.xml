@@ -11,19 +11,21 @@
     android:layout_height="wrap_content"
     android:layout_weight="4"
     android:orientation="vertical"
-    android:padding="12sp" >
+    android:padding="7sp" >
     
     <TextView
       android:id="@+id/course_name_textview"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginLeft="5dp"
       android:textColor="@color/white"
-      android:textSize="22sp" />
+      android:textSize="20sp" />
     
     <TextView
       android:id="@+id/course_semester_textview"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginLeft="5dp"
       android:text="@string/plan_no_semester_assigned"
       android:textColor="@color/white"
       android:textSize="12sp" />
@@ -39,7 +41,7 @@
     android:layout_gravity="center"
     android:gravity="right"
     android:textColor="@color/white"
-    android:textSize="36sp" />
+    android:textSize="30sp" />
   
   <ImageView
     android:id="@id/drag_handle"

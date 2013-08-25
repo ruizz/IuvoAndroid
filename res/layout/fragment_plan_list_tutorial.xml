@@ -214,18 +214,20 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="1"
 	    android:orientation="vertical"
-	    android:padding="12sp" >
+	    android:padding="7sp" >
 	    
 	    <TextView
 	      android:layout_width="fill_parent"
 	      android:layout_height="fill_parent"
+	      android:layout_marginLeft="3dp"
 	      android:text="@string/plan_getting_started_course_title"
 	      android:textColor="@color/white"
-	      android:textSize="22sp" />
+	      android:textSize="20sp" />
 	    
 	    <TextView
 	      android:layout_width="fill_parent"
 	      android:layout_height="fill_parent"
+	      android:layout_marginLeft="3dp"
 	      android:text="@string/plan_no_semester_assigned"
 	      android:textColor="@color/white"
 	      android:textSize="12sp" />
@@ -238,7 +240,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_marginRight="6dp"
 	    android:textColor="@color/white"
-	    android:textSize="36sp"
+	    android:textSize="30sp"
 	    android:text="@string/plan_getting_started_course_grade"
 	    android:layout_weight="0"
 	    android:layout_gravity="center" />
@@ -311,7 +313,7 @@
     <!-- Space -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="7dp"
         />
     
     <!-- First Course -->
@@ -326,18 +328,20 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="1"
 	    android:orientation="vertical"
-	    android:padding="12sp" >
+	    android:padding="7sp" >
 	    
 	    <TextView
 	      android:layout_width="fill_parent"
 	      android:layout_height="fill_parent"
+	      android:layout_marginLeft="3dp"
 	      android:text="@string/plan_getting_started_sample_course1"
 	      android:textColor="@color/white"
-	      android:textSize="22sp" />
+	      android:textSize="20sp" />
 	    
 	    <TextView
 	      android:layout_width="fill_parent"
 	      android:layout_height="fill_parent"
+	      android:layout_marginLeft="3dp"
 	      android:text="@string/plan_getting_started_sample_semester1"
 	      android:textColor="@color/white"
 	      android:textSize="12sp" />
@@ -350,7 +354,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_marginRight="6dp"
 	    android:textColor="@color/white"
-	    android:textSize="36sp"
+	    android:textSize="30sp"
 	    android:text="@string/plan_getting_started_course_grade1"
 	    android:layout_weight="0"
 	    android:layout_gravity="center" />
@@ -360,7 +364,7 @@
     <!-- Space -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="7dp"
         />
 	
     <!-- Second Course -->
@@ -375,18 +379,20 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="1"
 	    android:orientation="vertical"
-	    android:padding="12sp" >
+	    android:padding="7sp" >
 	    
 	    <TextView
 	      android:layout_width="fill_parent"
 	      android:layout_height="fill_parent"
+	      android:layout_marginLeft="3dp"
 	      android:text="@string/plan_getting_started_sample_course2"
 	      android:textColor="@color/white"
-	      android:textSize="22sp" />
+	      android:textSize="20sp" />
 	    
 	    <TextView
 	      android:layout_width="fill_parent"
 	      android:layout_height="fill_parent"
+	      android:layout_marginLeft="3dp"
 	      android:text="@string/plan_getting_started_sample_semester2"
 	      android:textColor="@color/white"
 	      android:textSize="12sp" />
@@ -399,7 +405,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_marginRight="6dp"
 	    android:textColor="@color/white"
-	    android:textSize="36sp"
+	    android:textSize="30sp"
 	    android:text="@string/plan_getting_started_course_grade2"
 	    android:layout_weight="0"
 	    android:layout_gravity="center" />
@@ -409,7 +415,7 @@
 	<!-- Space -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="7dp"
         />
     
     <!-- Second Group -->
@@ -432,7 +438,7 @@
     <!-- Space -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="7dp"
         />
     
     <!-- Third Course -->
@@ -447,18 +453,20 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="1"
 	    android:orientation="vertical"
-	    android:padding="12sp" >
+	    android:padding="7sp" >
 	    
 	    <TextView
 	      android:layout_width="fill_parent"
 	      android:layout_height="fill_parent"
+	      android:layout_marginLeft="3dp"
 	      android:text="@string/plan_getting_started_sample_course3"
 	      android:textColor="@color/white"
-	      android:textSize="22sp" />
+	      android:textSize="20sp" />
 	    
 	    <TextView
 	      android:layout_width="fill_parent"
 	      android:layout_height="fill_parent"
+	      android:layout_marginLeft="3dp"
 	      android:text="@string/plan_getting_started_sample_semester2"
 	      android:textColor="@color/white"
 	      android:textSize="12sp" />
@@ -471,7 +479,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_marginRight="6dp"
 	    android:textColor="@color/white"
-	    android:textSize="36sp"
+	    android:textSize="30sp"
 	    android:text="@string/plan_getting_started_course_grade3"
 	    android:layout_weight="0"
 	    android:layout_gravity="center" />

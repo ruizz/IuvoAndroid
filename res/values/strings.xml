@@ -27,34 +27,34 @@
 
     <!-- Me Tab -->
     <string name="dialog_name">Name</string>
-    <string name="dialog_school">School</string>
-    <string name="dialog_major">Major</string>
-    <string name="me_name">[Name]</string>
-    <string name="me_school">[School]</string>
-    <string name="me_major">[Major]</string>
-    <string name="me_classification">[Classification]</string>
-    <string name="me_name_desc">Name</string>
-    <string name="me_school_desc">Student</string>
-    <string name="me_major_desc">Major</string>
-    <string name="me_classification_desc">Classification</string>
+    <string name="me_exludes_hidden_courses_subheader">Excludes Hidden Courses</string>
+	<string name="me_gpa_header">My GPA</string>
     <string name="me_gpa">0.00</string>
-    <string name="me_gpa_desc">Overall GPA</string>
-    <string name="me_gpa_with_exclusions_desc">GPA with exclusions</string>
+    <string name="me_gpa_desc">Overall</string>
+    <string name="me_gpa_with_exclusions_desc">with exclusions</string>
+    <string name="me_progress_header">My Completion Progress</string>
     <string name="me_progress_percentage">0%</string>
-    <string name="me_progress_percentage_desc">Completion</string>
+    <string name="me_progress_percentage_desc">Complete</string>
     <string name="me_progress_fraction">0/0</string>
     <string name="me_progress_fraction_desc">Courses</string>
     <string name="me_progress_fraction_hours">0/0</string>
     <string name="me_progress_fraction_hours_desc">Hours</string>
-    <string name="me_grade_dist_key_blank">(No Grades Yet)</string>
-    <string name="me_grade_dist_key_a"><b>A </b></string>
-    <string name="me_grade_dist_key_b"><b>B </b></string>
-    <string name="me_grade_dist_key_c"><b>C </b></string>
-    <string name="me_grade_dist_key_d"><b>D </b></string>
-    <string name="me_grade_dist_key_f"><b>F </b></string>
+    <string name="me_grade_dist_header">My Grade Distribution</string>
+    <string name="me_grade_dist_key_a"><b>0.0% A</b></string>
+    <string name="me_grade_dist_key_b"><b>0.0% B</b></string>
+    <string name="me_grade_dist_key_c"><b>0.0% C</b></string>
+    <string name="me_grade_dist_key_d"><b>0.0% D</b></string>
+    <string name="me_grade_dist_key_f"><b>0.0% F</b></string>
     <string name="me_grade_dist_desc">Degree plan grade distribution</string>
-    <string name="me_view_more_details"><u>View more details</u></string>
-
+    <string name="me_database_header">My Database</string>
+    <string name="me_database_semester_count">0</string>
+	<string name="me_database_group_count">0</string>
+	<string name="me_database_course_count">0</string>
+	<string name="me_database_semester_count_desc">Semester</string>
+	<string name="me_database_group_count_desc">Group</string>
+	<string name="me_database_course_count_desc">Course</string>
+    
+    
     <!-- Plan Tab -->
     <string name="plan_no_semester_assigned">No Semester Assigned</string>
     <string name="plan_no_courses_found">There\'s nothing in this group to manage.</string>
@@ -123,6 +123,7 @@
     <string name="dialog_group">Group</string>
     <string name="dialog_semester">Semester</string>
     <string name="dialog_classification">Classification</string>
+    <string name="dialog_details">Details</string>
     <string name="dialog_hours">Hours</string>
     <string name="dialog_grade">Grade</string>
     <string name="course_group">Assigned Group</string>

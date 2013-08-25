@@ -39,7 +39,7 @@ public class CourseActivity extends Activity {
 	String semester = "None";
 	String group = "None";
 	String semesterColor = "None";
-	String groupSubText = "Course will be hidden.";
+	String groupSubText = "This course will be hidden.";
 	String semesterSubText = "No semester assigned.";
 	EditText nameEditText;
 	
@@ -110,6 +110,10 @@ public class CourseActivity extends Activity {
         
         textView = (TextView) findViewById(R.id.course_semester_class_count_textview);
         textView.setText(semesterSubText);
+        
+        textView = (TextView) findViewById(R.id.course_name_header); textView.setTypeface(IuvoApplication.typeface);
+        
+        textView = (TextView) findViewById(R.id.course_details_header); textView.setTypeface(IuvoApplication.typeface);
         
         textView = (TextView) findViewById(R.id.course_group_header_textview); textView.setTypeface(IuvoApplication.typeface);
         
@@ -208,6 +212,24 @@ public class CourseActivity extends Activity {
 			TextView textView;
      	   	textView = (TextView) findViewById(R.id.course_grade_textview);
      	   	textView.setText(grade);
+     	   
+     	   // Update the group and semester course counts
+     	   if (semesterID != -1) {
+				semesterSubText = String.valueOf(IuvoApplication.db.getCourseCountBySemester(semesterID)) + " Course";
+				if (IuvoApplication.db.getCourseCountBySemester(semesterID) != 1)
+					semesterSubText += "s";
+				
+				textView = (TextView) findViewById(R.id.course_semester_class_count_textview);
+		        textView.setText(semesterSubText);
+			}
+			if (groupID != -1) {
+				groupSubText = String.valueOf(IuvoApplication.db.getCourseCountByGroup(groupID)) + " Course";
+				if (IuvoApplication.db.getCourseCountByGroup(groupID) != 1)
+					groupSubText += "s";
+				
+				textView = (TextView) findViewById(R.id.course_group_class_count_textview);
+		        textView.setText(groupSubText);
+			}
      	   	
 			Toast.makeText(this, getResources().getString(R.string.course_added), Toast.LENGTH_LONG).show();
 		
@@ -381,7 +403,7 @@ public class CourseActivity extends Activity {
 	            	   view = findViewById(R.id.course_group_linear_layout);
 	            	   if (group.equals("None")) {
 	            		   view.setBackgroundColor(getResources().getColor(R.color.gray));
-	            		   groupSubText = "Course will be hidden.";
+	            		   groupSubText = "This course will be hidden.";
 	            	   } else {
 	            		   view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
 	            		   groupSubText = String.valueOf(IuvoApplication.db.getCourseCountByGroup(groupID)) + " Course";

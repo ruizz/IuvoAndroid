@@ -28,9 +28,10 @@ import com.helloruiz.iuvo.database.IuvoApplication;
 public class Dialogs {
 	
 	/** 
+	 * SCRAPPED
 	 * Dialog for the 'Edit Profile' menu setting that is shown when the 'me' tab is in focus.
 	 * @return This one returns the dialog back to activity because the user may need to save some changes.
-	 */
+	 
 	public static AlertDialog.Builder editProfile(final Activity activity, LayoutInflater inflater, SharedPreferences iuvoSettings) {
 				
 				// Grab the view that contains the EditTexts and Spinner so that we can access it.
@@ -80,6 +81,7 @@ public class Dialogs {
 				dialogBuilder.setPositiveButton("Save", saveClickListener).setNegativeButton(activity.getString(R.string.dialog_button_cancel), null);
 				return dialogBuilder;
 	}
+	*/
 	
 	/** 
 	 * Dialog for 'add' menu option in the group manager activity.
