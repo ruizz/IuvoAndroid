@@ -1,4 +1,0 @@
-Iuvo
-====
-
-Iuvo for Android

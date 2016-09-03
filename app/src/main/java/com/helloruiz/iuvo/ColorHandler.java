@@ -31,8 +31,8 @@ public class ColorHandler {
 		if (colorName.equals("Wild Berry"))
 			return context.getResources().getColor(R.color.wild_berry);
 		
-		if (colorName.equals("Purple"))
-			return context.getResources().getColor(R.color.purple);
+		if (colorName.equals("Grape"))
+			return context.getResources().getColor(R.color.grape);
 		
 		if (colorName.equals("Crimson"))
 			return context.getResources().getColor(R.color.crimson);
