@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 21
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.helloruiz.iuvo"
-        minSdkVersion 16
-        targetSdkVersion 23
+        minSdkVersion 19
+        targetSdkVersion 21
 
     }
 
@@ -22,15 +22,12 @@ android {
 }
 
 repositories {
-    maven {
-        url 'https://mvnrepository.com/artifact/asia.ivity.android/drag-sort-listview'
-    }
     mavenCentral()
 
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:23.0.0'
+    compile 'com.android.support:support-v4:21.0.0'
     compile files('libs/achartengine-1.1.0.jar')
     compile group: 'asia.ivity.android', name: 'drag-sort-listview', version: '1.0'
 
