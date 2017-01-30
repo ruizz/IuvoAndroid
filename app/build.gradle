@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 25
     buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.helloruiz.iuvo"
         minSdkVersion 19
-        targetSdkVersion 21
+        targetSdkVersion 25
+        return void
 
     }
 
@@ -19,6 +20,8 @@ android {
 
     }
 
+    // Remove lint error 'Not all execution paths return a value'
+    return void
 }
 
 repositories {
@@ -27,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.0'
+    compile 'com.android.support:support-v4:25.1.0'
     compile files('libs/achartengine-1.1.0.jar')
     compile group: 'asia.ivity.android', name: 'drag-sort-listview', version: '1.0'
 

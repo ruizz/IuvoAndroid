@@ -152,7 +152,7 @@ public class PointsActivity extends Activity {
 		iuvoSettingsEditor.putFloat("pointsD", Float.parseFloat(dString));
 		iuvoSettingsEditor.putFloat("pointsDMinus", Float.parseFloat(dMinusString));
 		
-		iuvoSettingsEditor.commit();
+		iuvoSettingsEditor.apply();
 		
 		IuvoApplication.updatePoints();
 		

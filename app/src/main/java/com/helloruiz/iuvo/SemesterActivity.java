@@ -126,25 +126,25 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 	
 	// Called by Quick Fill objects
 	public void springQuickFill(View view){
-		nameEditText.setText("Spring 20");
+		nameEditText.setText(this.getText(R.string.semester_quick_fill_spring));
 		nameEditText.setSelection(nameEditText.getText().length());
 		nameEditText.requestFocus();
 	}
 	
 	public void summerQuickFill(View view){
-		nameEditText.setText("Summer 20");
+		nameEditText.setText(this.getText(R.string.semester_quick_fill_summer));
 		nameEditText.setSelection(nameEditText.getText().length());
 		nameEditText.requestFocus();
 	}
 	
 	public void fallQuickFill(View view){
-		nameEditText.setText("Fall 20");
+		nameEditText.setText(this.getText(R.string.semester_quick_fill_fall));
 		nameEditText.setSelection(nameEditText.getText().length());
 		nameEditText.requestFocus();
 	}
 		
 	public void winterQuickFill(View view){
-		nameEditText.setText("Winter 20");
+		nameEditText.setText(this.getText(R.string.semester_quick_fill_winter));
 		nameEditText.setSelection(nameEditText.getText().length());
 		nameEditText.requestFocus();
 	}

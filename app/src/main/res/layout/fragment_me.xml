@@ -105,7 +105,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentTop="true"
-	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentStart="true"
 	        android:textSize="26sp"
 	        android:textColor="@color/theme_gray"
 	        android:text="@string/me_gpa_header"
@@ -142,7 +142,7 @@
 			    android:layout_width="0dp"
 			    android:layout_height="wrap_content"
 			    android:layout_weight="1"
-			    android:gravity="right"
+			    android:gravity="end"
 			    android:text="@string/me_gpa"
 			    android:textColor="@color/theme_gray"
 			    android:textSize="40sp" />
@@ -170,7 +170,7 @@
 		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
 		    android:layout_weight="1"
-		    android:gravity="right"
+		    android:gravity="end"
 		    android:text="@string/me_gpa_with_exclusions_desc"
 		    android:textColor="@color/theme_gray"
 		    android:textSize="14sp" />
@@ -245,8 +245,8 @@
 			    android:layout_width="0dp"
 			    android:layout_height="wrap_content"
 			    android:layout_weight="1"
-			    android:gravity="left"
-			    android:text="@string/me_progress_fraction"
+			    android:gravity="start"
+			    android:text="@string/me_progress_fraction_zero"
 			    android:textColor="@color/theme_gray"
 			    android:textSize="30sp" />
 			
@@ -256,7 +256,7 @@
 			    android:layout_height="wrap_content"
 			    android:layout_weight="1"
 			    android:gravity="center"
-			    android:text="@string/me_progress_fraction_hours"
+			    android:text="@string/me_progress_fraction_zero"
 			    android:textColor="@color/theme_gray"
 			    android:textSize="30sp" />
 		
@@ -265,8 +265,8 @@
 			    android:layout_width="0dp"
 			    android:layout_height="wrap_content"
 			    android:layout_weight="1"
-				android:gravity="right"
-			    android:text="@string/me_progress_percentage"
+				android:gravity="end"
+			    android:text="@string/me_progress_percentage_zero"
 			    android:textColor="@color/theme_gray"
 			    android:textSize="30sp" />
 			
@@ -284,7 +284,7 @@
 			    android:layout_width="0dp"
 			    android:layout_height="wrap_content"
 			    android:layout_weight="1"
-			    android:gravity="left"
+			    android:gravity="start"
 			    android:text="@string/me_progress_fraction_desc"
 			    android:textColor="@color/theme_gray"
 			    android:textSize="14sp" />
@@ -304,7 +304,7 @@
 			    android:layout_width="0dp"
 			    android:layout_height="wrap_content"
 			    android:layout_weight="1"
-				android:gravity="right"
+				android:gravity="end"
 			    android:text="@string/me_progress_percentage_desc"
 			    android:textColor="@color/theme_gray"
 			    android:textSize="14sp" />

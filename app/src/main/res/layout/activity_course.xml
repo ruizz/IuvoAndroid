@@ -21,6 +21,7 @@
 	        android:textSize="26sp"
 	        android:textColor="@color/theme_gray"
 	        android:text="@string/dialog_name"
+			android:labelFor="@+id/course_name_edittext"
 	        />
 		
 		<View
@@ -99,7 +100,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:layout_marginRight="5dp"
+				android:layout_marginEnd="5dp"
 				android:background="@color/theme_blue"
 				android:baselineAligned="false"
 				android:orientation="vertical"
@@ -128,8 +129,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:layout_marginLeft="5dp"
-				android:layout_marginRight="5dp"
+				android:layout_marginStart="5dp"
+				android:layout_marginEnd="5dp"
 				android:background="@color/theme_blue"
 				android:baselineAligned="false"
 				android:orientation="vertical"
@@ -158,7 +159,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:layout_weight="1"
-				android:layout_marginLeft="5dp"
+				android:layout_marginStart="5dp"
 				android:background="@color/theme_blue"
 				android:baselineAligned="false"
 				android:orientation="vertical"

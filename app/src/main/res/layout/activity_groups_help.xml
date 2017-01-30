@@ -5,8 +5,7 @@
     android:padding="@dimen/activity_vertical_margin"
     android:clipToPadding="false"
 	android:scrollbars="none"
-    android:background="@color/theme_white"
-    tools:context=".AboutActivity" >
+    android:background="@color/theme_white">
 	
 	<LinearLayout 
 	    android:layout_width="match_parent"

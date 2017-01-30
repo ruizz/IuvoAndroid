@@ -2,4 +2,12 @@
 <resources>
     <item type="id" name="drag_handle" />
     <item type="id" name="click_remove" />
+
+    <!-- Lists -->
+    <item type="id" name="list_header" />
+    <item type="id" name="list_empty" />
+    <item type="id" name="list_item" />
+    <item type="id" name="list_tutorial" />
+    <item type="id" name="list_title" />
+
 </resources>

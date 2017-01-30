@@ -18,6 +18,7 @@
 	        android:textSize="26sp"
 	        android:textColor="@color/theme_gray"
 	        android:text="@string/dialog_name"
+			android:labelFor="@+id/semester_name_edittext"
 	        />
 		
 		<View
@@ -35,7 +36,8 @@
         android:layout_marginTop="10dp"
         android:background="@color/theme_blue"
         android:orientation="horizontal"
-        android:paddingLeft="10sp"
+        android:paddingStart="10sp"
+		android:paddingEnd="10sp"
         android:paddingTop="10sp"
         android:paddingBottom="10sp" >
         

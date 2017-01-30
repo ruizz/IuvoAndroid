@@ -9,6 +9,9 @@
     <string name="action_settings">Settings</string>
     <string name="dialog_none">None</string>
 
+    <!-- Image accessibility -->
+    <string name="image_drag_handle">Drag handle.</string>
+
     <!-- Menu Item Names -->
     <string name="menu_edit_profile">Edit Profile</string>
     <string name="menu_manage_groups">Groups</string>
@@ -33,18 +36,19 @@
     <string name="me_gpa_desc">Overall</string>
     <string name="me_gpa_with_exclusions_desc">with exclusions</string>
     <string name="me_progress_header">My Completion Progress</string>
-    <string name="me_progress_percentage">0%</string>
+    <string name="me_progress_percentage">%1$s%%</string>
+    <string name="me_progress_percentage_zero" formatted="false">0%</string>
     <string name="me_progress_percentage_desc">Complete</string>
-    <string name="me_progress_fraction">0/0</string>
+    <string name="me_progress_fraction">%1$d/%2$d</string>
+    <string name="me_progress_fraction_zero">0/0</string>
     <string name="me_progress_fraction_desc">Courses</string>
-    <string name="me_progress_fraction_hours">0/0</string>
     <string name="me_progress_fraction_hours_desc">Hours</string>
     <string name="me_grade_dist_header">My Grade Distribution</string>
-    <string name="me_grade_dist_key_a"><b>0.0% A</b></string>
-    <string name="me_grade_dist_key_b"><b>0.0% B</b></string>
-    <string name="me_grade_dist_key_c"><b>0.0% C</b></string>
-    <string name="me_grade_dist_key_d"><b>0.0% D</b></string>
-    <string name="me_grade_dist_key_f"><b>0.0% F</b></string>
+    <string name="me_grade_dist_key_a"><b>%1$s%% A</b></string>
+    <string name="me_grade_dist_key_b"><b>%1$s%% B</b></string>
+    <string name="me_grade_dist_key_c"><b>%1$s%% C</b></string>
+    <string name="me_grade_dist_key_d"><b>%1$s%% D</b></string>
+    <string name="me_grade_dist_key_f"><b>%1$s%% F</b></string>
     <string name="me_grade_dist_desc">Degree plan grade distribution</string>
     <string name="me_database_header">My Database</string>
     <string name="me_database_semester_count">0</string>
@@ -53,8 +57,7 @@
 	<string name="me_database_semester_count_desc">Semester</string>
 	<string name="me_database_group_count_desc">Group</string>
 	<string name="me_database_course_count_desc">Course</string>
-    
-    
+
     <!-- Plan Tab -->
     <string name="plan_no_semester_assigned">No Semester Assigned</string>
     <string name="plan_no_courses_found">There\'s nothing in this group to manage.</string>
@@ -109,6 +112,10 @@
     <string name="semester_added">Semester added. Add another semester or go back to view your semesters.</string>
     <string name="semester_updated">Semester updated.</string>
     <string name="semester_not_added">Semester name and/or color missing.</string>
+    <string name="semester_quick_fill_spring">Spring 20</string>
+    <string name="semester_quick_fill_summer">Summer 20</string>
+    <string name="semester_quick_fill_fall">Fall 20</string>
+    <string name="semester_quick_fill_winter">Winter 20</string>
 
     <!-- Courses Activity -->
     <string name="title_activity_courses">Hidden Courses</string>
@@ -137,9 +144,9 @@
     <string name="plan_getting_started_header">Welcome to your degree plan.</string>
     <string name="plan_getting_started_note1">Let\'s face it, placing your entire college or university degree plan into an app probably won\'t be the fastest thing you\'ll ever do, but Iuvo\'s simple interface should make it as quick and easy as possible. With a good amount of effort, we should have a beautiful, flexible, and detailed degree plan set up in no time. Iuvo can then give you statistics about your college career and will continue to do so even as you make chagnes later on.</string>
     <string name="plan_getting_started_note1_1"><i>Tip: You should back up your degree plan in the \'more\' tab afterwards so that you don\'t lose all of your hard earned work.</i></string>
-    <string name="plan_getting_started_note2">First, start off by adding semesters. These aren\'t needed to construct your degree plan, but Iuvo uses your semesters to help \'color-code\' your your courses, making it easier to recognize when you took them. If you need help while adding or managing your semesters, hit the \'help\' button that displays at the top of the semesters screen.</string>
+    <string name="plan_getting_started_note2">First, start off by adding semesters. These aren\'t needed to construct your degree plan, but Iuvo uses your semesters to help \'color-code\' your courses, making it easier to recognize when you took them. If you need help while adding or managing your semesters, hit the \'help\' button that displays at the top of the semesters screen.</string>
     <string name="plan_getting_started_note3">Next, we\'ll add groups. Groups are the basic building block of your degree plan in Iuvo and are used to organize your courses the same that way your actual degree plan does. The courses that you create in the next step will appear under these groups. Without groups, none of your courses will be able to appear on your degree plan at all. If still need help with understanding and using groups, hit the \'help\' button that displays at the top of the groups screen. Once you add your first group, this tutorial will disappear and your degree plan will take its place. You can view this tutorial in the \'more\' tab if you need to read it again.</string>
-    <string name="plan_getting_started_note4">Finally, we\'ll complete your degree plan in Iuvo by adding every single course from your curriculum. Courses contiain a lot more information than semesters or groups, and are therefore explained in more detail through the \'help\' button in the course screen. You should read this so that you can add all of your courses properly, including transfer credit and credit that is not part of your degree plan. Adding your courses is the final step. Once you\'re done, Iuvo will be able to give you detailed breakdowns about your GPA, grade distribution, and other information in the \'me\' tab.</string>
+    <string name="plan_getting_started_note4">Finally, we\'ll complete your degree plan in Iuvo by adding every single course from your curriculum. Courses contain a lot more information than semesters or groups, and are therefore explained in more detail through the \'help\' button in the course screen. You should read this so that you can add all of your courses properly, including transfer credit and credit that is not part of your degree plan. Adding your courses is the final step. Once you\'re done, Iuvo will be able to give you detailed breakdowns about your GPA, grade distribution, and other information in the \'me\' tab.</string>
     <string name="plan_getting_started_note5">Below is a small sample of what your degree plan should look like. It includes a two semesters, two groups, and three courses. Remember, this tutorial will disappear after adding your first group. You can always view it in the \'more\' tab if you need to read it again.</string>
     <string name="plan_getting_started_semester_title">Spring 20XX</string>
     <string name="plan_getting_started_semester_subtitle">X Courses, X GPA</string>
