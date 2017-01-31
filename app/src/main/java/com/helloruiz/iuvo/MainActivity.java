@@ -56,12 +56,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     int currentTabIndex = 0;
 
     // Unique tags for passing an intent to another activity.
-    static String MAINACTIVITY_COURSE_ID = "com.helloruiz.iuvo.MainActivity.courseID";
-    static String MAINACTIVITY_GROUP_ID = "com.helloruiz.iuvo.MainActivity.groupID";
-    static String MAINACTIVITY_EMPTY_GROUP_KEY = "com.helloruiz.iuvo.MainActivity.emptyGroupKey";
+    static final String MAINACTIVITY_COURSE_ID = "com.helloruiz.iuvo.MainActivity.courseID";
+    static final String MAINACTIVITY_GROUP_ID = "com.helloruiz.iuvo.MainActivity.groupID";
+    static final String MAINACTIVITY_EMPTY_GROUP_KEY = "com.helloruiz.iuvo.MainActivity.emptyGroupKey";
 
-    // Context. 
-    static Context mContext;
+    // Context.
+    //static Context mContext;
 
     /**
      * Overrides
@@ -71,7 +71,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mContext = getApplicationContext();
+        //mContext = getApplicationContext();
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -527,13 +527,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 
         // Static variables.
-        static List<String> groupTitles = new ArrayList<String>();
-        static List<Integer> groupIDs = new ArrayList<Integer>();
-        static List<String> courseTitles = new ArrayList<String>();
-        static List<String> courseSemesters = new ArrayList<String>();
-        static List<String> courseSemesterColors = new ArrayList<String>();
-        static List<String> courseGrades = new ArrayList<String>();
-        static List<Integer> courseIDs = new ArrayList<Integer>();
+        static final List<String> groupTitles = new ArrayList<String>();
+        static final List<Integer> groupIDs = new ArrayList<Integer>();
+        static final List<String> courseTitles = new ArrayList<String>();
+        static final List<String> courseSemesters = new ArrayList<String>();
+        static final List<String> courseSemesterColors = new ArrayList<String>();
+        static final List<String> courseGrades = new ArrayList<String>();
+        static final List<Integer> courseIDs = new ArrayList<Integer>();
 
         private ListView listView;
 
@@ -566,7 +566,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 groupTitles.add(getString(R.string.plan_getting_started_header));
 
                 listView = getListView();
-                setListAdapter(new getStartedListAdapter());
+                setListAdapter(new getStartedListAdapter(this.getContext()));
 
             } else { // User created groups, populate the appropriate headers, titles, etc and display them.
 
@@ -616,14 +616,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 }
 
                 listView = getListView();
-                setListAdapter(new DegreePlanListAdapter());
+                setListAdapter(new DegreePlanListAdapter(this.getContext()));
             }
         }
         // End of onResume
 
         // BaseAdapter explicitly designed to show the "Let's get started" dialogue
         private class getStartedListAdapter extends BaseAdapter {
-            public getStartedListAdapter() {
+
+            private final Context mContext;
+
+            getStartedListAdapter (Context mContext) {
+                this.mContext = mContext;
+
             }
 
             @Override
@@ -682,7 +687,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         // Plan section fragment. Designed to show the degree plan as a list with headers.
         private class DegreePlanListAdapter extends BaseAdapter {
-            public DegreePlanListAdapter() {
+
+            private final Context mContext;
+
+            public DegreePlanListAdapter(Context mContext) {
+                this.mContext = mContext;
+
             }
 
             @Override
@@ -838,12 +848,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 }
             }
             listView = getListView();
-            setListAdapter(new moreListAdapter());
+            setListAdapter(new moreListAdapter(this.getContext()));
         }
 
         // BaseAdapter that shows the list seen in the 'more' tab.
         private class moreListAdapter extends BaseAdapter {
-            public moreListAdapter() {
+
+            private final Context mContext;
+
+            public moreListAdapter(Context mContext) {
+                this.mContext = mContext;
+
             }
 
             @Override

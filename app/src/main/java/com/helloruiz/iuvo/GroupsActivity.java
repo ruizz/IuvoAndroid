@@ -65,7 +65,7 @@ public class GroupsActivity extends ListActivity {
 
     private ArrayList<Group> mGroups;
     
-    private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
+    private final DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
                 
     	@Override
     	public void drop(int from, int to) {
@@ -79,7 +79,7 @@ public class GroupsActivity extends ListActivity {
     };
 	
 	// Whenever a user swipes an group item left or right to delete.
-    private DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener() {
+    private final DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener() {
 		
 		@Override
 		public void remove(int which) {
@@ -88,8 +88,8 @@ public class GroupsActivity extends ListActivity {
 	};
 	
 	// Strings defined globally here since they'll be used in a loop.
-	String SINGLE_COURSE = " Course";
-	String MULTIPLE_COURSES = " Courses";
+	final String SINGLE_COURSE = " Course";
+	final String MULTIPLE_COURSES = " Courses";
 	
 	/**
 	 * -- Overrides --

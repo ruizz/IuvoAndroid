@@ -8,7 +8,7 @@ package com.helloruiz.iuvo.database;
 public class Course {
 	
 	// private variables
-	private int _id; // unique, can never change
+	private final int _id; // unique, can never change
 	private int position; // applies to position within the GROUP that it's assigned to.
 
 	private String name;

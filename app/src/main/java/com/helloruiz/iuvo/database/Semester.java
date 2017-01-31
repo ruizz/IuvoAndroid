@@ -8,7 +8,7 @@ package com.helloruiz.iuvo.database;
 public class Semester {
 	
 	// private variables
-	private int _id; // unique, can never change
+	private final int _id; // unique, can never change
 	private int position;
 	private String name;
 	private String color;

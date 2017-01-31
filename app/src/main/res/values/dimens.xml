@@ -24,7 +24,6 @@
     <dimen name="lvDividerHeight">1dp</dimen>
     <dimen name="lvDividerMargin">15dp</dimen>
     <dimen name="lvSectionDividerMargin">5dp</dimen>
-    <dimen name="lvDividerWidth">1dp</dimen>
 
     <dimen name="lvSectionDividerMarginTop">5dp</dimen>
 </resources>

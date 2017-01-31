@@ -82,7 +82,7 @@ public class CoursesActivitySemester extends ListActivity {
 	private CoursesAdapter coursesAdapter;
 	
 	// Whenever a user swipes an course item left or right to delete.
-    private DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener() {
+    private final DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener() {
 		
 		@Override
 		public void remove(int which) {

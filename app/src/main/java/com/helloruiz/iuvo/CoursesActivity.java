@@ -74,7 +74,7 @@ public class CoursesActivity extends ListActivity {
     private ArrayList<Course> mCourses;
     
     // Listener for whenever a user drops a course in a new location
-    private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
+    private final DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
     	@Override
     	public void drop(int from, int to) {
 			IuvoApplication.db.moveCourse(from, to, groupID);      
@@ -84,7 +84,7 @@ public class CoursesActivity extends ListActivity {
     };
 	
 	// Listener for whenever a user swipes an course item left or right to delete.
-    private DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener() {
+    private final DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener() {
 		@Override
 		public void remove(int which) {
 			deleteCourseConfirm(which);			
