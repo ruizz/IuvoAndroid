@@ -75,7 +75,6 @@ public class AboutActivity extends Activity {
 			startActivity(webIntent);
 		} else {
 			Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.toast_no_web), Toast.LENGTH_LONG).show();
-			return;
 		}
 	}
 	
@@ -91,7 +90,6 @@ public class AboutActivity extends Activity {
 			startActivity(webIntent);
 		} else {
 			Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.toast_no_web), Toast.LENGTH_LONG).show();
-			return;
 		}
 	}
 	
@@ -108,7 +106,6 @@ public class AboutActivity extends Activity {
 		} else {
 			Context context = getApplicationContext();
 			Toast.makeText(context, getApplicationContext().getString(R.string.toast_no_email), Toast.LENGTH_LONG).show();
-			return;
 		}
 	}
 	
@@ -124,7 +121,6 @@ public class AboutActivity extends Activity {
 			startActivity(webIntent);
 		} else {
 			Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.toast_no_market), Toast.LENGTH_LONG).show();
-			return;
 		}
 	}
 	

@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,7 +53,7 @@ public class GroupsActivity extends ListActivity {
             textView.setText((CharSequence) (courseCount + groupGPA));
 	        
             // Background color would change after messing with semesters. Band-Aid fix.
-            v.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+            v.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
             
 	        return v;
 	      }
@@ -143,18 +144,18 @@ public class GroupsActivity extends ListActivity {
 	 * -- Voids --
 	 */
 	// Pops up with dialog so that user get help
-    public void menuGroupsHelp() {
+	private void menuGroupsHelp() {
     	Intent intent = new Intent(getApplicationContext(), GroupsHelpActivity.class);
     	startActivity(intent);
     }
 	
 	// Pops up with dialog so that user can add a group
-    public void menuAddGroup() {
+	private void menuAddGroup() {
     	Dialogs.addGroup(this);
     }
     
     // Pops up with dialog so that user can confirm deletion
-    public void deleteGroupConfirm(int which) {
+	private void deleteGroupConfirm(int which) {
     	Dialogs.deleteGroupConfirm(this, which);
     }
 

@@ -75,7 +75,7 @@ public class CoursesActivitySemester extends ListActivity {
 	 * Variables
 	 */
 	
-	int semesterID;
+	private int semesterID;
 	
 	private ArrayList<Course> mCourses;
 	
@@ -150,13 +150,13 @@ public class CoursesActivitySemester extends ListActivity {
 	 * Voids
 	 */
 	// Pops up with dialog so that user get help
-    public void menuCoursesHelp() {
+    private void menuCoursesHelp() {
     	Intent intent = new Intent(getApplicationContext(), CoursesHelpActivity.class);
     	startActivity(intent);
     }
 	
 	// Pops up with dialog so that user can confirm deletion
-    public void deleteCourseConfirm(int which) {
+    private void deleteCourseConfirm(int which) {
     	Dialogs.deleteCourseConfirmSemester(this, which);
     }
     

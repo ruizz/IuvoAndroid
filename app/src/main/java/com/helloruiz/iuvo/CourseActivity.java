@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,21 +28,21 @@ public class CourseActivity extends Activity {
 	/**
 	 * Variables
 	 */
-	int id = -1;
-	int position = -1;
-	String name = "";
-	int hours = 3;
-	String grade = "-";
-	String excludeFromGPA = "No";
-	int semesterID = -1;
-	int oldGroupID = -1;
-	int groupID = -1;
-	String semester = "None";
-	String group = "None";
-	String semesterColor = "None";
-	String groupSubText = "This course will be hidden.";
-	String semesterSubText = "No semester assigned.";
-	EditText nameEditText;
+	private int id = -1;
+	private int position = -1;
+	private String name = "";
+	private int hours = 3;
+	private String grade = "-";
+	private String excludeFromGPA = "No";
+	private int semesterID = -1;
+	private int oldGroupID = -1;
+	private int groupID = -1;
+	private String semester = "None";
+	private String group = "None";
+	private String semesterColor = "None";
+	private String groupSubText = "This course will be hidden.";
+	private String semesterSubText = "No semester assigned.";
+	private EditText nameEditText;
 	
 	/**
 	 * Overrides
@@ -122,20 +123,20 @@ public class CourseActivity extends Activity {
         // Not sure what's causing these views to change random colors. This ensures that they stay blue.
         View view;
         
-        view = findViewById(R.id.course_name_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-	    view = findViewById(R.id.course_hours_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-	    view = findViewById(R.id.course_grade_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-	    view = findViewById(R.id.course_exclude_from_gpa_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-	    view = findViewById(R.id.course_group_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+        view = findViewById(R.id.course_name_linear_layout); view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+	    view = findViewById(R.id.course_hours_linear_layout); view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+	    view = findViewById(R.id.course_grade_linear_layout); view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+	    view = findViewById(R.id.course_exclude_from_gpa_linear_layout); view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+	    view = findViewById(R.id.course_group_linear_layout); view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
 	    if (groupID == -1) {
-        	view.setBackgroundColor(getResources().getColor(R.color.gray));
+        	view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.gray));
         } else {
-        	view.setBackgroundColor(getResources().getColor(R.color.theme_blue)); 
+        	view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
         }
 	    
 	    view = findViewById(R.id.course_semester_linear_layout); 
 	    if (semesterID == -1) {
-        	view.setBackgroundColor(getResources().getColor(R.color.gray));
+        	view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.gray));
         } else {
         	view.setBackgroundColor(ColorHandler.getColor(getApplicationContext(), semesterColor)); 
         }
@@ -402,10 +403,10 @@ public class CourseActivity extends Activity {
 	            	   View view;
 	            	   view = findViewById(R.id.course_group_linear_layout);
 	            	   if (group.equals("None")) {
-	            		   view.setBackgroundColor(getResources().getColor(R.color.gray));
+	            		   view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.gray));
 	            		   groupSubText = "This course will be hidden.";
 	            	   } else {
-	            		   view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+	            		   view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
 	            		   groupSubText = String.valueOf(IuvoApplication.db.getCourseCountByGroup(groupID)) + " Course";
 	            		   if (IuvoApplication.db.getCourseCountByGroup(groupID) != 1)
 	            			   groupSubText += "s";
@@ -457,7 +458,7 @@ public class CourseActivity extends Activity {
 	            	   view = findViewById(R.id.course_semester_linear_layout);
 	            	   if (semester.equals("None")) {
 	            		   semesterColor = "None";
-	            		   view.setBackgroundColor(getResources().getColor(R.color.gray));
+	            		   view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.gray));
 	            		   semesterSubText = "No semester assigned.";
 	            	   } else {
 	            		   semesterColor = IuvoApplication.db.getSemester(semesterID).getColor();

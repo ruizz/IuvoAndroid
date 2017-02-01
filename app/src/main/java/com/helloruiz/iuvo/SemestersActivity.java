@@ -155,7 +155,7 @@ public class SemestersActivity extends ListActivity {
 	/**
 	 * -- Voids --
 	 */
-	public void semesterOptionsDialog(final View view) {
+	private void semesterOptionsDialog(final View view) {
 		Semester semester = IuvoApplication.db.getSemester((Integer) view.getTag());
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -180,19 +180,19 @@ public class SemestersActivity extends ListActivity {
 	}
 	
 	// Pops up with dialog so that user can add a semester
-    public void menuSemestersHelp() {
+	private void menuSemestersHelp() {
     	Intent intent = new Intent(getApplicationContext(), SemestersHelpActivity.class);
     	startActivity(intent);
     }
 	
 	// Starts add semester activity
-    public void menuAddSemester() {
+	private void menuAddSemester() {
     	Intent intent = new Intent(this, SemesterActivity.class);
     	startActivity(intent);
     }
     
     // Pops up with dialog so that user can confirm deletion
-    public void deleteSemesterConfirm(int which) {
+	private void deleteSemesterConfirm(int which) {
     	Dialogs.deleteSemesterConfirm(this, which);
     }
 

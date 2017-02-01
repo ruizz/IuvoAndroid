@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,8 +34,8 @@ public class BackupActivity extends Activity {
 		
 		// Not sure what's causing these views to change random colors. This ensures that they stay blue.
 		View view;
-        view = findViewById(R.id.backup_backup_linearlayout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-        view = findViewById(R.id.backup_restore_linearlayout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+        view = findViewById(R.id.backup_backup_linearlayout); view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+        view = findViewById(R.id.backup_restore_linearlayout); view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
 	}
 
 	@Override

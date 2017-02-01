@@ -2,7 +2,6 @@ package com.helloruiz.iuvo;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,22 +46,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     //three primary sections of the app. We use a {@link android.support.v4.app.FragmentPagerAdapter}
     //derivative, which will keep every loaded fragment in memory. If this becomes too memory
     //intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
-    AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+    private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 
     // The {@link ViewPager} that will display the three primary sections of the app, one at a time.
     // If you ever need to switch pages programatically. Could be useful: mViewPager.setCurrentItem(0);
-    ViewPager mViewPager;
+    private ViewPager mViewPager;
 
     // For keeping track of the currently selected tab.
-    int currentTabIndex = 0;
+    private int currentTabIndex = 0;
 
     // Unique tags for passing an intent to another activity.
     static final String MAINACTIVITY_COURSE_ID = "com.helloruiz.iuvo.MainActivity.courseID";
     static final String MAINACTIVITY_GROUP_ID = "com.helloruiz.iuvo.MainActivity.groupID";
     static final String MAINACTIVITY_EMPTY_GROUP_KEY = "com.helloruiz.iuvo.MainActivity.emptyGroupKey";
-
-    // Context.
-    //static Context mContext;
 
     /**
      * Overrides
@@ -70,8 +67,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //mContext = getApplicationContext();
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -139,6 +134,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         public AppSectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+
         }
 
         @Override
@@ -236,8 +232,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         View rootView;
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             rootView = inflater.inflate(R.layout.fragment_me, container, false);
             displayProfile();
             return rootView;
@@ -351,13 +346,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 0.0f;
                 view.setLayoutParams(params);
-                view.setBackgroundColor(getResources().getColor(R.color.theme_teal));
+                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.theme_teal));
 
                 view = (View) rootView.findViewById(R.id.me_progress_not_completed);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 1.0f;
                 view.setLayoutParams(params);
-                view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.theme_blue));
 
             } else { // Show X% completion
 
@@ -365,13 +360,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = (float) courseCountCompleted;
                 view.setLayoutParams(params);
-                view.setBackgroundColor(getResources().getColor(R.color.theme_teal));
+                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.theme_teal));
 
                 view = (View) rootView.findViewById(R.id.me_progress_not_completed);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = (float) courseCount - (float) courseCountCompleted;
                 view.setLayoutParams(params);
-                view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.theme_blue));
             }
 
             // Grade distribution. This code to give the grade distribution bar its intended effect
@@ -394,7 +389,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 1.0f;
                 view.setLayoutParams(params);
-                view.setBackgroundColor(getResources().getColor(R.color.gray));
+                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.gray));
 
                 view = (View) rootView.findViewById(R.id.me_grade_dist_a);
                 params = (LayoutParams) view.getLayoutParams();
@@ -444,7 +439,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 // A
                 gradeCount = IuvoApplication.db.getACount();
                 view = rootView.findViewById(R.id.me_grade_dist_a);
-                view.setBackgroundColor(getResources().getColor(R.color.theme_green));
+                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.theme_green));
                 ((LayoutParams) view.getLayoutParams()).weight = (float) gradeCount;
                 gradePercentageString = format.format(((double) gradeCount / (double) courseCountCompleted) * 100);
                 ((TextView) rootView.findViewById(R.id.me_grade_dist_key_a)).setText(this.getString(R.string.me_grade_dist_key_a, gradePercentageString));
@@ -452,7 +447,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 // B
                 gradeCount = IuvoApplication.db.getBCount();
                 view = rootView.findViewById(R.id.me_grade_dist_b);
-                view.setBackgroundColor(getResources().getColor(R.color.theme_teal));
+                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.theme_teal));
                 ((LayoutParams) view.getLayoutParams()).weight = (float) gradeCount;
                 gradePercentageString = format.format(((double) gradeCount / (double) courseCountCompleted) * 100);
                 ((TextView) rootView.findViewById(R.id.me_grade_dist_key_b)).setText(this.getString(R.string.me_grade_dist_key_b, gradePercentageString));
@@ -460,7 +455,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 // C
                 gradeCount = IuvoApplication.db.getCCount();
                 view = rootView.findViewById(R.id.me_grade_dist_c);
-                view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.theme_blue));
                 ((LayoutParams) view.getLayoutParams()).weight = (float) gradeCount;
                 gradePercentageString = format.format(((double) gradeCount / (double) courseCountCompleted) * 100);
                 ((TextView) rootView.findViewById(R.id.me_grade_dist_key_c)).setText(this.getString(R.string.me_grade_dist_key_c, gradePercentageString));
@@ -468,7 +463,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 // D
                 gradeCount = IuvoApplication.db.getDCount();
                 view = rootView.findViewById(R.id.me_grade_dist_d);
-                view.setBackgroundColor(getResources().getColor(R.color.theme_gray));
+                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.theme_gray));
                 ((LayoutParams) view.getLayoutParams()).weight = (float) gradeCount;
                 gradePercentageString = format.format(((double) gradeCount / (double) courseCountCompleted) * 100);
                 ((TextView) rootView.findViewById(R.id.me_grade_dist_key_d)).setText(this.getString(R.string.me_grade_dist_key_d, gradePercentageString));
@@ -476,7 +471,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 // F
                 gradeCount = IuvoApplication.db.getFCount();
                 view = rootView.findViewById(R.id.me_grade_dist_f);
-                view.setBackgroundColor(getResources().getColor(R.color.android_dark_red));
+                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.android_dark_red));
                 ((LayoutParams) view.getLayoutParams()).weight = (float) gradeCount;
                 gradePercentageString = format.format(((double) gradeCount / (double) courseCountCompleted) * 100);
                 ((TextView) rootView.findViewById(R.id.me_grade_dist_key_f)).setText(this.getString(R.string.me_grade_dist_key_f, gradePercentageString));
@@ -566,7 +561,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 groupTitles.add(getString(R.string.plan_getting_started_header));
 
                 listView = getListView();
-                setListAdapter(new getStartedListAdapter(this.getContext()));
+                setListAdapter(new getStartedListAdapter());
 
             } else { // User created groups, populate the appropriate headers, titles, etc and display them.
 
@@ -616,20 +611,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 }
 
                 listView = getListView();
-                setListAdapter(new DegreePlanListAdapter(this.getContext()));
+                setListAdapter(new DegreePlanListAdapter());
             }
         }
         // End of onResume
 
         // BaseAdapter explicitly designed to show the "Let's get started" dialogue
         private class getStartedListAdapter extends BaseAdapter {
-
-            private final Context mContext;
-
-            getStartedListAdapter (Context mContext) {
-                this.mContext = mContext;
-
-            }
 
             @Override
             public int getCount() {
@@ -657,7 +645,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
                 View rootView = convertView;
 
-                rootView = LayoutInflater.from(mContext).inflate(
+                rootView = LayoutInflater.from(getContext()).inflate(
                         R.layout.fragment_plan_list_tutorial, parent, false);
                 rootView.setId(R.id.list_tutorial);
 
@@ -687,14 +675,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         // Plan section fragment. Designed to show the degree plan as a list with headers.
         private class DegreePlanListAdapter extends BaseAdapter {
-
-            private final Context mContext;
-
-            public DegreePlanListAdapter(Context mContext) {
-                this.mContext = mContext;
-
-            }
-
             @Override
             public int getCount() {
                 return groupTitles.size();
@@ -730,7 +710,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 if (headerText != null) { // Group Header
 
                     if (convertView == null || convertView.getId() == R.id.list_item || convertView.getId() == R.id.list_empty) {
-                        rootView = LayoutInflater.from(mContext).inflate(
+                        rootView = LayoutInflater.from(getContext()).inflate(
                                 R.layout.fragment_plan_list_header, parent, false);
                         rootView.setId(R.id.list_header);
                     }
@@ -751,9 +731,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             int groupID = (Integer) view.getTag();
 
                             if (IuvoApplication.db.getCourseCountByGroup(groupID) == 0) {
-                                Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
                             } else {
-                                Intent intent = new Intent(mContext, CoursesActivity.class);
+                                Intent intent = new Intent(getContext(), CoursesActivity.class);
                                 intent.putExtra(MAINACTIVITY_GROUP_ID, groupID);
                                 startActivity(intent);
                             }
@@ -766,7 +746,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 } else if (emptyText != null && emptyText.equals(MAINACTIVITY_EMPTY_GROUP_KEY)) { // Empty group indicator
 
                     if (convertView == null || convertView.getId() == R.id.list_item || convertView.getId() == R.id.list_header) {
-                        rootView = LayoutInflater.from(mContext).inflate(
+                        rootView = LayoutInflater.from(getContext()).inflate(
                                 R.layout.fragment_plan_list_empty, parent, false);
                         rootView.setId(R.id.list_empty);
                     }
@@ -775,7 +755,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 } else { // Course Item
 
                     if (convertView == null || convertView.getId() == R.id.list_header || convertView.getId() == R.id.list_empty) {
-                        rootView = LayoutInflater.from(mContext).inflate(
+                        rootView = LayoutInflater.from(getContext()).inflate(
                                 R.layout.fragment_plan_list_item, parent, false);
                         rootView.setId(R.id.list_item);
                     }
@@ -786,7 +766,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     TextView subtext = (TextView) rootView.findViewById(R.id.plan_item_description);
                     subtext.setText(courseSemesters.get(position));
 
-                    rootView.setBackgroundColor(ColorHandler.getColor(mContext, courseSemesterColors.get(position)));
+                    rootView.setBackgroundColor(ColorHandler.getColor(getContext(), courseSemesterColors.get(position)));
 
                     TextView gradeText = (TextView) rootView.findViewById(R.id.plan_item_grade);
 
@@ -802,7 +782,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
                             int courseID = (Integer) view.getTag();
                             //Toast.makeText(mContext, "Course ID: " + courseID, Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(mContext, CourseActivity.class);
+                            Intent intent = new Intent(getContext(), CourseActivity.class);
                             intent.putExtra(MAINACTIVITY_COURSE_ID, courseID);
                             startActivity(intent);
                         }
@@ -848,18 +828,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 }
             }
             listView = getListView();
-            setListAdapter(new moreListAdapter(this.getContext()));
+            setListAdapter(new moreListAdapter());
         }
 
         // BaseAdapter that shows the list seen in the 'more' tab.
         private class moreListAdapter extends BaseAdapter {
-
-            private final Context mContext;
-
-            public moreListAdapter(Context mContext) {
-                this.mContext = mContext;
-
-            }
 
             @Override
             public int getCount() {
@@ -890,7 +863,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 View rootView = convertView;
 
                 if (convertView == null || convertView.getTag() == LIST_TITLE) {
-                    rootView = LayoutInflater.from(mContext).inflate(
+                    rootView = LayoutInflater.from(getActivity()).inflate(
                             R.layout.fragment_more_list_item, parent, false);
                     rootView.setTag(LIST_TITLE);
                 }
@@ -904,16 +877,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
                 switch (position) {
                     case 1:
-                        rootView.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+                        rootView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.theme_blue));
                         break;
                     case 2:
-                        rootView.setBackgroundColor(getResources().getColor(R.color.theme_teal));
+                        rootView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.theme_teal));
                         break;
                     case 3:
-                        rootView.setBackgroundColor(getResources().getColor(R.color.theme_green));
+                        rootView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.theme_green));
                         break;
                     case 4:
-                        rootView.setBackgroundColor(getResources().getColor(R.color.gray));
+                        rootView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray));
                         break;
                 }
 
@@ -931,27 +904,27 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             case 0: // View hidden courses
 
                                 if (IuvoApplication.db.getCourseCountByGroup(-1) == 0) {
-                                    Toast.makeText(mContext, view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
                                 } else {
-                                    intent = new Intent(mContext, CoursesActivity.class);
+                                    intent = new Intent(getContext(), CoursesActivity.class);
                                     intent.putExtra(MAINACTIVITY_GROUP_ID, -1);
                                     startActivity(intent);
                                 }
                                 break;
                             case 1: // GPA Scale
-                                intent = new Intent(mContext, PointsActivity.class);
+                                intent = new Intent(getContext(), PointsActivity.class);
                                 startActivity(intent);
                                 break;
                             case 2: // Backup/Restore
-                                intent = new Intent(mContext, BackupActivity.class);
+                                intent = new Intent(getContext(), BackupActivity.class);
                                 startActivity(intent);
                                 break;
                             case 3: // Tutorial
-                                intent = new Intent(mContext, StartHelpActivity.class);
+                                intent = new Intent(getContext(), StartHelpActivity.class);
                                 startActivity(intent);
                                 break;
                             case 4: // About
-                                intent = new Intent(mContext, AboutActivity.class);
+                                intent = new Intent(getContext(), AboutActivity.class);
                                 startActivity(intent);
                                 break;
                         }
@@ -973,7 +946,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     /**
      * Starts the group manager activity.
      */
-    public void menuManageGroups() {
+    private void menuManageGroups() {
 
         Intent intent = new Intent(this, GroupsActivity.class);
         startActivity(intent);
@@ -982,7 +955,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     /**
      * Starts the semester manager activity
      */
-    public void menuManageSemesters() {
+    private void menuManageSemesters() {
 
         Intent intent = new Intent(this, SemestersActivity.class);
         startActivity(intent);
@@ -991,7 +964,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     /**
      * Starts the course editor activity
      */
-    public void menuAddCourse() {
+    private void menuAddCourse() {
 
         Intent intent = new Intent(this, CourseActivity.class);
         startActivity(intent);

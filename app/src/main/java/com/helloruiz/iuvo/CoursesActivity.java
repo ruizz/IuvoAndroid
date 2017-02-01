@@ -67,7 +67,7 @@ public class CoursesActivity extends ListActivity {
 	 */
 
 	// For determining what group we're loading a list of courses from.
-	int groupID = -1;
+	private int groupID = -1;
 	
 	private CourseAdapter courseAdapter;
 
@@ -153,13 +153,13 @@ public class CoursesActivity extends ListActivity {
 	 * -- Voids --
 	 */
 	// Pops up with dialog so that user get help
-    public void menuCoursesHelp() {
+    private void menuCoursesHelp() {
     	Intent intent = new Intent(getApplicationContext(), CoursesHelpActivity.class);
     	startActivity(intent);
     }
     
     // Pops up with dialog so that user can confirm deletion
-    public void deleteCourseConfirm(int which) {
+    private void deleteCourseConfirm(int which) {
     	Dialogs.deleteCourseConfirm(this, which);
     }
 	

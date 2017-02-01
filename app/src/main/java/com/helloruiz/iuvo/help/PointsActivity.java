@@ -3,6 +3,7 @@ package com.helloruiz.iuvo.help;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -16,18 +17,18 @@ public class PointsActivity extends Activity {
 	/**
 	 * Variables
 	 */
-	EditText aPlusEditText;
-	EditText aEditText;
-	EditText aMinusEditText;
-	EditText bPlusEditText;
-	EditText bEditText;
-	EditText bMinusEditText;
-	EditText cPlusEditText;
-	EditText cEditText;
-	EditText cMinusEditText;
-	EditText dPlusEditText;
-	EditText dEditText;
-	EditText dMinusEditText;
+	private EditText aPlusEditText;
+	private EditText aEditText;
+	private EditText aMinusEditText;
+	private EditText bPlusEditText;
+	private EditText bEditText;
+	private EditText bMinusEditText;
+	private EditText cPlusEditText;
+	private EditText cEditText;
+	private EditText cMinusEditText;
+	private EditText dPlusEditText;
+	private EditText dEditText;
+	private EditText dMinusEditText;
 	
 	/**
 	 * Overrides
@@ -77,18 +78,18 @@ public class PointsActivity extends Activity {
 		dMinusEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsDMinus));
 		
 		// Prevent the blocks from inexplicably changing colors
-		findViewById(R.id.points_aplus_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
-		findViewById(R.id.points_a_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
-		findViewById(R.id.points_aminus_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
-		findViewById(R.id.points_bplus_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
-		findViewById(R.id.points_b_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
-		findViewById(R.id.points_bminus_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
-		findViewById(R.id.points_cplus_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
-		findViewById(R.id.points_c_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
-		findViewById(R.id.points_cminus_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
-		findViewById(R.id.points_dplus_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
-		findViewById(R.id.points_d_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
-		findViewById(R.id.points_dminus_linearlayout).setBackgroundColor(getResources().getColor(R.color.theme_blue));
+		findViewById(R.id.points_aplus_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+		findViewById(R.id.points_a_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+		findViewById(R.id.points_aminus_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+		findViewById(R.id.points_bplus_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+		findViewById(R.id.points_b_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+		findViewById(R.id.points_bminus_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+		findViewById(R.id.points_cplus_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+		findViewById(R.id.points_c_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+		findViewById(R.id.points_cminus_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+		findViewById(R.id.points_dplus_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+		findViewById(R.id.points_d_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+		findViewById(R.id.points_dminus_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
 		
 	}
 

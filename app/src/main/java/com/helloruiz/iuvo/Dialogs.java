@@ -1,23 +1,17 @@
 package com.helloruiz.iuvo;
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.helloruiz.iuvo.MainActivity.MeSectionFragment;
 import com.helloruiz.iuvo.database.Group;
 import com.helloruiz.iuvo.database.IuvoApplication;
+
+import java.io.IOException;
 
 /**
  * Stores dialogs. Lots of lines just to display dialogs, but I'm sure that it's cleaner

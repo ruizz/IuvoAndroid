@@ -1,6 +1,7 @@
 package com.helloruiz.iuvo.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
@@ -14,7 +15,7 @@ public class SemesterColorList extends ListFragment{
 	/**
 	 * Variables
 	 */
-	HeadlineSelection headlineSelection;
+	private HeadlineSelection headlineSelection;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,12 +44,14 @@ public class SemesterColorList extends ListFragment{
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		if (context instanceof Activity){
+			// Tying the interface object with the host activity
+			// Make sure that the host activity implements the interface!
+			headlineSelection = (HeadlineSelection) context;
+		}
 
-		// Tying the interface object with the host activity
-		// Make sure that the host activity implements the interface!
-		headlineSelection = (HeadlineSelection) activity;
 	}
 
 	@Override
@@ -65,7 +68,7 @@ public class SemesterColorList extends ListFragment{
 	 * Interfaces
 	 */
 	public interface HeadlineSelection {
-		public void colorSelected(int position);
+		void colorSelected(int position);
 	}
 
 	

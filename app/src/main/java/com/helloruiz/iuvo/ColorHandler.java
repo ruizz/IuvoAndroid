@@ -1,111 +1,112 @@
 package com.helloruiz.iuvo;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 
 /**
  * For handling colors. Give it a string such as "Sweet Pea Green", and it'll turn the color value.
  *
  */
-public class ColorHandler {
+class ColorHandler {
 
 	public static int getColor(Context context, String colorName) {
-		
+
 		if (colorName.equals("Android Dark Blue"))
-			return context.getResources().getColor(R.color.android_dark_blue);
-		
+			return ContextCompat.getColor(context, R.color.android_dark_blue);
+
 		if (colorName.equals("Android Dark Purple"))
-			return context.getResources().getColor(R.color.android_dark_purple);
-		
+			return ContextCompat.getColor(context, R.color.android_dark_purple);
+
 		if (colorName.equals("Android Dark Green"))
-			return context.getResources().getColor(R.color.android_dark_green);
-		
+			return ContextCompat.getColor(context, R.color.android_dark_green);
+
 		if (colorName.equals("Android Dark Yellow"))
-			return context.getResources().getColor(R.color.android_dark_yellow);
-		
+			return ContextCompat.getColor(context, R.color.android_dark_yellow);
+
 		if (colorName.equals("Android Dark Red"))
-			return context.getResources().getColor(R.color.android_dark_red);
-		
+			return ContextCompat.getColor(context, R.color.android_dark_red);
+
 		if (colorName.equals("Plum"))
-			return context.getResources().getColor(R.color.plum);
-		
+			return ContextCompat.getColor(context, R.color.plum);
+
 		if (colorName.equals("Wild Berry"))
-			return context.getResources().getColor(R.color.wild_berry);
-		
+			return ContextCompat.getColor(context, R.color.wild_berry);
+
 		if (colorName.equals("Grape"))
-			return context.getResources().getColor(R.color.grape);
-		
+			return ContextCompat.getColor(context, R.color.grape);
+
 		if (colorName.equals("Crimson"))
-			return context.getResources().getColor(R.color.crimson);
-		
+			return ContextCompat.getColor(context, R.color.crimson);
+
 		if (colorName.equals("Maroon"))
-			return context.getResources().getColor(R.color.maroon);
-		
+			return ContextCompat.getColor(context, R.color.maroon);
+
 		if (colorName.equals("Rust"))
-			return context.getResources().getColor(R.color.rust);
-		
+			return ContextCompat.getColor(context, R.color.rust);
+
 		if (colorName.equals("Brick"))
-			return context.getResources().getColor(R.color.brick);
-		
+			return ContextCompat.getColor(context, R.color.brick);
+
 		if (colorName.equals("Watermelon"))
-			return context.getResources().getColor(R.color.watermelon);
-		
+			return ContextCompat.getColor(context, R.color.watermelon);
+
 		if (colorName.equals("Goldfish"))
-			return context.getResources().getColor(R.color.goldfish);
-		
+			return ContextCompat.getColor(context, R.color.goldfish);
+
 		if (colorName.equals("Construction Zone"))
-			return context.getResources().getColor(R.color.construction_zone);
-		
+			return ContextCompat.getColor(context, R.color.construction_zone);
+
 		if (colorName.equals("Mustard"))
-			return context.getResources().getColor(R.color.mustard);
-		
+			return ContextCompat.getColor(context, R.color.mustard);
+
 		if (colorName.equals("Forest"))
-			return context.getResources().getColor(R.color.forest);
-		
+			return ContextCompat.getColor(context, R.color.forest);
+
 		if (colorName.equals("Sea Green"))
-			return context.getResources().getColor(R.color.sea_green);
-		
+			return ContextCompat.getColor(context, R.color.sea_green);
+
 		if (colorName.equals("Split Pea Soup"))
-			return context.getResources().getColor(R.color.split_pea_soup);
-		
+			return ContextCompat.getColor(context, R.color.split_pea_soup);
+
 		if (colorName.equals("Peru"))
-			return context.getResources().getColor(R.color.peru);
-		
+			return ContextCompat.getColor(context, R.color.peru);
+
 		if (colorName.equals("Milk Chocolate"))
-			return context.getResources().getColor(R.color.milk_chocolate);
-		
+			return ContextCompat.getColor(context, R.color.milk_chocolate);
+
 		if (colorName.equals("Dark Chocolate"))
-			return context.getResources().getColor(R.color.dark_chocolate);
-		
+			return ContextCompat.getColor(context, R.color.dark_chocolate);
+
 		if (colorName.equals("Periwinkle"))
-			return context.getResources().getColor(R.color.periwinkle);
-		
+			return ContextCompat.getColor(context, R.color.periwinkle);
+
 		if (colorName.equals("Navy"))
-			return context.getResources().getColor(R.color.theme_navy);
-		
+			return ContextCompat.getColor(context, R.color.theme_navy);
+
 		if (colorName.equals("Cute Blue"))
-			return context.getResources().getColor(R.color.cute_blue);
-		
+			return ContextCompat.getColor(context, R.color.cute_blue);
+
 		if (colorName.equals("Gold"))
-			return context.getResources().getColor(R.color.gold);
-		
+			return ContextCompat.getColor(context, R.color.gold);
+
 		if (colorName.equals("Jeans"))
-			return context.getResources().getColor(R.color.jeans);
-		
+			return ContextCompat.getColor(context, R.color.jeans);
+
 		if (colorName.equals("Cool Blue"))
-			return context.getResources().getColor(R.color.cool_blue);
-		
+			return ContextCompat.getColor(context, R.color.cool_blue);
+
 		if (colorName.equals("Orange"))
-			return context.getResources().getColor(R.color.orange);
-		
+			return ContextCompat.getColor(context, R.color.orange);
+
 		if (colorName.equals("Chaminade"))
-			return context.getResources().getColor(R.color.chaminade);
-		
+			return ContextCompat.getColor(context, R.color.chaminade);
+
 		if (colorName.equals("Barbie"))
-			return context.getResources().getColor(R.color.barbie);
-		
+			return ContextCompat.getColor(context, R.color.barbie);
+
 		if (colorName.equals("Gray"))
-			return context.getResources().getColor(R.color.gray);
-		
-		return context.getResources().getColor(R.color.gray);
+			return ContextCompat.getColor(context, R.color.gray);
+
+		return ContextCompat.getColor(context, R.color.gray);
 	}
 }

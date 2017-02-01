@@ -3,6 +3,7 @@ package com.helloruiz.iuvo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,18 +16,18 @@ import com.helloruiz.iuvo.database.Semester;
 import com.helloruiz.iuvo.fragments.SemesterColorList;
 
 public class SemesterActivity extends FragmentActivity implements SemesterColorList.HeadlineSelection {
-	
-	int semesterID = -1;
-	
-	Semester semester;
-	
-	String[] colorArray;
+
+	private int semesterID = -1;
+
+	private Semester semester;
+
+	private String[] colorArray;
 	
 	private String colorSelection;
-	
-	EditText nameEditText;
-	
-	View nameView;
+
+	private EditText nameEditText;
+
+	private View nameView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +77,8 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
         Intent intent = getIntent();
 		semesterID = intent.getIntExtra(SemestersActivity.SEMESTERSACTIVITY_SEMESTER_ID, -1);
 		
-        View view = findViewById(R.id.semester_color_linear_layout); view.setBackgroundColor(getResources().getColor(R.color.theme_blue));
-        nameView.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+        View view = findViewById(R.id.semester_color_linear_layout); view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+        nameView.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
         
 		if (semesterID != -1) {
 			semester = IuvoApplication.db.getSemester(semesterID);
@@ -150,7 +151,7 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 	}
 	
 	// User hits the save button.
-	public void saveSemester() {
+	private void saveSemester() {
 		
 		IuvoApplication.hideKeyboard(this, nameEditText);
 		
@@ -159,7 +160,7 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 				IuvoApplication.db.addSemester(nameEditText.getText().toString(), colorSelection);
 				colorSelection = "None";
 				nameEditText.setText("");
-				nameView.setBackgroundColor(getResources().getColor(R.color.theme_blue));
+				nameView.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
 				Toast.makeText(this, getResources().getString(R.string.semester_added), Toast.LENGTH_LONG).show();
 			} else {
 				semester.setName(nameEditText.getText().toString());

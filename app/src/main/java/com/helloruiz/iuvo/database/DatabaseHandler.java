@@ -33,7 +33,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 */
 	
 	// Database
-    final SQLiteDatabase db;
+    private final SQLiteDatabase db;
 	
     // Database Version
     private static final int DATABASE_VERSION = 1;
@@ -58,7 +58,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_EXCLUDED_FROM_GPA = "excludedFromGPA";
 
     // Database location in file system.
-    public static String DB_FILEPATH;
+    private static String DB_FILEPATH;
     
     /**
      * Constructor
@@ -123,7 +123,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      
         // Adding Row
         db.insert(TABLE_GROUP, null, values);
-        ;
+
     }
     
     // Move group position in list.
@@ -415,7 +415,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      
         // updating row
         db.update(TABLE_SEMESTER, values, KEY_ID + " = ?", new String[] { String.valueOf(semester.getID()) });
-        ;
+
     }
     
     // Delete single semester 
@@ -491,7 +491,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      
         // Adding Row
         db.insert(TABLE_COURSE, null, values);
-        ;
+
     }
     
     // Move course position in list. Position applies to group that the course is in.
@@ -722,7 +722,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         
         // updating row
         db.update(TABLE_COURSE, values, KEY_ID + " = ?", new String[] { String.valueOf(course.getID()) });
-        ;
+
     }
     
     // Delete single course 
@@ -882,10 +882,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		File importedDatabase = new File(sdCard.getAbsolutePath() + "/Iuvo/IuvoDatabase.db");
 		
 		// Check if the database to be imported exists in file system.
-		if(importedDatabase.exists())
-			return true;
-		else
-			return false;
+        return importedDatabase.exists();
+
 	}
 	
 	// Imports the database stored from the backup location and overwrites the app's database.
