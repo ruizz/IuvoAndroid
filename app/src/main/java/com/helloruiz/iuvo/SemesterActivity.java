@@ -1,5 +1,6 @@
 package com.helloruiz.iuvo;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -75,14 +76,14 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
         }
         
         Intent intent = getIntent();
-		semesterID = intent.getIntExtra(SemestersActivity.SEMESTERSACTIVITY_SEMESTER_ID, -1);
+		semesterID = intent.getIntExtra(SemestersActivity.SEMESTERS_ACTIVITY_SEMESTER_ID, -1);
 		
         View view = findViewById(R.id.semester_color_linear_layout); view.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
         nameView.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
         
 		if (semesterID != -1) {
 			semester = IuvoApplication.db.getSemester(semesterID);
-			nameEditText.setText((CharSequence) semester.getName());
+			nameEditText.setText(semester.getName());
 			nameView.setBackgroundColor(ColorHandler.getColor(this, semester.getColor()));
 			colorSelection = semester.getColor();
 			setTitle(semester.getName());
@@ -93,7 +94,12 @@ public class SemesterActivity extends FragmentActivity implements SemesterColorL
 	 * Set up the {@link android.app.ActionBar}.
 	 */
 	private void setupActionBar() {
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		// Show the Up button in the action bar.
+		ActionBar actionBar = getActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+
+		}
 	}
 	
 	@Override

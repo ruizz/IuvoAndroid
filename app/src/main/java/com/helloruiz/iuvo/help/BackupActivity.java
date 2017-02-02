@@ -2,6 +2,7 @@ package com.helloruiz.iuvo.help;
 
 import java.io.IOException;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -25,7 +26,11 @@ public class BackupActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_backup);
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+
+		}
 		
 		TextView textView;
 		textView = (TextView) findViewById(R.id.backup_title_textview); textView.setTypeface(IuvoApplication.typeface);

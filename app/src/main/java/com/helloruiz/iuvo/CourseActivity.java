@@ -3,6 +3,7 @@ package com.helloruiz.iuvo;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -33,7 +34,7 @@ public class CourseActivity extends Activity {
 	private String name = "";
 	private int hours = 3;
 	private String grade = "-";
-	private String excludeFromGPA = "No";
+	private String excludeFromGPAString = "No";
 	private int semesterID = -1;
 	private int oldGroupID = -1;
 	private int groupID = -1;
@@ -52,10 +53,14 @@ public class CourseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_course);
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+
+		}
 		
 		Intent intent = getIntent();
-		id = intent.getIntExtra(MainActivity.MAINACTIVITY_COURSE_ID, -1);
+		id = intent.getIntExtra(MainActivity.MAIN_ACTIVITY_COURSE_ID, -1);
 		
 		if (id != -1) {
 			Course course = IuvoApplication.db.getCourse(id);
@@ -66,7 +71,7 @@ public class CourseActivity extends Activity {
 			if (!course.getGrade().equals("None"))
 				grade = course.getGrade();
 			if (course.getExcludedFromGPA() == 1)
-				excludeFromGPA = "Yes";
+				excludeFromGPAString = "Yes";
 			semesterID = course.getSemesterID();
 			groupID = course.getGroupID();
 			oldGroupID = course.getGroupID();
@@ -88,7 +93,7 @@ public class CourseActivity extends Activity {
 		}
 		
 		nameEditText = (EditText) findViewById(R.id.course_name_edittext);
-		nameEditText.setText((CharSequence) name);
+		nameEditText.setText(name);
 		
 		TextView textView;
 		textView = (TextView) findViewById(R.id.course_hours_textview); textView.setTypeface(IuvoApplication.typeface);
@@ -98,7 +103,7 @@ public class CourseActivity extends Activity {
         textView.setText(grade);
         
         textView = (TextView) findViewById(R.id.course_exclude_from_gpa_textview); textView.setTypeface(IuvoApplication.typeface);
-        textView.setText(excludeFromGPA);
+        textView.setText(excludeFromGPAString);
 
         textView = (TextView) findViewById(R.id.course_group_textview); textView.setTypeface(IuvoApplication.typeface);
         textView.setText(group);
@@ -183,11 +188,7 @@ public class CourseActivity extends Activity {
 			return;
 		}
 		
-		int eFGPA = 0;
-		if(excludeFromGPA.equals("Yes"))
-			eFGPA = 1;
-		else
-			eFGPA = 0;
+		int excludeFromGPAValue = excludeFromGPAString.equals("Yes") ? 1 : 0;
 		
 		if(id == -1) { // If user is adding a new course
 			
@@ -195,14 +196,14 @@ public class CourseActivity extends Activity {
 				grade = "None";
 			
 			// Add the course to the database
-			IuvoApplication.db.addCourse(name, hours, grade, eFGPA, semesterID, groupID);
+			IuvoApplication.db.addCourse(name, hours, grade, excludeFromGPAValue, semesterID, groupID);
 			
 			// Clear all but the first word of the nameEditText
 			int spaceIndex = name.indexOf(" ");
 			if (spaceIndex == -1)
 				nameEditText.setText("");
 			else {
-				nameEditText.setText((CharSequence) (name.substring(0, spaceIndex) + " "));
+				nameEditText.setText((name.substring(0, spaceIndex) + " "));
 				nameEditText.setSelection(nameEditText.getText().length());
 			}
 			
@@ -244,7 +245,7 @@ public class CourseActivity extends Activity {
 				position = IuvoApplication.db.getCourseCountByGroup(groupID);
 			}
 			
-			Course course = new Course(id, position, name, hours, grade, eFGPA, semesterID, groupID);
+			Course course = new Course(id, position, name, hours, grade, excludeFromGPAValue, semesterID, groupID);
 			IuvoApplication.db.updateCourse(course);
 			Toast.makeText(this, getResources().getString(R.string.course_updated), Toast.LENGTH_LONG).show();
 		}
@@ -353,13 +354,13 @@ public class CourseActivity extends Activity {
 	           .setItems(R.array.exclude_from_gpa_array, new DialogInterface.OnClickListener() {
 	               public void onClick(DialogInterface dialog, int which) {
 	               if (which == 0)
-	            	   excludeFromGPA = "Yes";
+	            	   excludeFromGPAString = "Yes";
 	               else
-	            	   excludeFromGPA = "No";
+	            	   excludeFromGPAString = "No";
 	               
 	               TextView textView;
             	   textView = (TextView) findViewById(R.id.course_exclude_from_gpa_textview);
-            	   textView.setText(excludeFromGPA);
+            	   textView.setText(excludeFromGPAString);
 	           }
 	    });
 	    

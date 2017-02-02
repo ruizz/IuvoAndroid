@@ -198,7 +198,7 @@
 			android:layout_below="@+id/me_progress_header"
 	        android:textSize="14sp"
 	        android:textColor="@color/theme_gray"
-	        android:text="@string/me_exludes_hidden_courses_subheader"
+	        android:text="@string/me_excludes_hidden_courses_subheader"
 	        />
 		
 		<View
@@ -332,7 +332,7 @@
 			android:layout_below="@+id/me_grade_dist_header"
 	        android:textSize="14sp"
 	        android:textColor="@color/theme_gray"
-	        android:text="@string/me_exludes_hidden_courses_subheader"
+	        android:text="@string/me_excludes_hidden_courses_subheader"
 	        />
 		
 		<View

@@ -1,5 +1,6 @@
  package com.helloruiz.iuvo.help;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,7 +20,11 @@ public class CoursesHelpActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_courses_help);
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+
+		}
 		
 		TextView textView;
 		textView = (TextView) findViewById(R.id.courses_help_title_textview); textView.setTypeface(IuvoApplication.typeface);

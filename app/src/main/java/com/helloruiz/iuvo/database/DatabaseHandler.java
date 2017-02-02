@@ -19,6 +19,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
 
+import static com.helloruiz.iuvo.R.menu.course;
+
 /**
  * Database Handler for all group, semester, and class databases. Based on:
  * http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/
@@ -165,33 +167,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	
         Cursor cursor = db.query(TABLE_GROUP, new String[] {KEY_ID, KEY_POSITION, KEY_NAME}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
         		null, null, null, null);
-        
-        if (cursor != null)
+
+        Group group;
+        if (cursor != null) {
             cursor.moveToFirst();
-     
-        Group group = new Group(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2));
-        
-        cursor.close();
-        
-        // return group
+            group = new Group(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2));
+            cursor.close();
+
+        } else {
+            group = new Group();
+
+        }
         return group;
+
     }
-    
+
     // Get single group
     public Group getGroupByPosition(int position) {
      
         Cursor cursor = db.query(TABLE_GROUP, new String[] {KEY_ID, KEY_POSITION, KEY_NAME}, KEY_POSITION + "=?", new String[] { String.valueOf( position ) },
         		null, null, null, null);
-        
-        if (cursor != null)
+
+        Group group;
+        if (cursor != null) {
             cursor.moveToFirst();
-     
-        Group group = new Group(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2));
-        
-        cursor.close();
-                
-        // return group
+            group = new Group(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2));
+            cursor.close();
+
+        } else {
+            group = new Group();
+
+        }
         return group;
+
     }
     
     // Get all groups. Ordered by position.
@@ -287,16 +295,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String maxGroupIDQuery = "SELECT MAX(" + KEY_ID + ") AS maxGroupID FROM " + TABLE_GROUP;
         
         Cursor cursor = db.rawQuery(maxGroupIDQuery, null);
-        
-        if (cursor != null)
+
+        int result;
+        if (cursor != null) {
             cursor.moveToFirst();
-        
-        int result = cursor.getInt(0);
-        Log.d("MaxReferenceKey: ", "Result: " + result);
-        
-        cursor.close();
-        
+            result = cursor.getInt(0);
+            Log.d("MaxReferenceKey: ", "Result: " + result);
+            cursor.close();
+
+        } else {
+            result = -1;
+            Log.d("Invalid cursor: ", "Result: " + result);
+
+        }
 		return result;
+
 	}
 	
 	/**
@@ -353,16 +366,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      
         Cursor cursor = db.query(TABLE_SEMESTER, new String[] {KEY_ID, KEY_POSITION, KEY_NAME, KEY_COLOR}, KEY_ID + "=?", new String[] { String.valueOf( id ) },
         		null, null, null, null);
-        
-        if (cursor != null)
+
+        Semester semester;
+        if (cursor != null) {
             cursor.moveToFirst();
-     
-        Semester semester = new Semester(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3));
-        
-        cursor.close();
-        
-        // return semester
+            semester = new Semester(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3));
+            cursor.close();
+
+        } else {
+            semester = new Semester(0, 0, "INVALID", "INVALID");
+
+        }
         return semester;
+
     }
     
     // Get single semester by position
@@ -370,16 +386,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      
         Cursor cursor = db.query(TABLE_SEMESTER, new String[] {KEY_ID, KEY_POSITION, KEY_NAME, KEY_COLOR}, KEY_POSITION + "=?", new String[] { String.valueOf( position ) },
         		null, null, null, null);
-        
-        if (cursor != null)
+
+        Semester semester;
+        if (cursor != null) {
             cursor.moveToFirst();
-     
-        Semester semester = new Semester(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3));
-        
-        cursor.close();
-        
-        // return semester
+            semester = new Semester(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3));
+            cursor.close();
+
+        } else {
+            semester = new Semester(0, 0, "INVALID", "INVALID");
+
+        }
         return semester;
+
     }
     
     // Get all semesters. Ordered by position.
@@ -461,16 +480,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String maxSemesterIDQuery = "SELECT MAX(" + KEY_ID + ") AS maxSemesterID FROM " + TABLE_SEMESTER;
         
         Cursor cursor = db.rawQuery(maxSemesterIDQuery, null);
-        
-        if (cursor != null)
+
+        int result;
+        if (cursor != null) {
             cursor.moveToFirst();
-        
-        int result = cursor.getInt(0);
-        Log.d("MaxReferenceKey: ", "Result: " + result);
-        
-        cursor.close();
-        
-		return result;
+            result = cursor.getInt(0);
+            Log.d("MaxReferenceKey: ", "Result: " + result);
+            cursor.close();
+
+        } else {
+            result = -1;
+            Log.d("Invalid cursor: ", "Result: " + result);
+
+        }
+        return result;
+
 	}
 	
 	/**
@@ -549,21 +573,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         		KEY_ID + "=?",
         		new String[] { String.valueOf( id )},
         		null, null, null, null);
-        
-        if (cursor != null)
+
+        Course course;
+        if (cursor != null) {
             cursor.moveToFirst();
-     
-        Course course = new Course(
-        		Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)),
-        		cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4),
-        		Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
-        		Integer.parseInt(cursor.getString(7))
-        		);
-        
-        cursor.close();
-        
-        // return course
+            course = new Course(
+                    Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)),
+                    cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4),
+                    Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
+                    Integer.parseInt(cursor.getString(7))
+            );
+            cursor.close();
+
+        } else {
+            course = new Course(0, 0, "INVALID", 0, "INVALID", 0, 0, 0);
+
+        }
         return course;
+
     }
     
     // Get single course by position
@@ -574,20 +601,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         		KEY_POSITION + "=? AND " + KEY_GROUP_ID + "=?",
         		new String[] { String.valueOf( position ), String.valueOf(groupID)},
         		null, null, null, null);
-        
-        if (cursor != null)
+
+        Course course;
+        if (cursor != null) {
             cursor.moveToFirst();
-     
-        Course course = new Course(
-        		Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)),
-        		cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4),
-        		Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
-        		Integer.parseInt(cursor.getString(7))
-        		);
-        
-        cursor.close();
-        
-        // return course
+            course = new Course(
+                    Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)),
+                    cursor.getString(2), Integer.parseInt(cursor.getString(3)), cursor.getString(4),
+                    Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
+                    Integer.parseInt(cursor.getString(7))
+            );
+            cursor.close();
+
+        } else {
+            course = new Course(0, 0, "INVALID", 0, "INVALID", 0, 0, 0);
+
+        }
         return course;
     }
     
@@ -858,16 +887,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String maxCourseIDQuery = "SELECT MAX(" + KEY_ID + ") AS maxCourseID FROM " + TABLE_COURSE;
         
         Cursor cursor = db.rawQuery(maxCourseIDQuery, null);
-        
-        if (cursor != null)
+
+        int result;
+        if (cursor != null) {
             cursor.moveToFirst();
-        
-        int result = cursor.getInt(0);
-        Log.d("MaxReferenceKey: ", "Result: " + result);
-        
-        cursor.close();
-        
-		return result;
+            result = cursor.getInt(0);
+            Log.d("MaxReferenceKey: ", "Result: " + result);
+            cursor.close();
+
+        } else {
+            result = -1;
+            Log.d("Invalid cursor: ", "Result: " + result);
+
+        }
+        return result;
+
 	}
 	
 	// Source for import/export technique found here:
@@ -892,7 +926,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Creates the file directory at (SD card)/Iuvo if it doesn't exist.
 		File sdCard = Environment.getExternalStorageDirectory();
 		File fileDir = new File(sdCard.getAbsolutePath() + "/Iuvo");
-		fileDir.mkdirs();
+		if (fileDir.mkdirs() == false) {
+            return false;
+
+        }
 		
 		// Create file of database to be imported.
 		File importedDatabase = new File(fileDir.getAbsolutePath() + "/IuvoDatabase.db");
@@ -911,18 +948,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Exports the app's database
 	public boolean exportDatabase() throws IOException {
 		
-		// Creates the file directory at (SD card)/Iuvo if it doens't exist.
+		// Creates the file directory at (SD card)/Iuvo if it doesn't exist.
 		File sdCard = Environment.getExternalStorageDirectory();
 		File fileDir = new File(sdCard.getAbsolutePath() + "/Iuvo");
-		fileDir.mkdirs();
+		if (fileDir.mkdirs() == false) {
+            return false;
+
+        }
 		
 		// Create file of the data to be exported
 		File exportedDatabase = new File(fileDir.getAbsolutePath() + "/IuvoDatabase.db");
 		File appDatabase = new File(DB_FILEPATH);
 		
 		// If file exists already, delete it. We already confirmed with the user that we can overwrite.
-		if(exportedDatabase.exists())
-			exportedDatabase.delete();
+		if(exportedDatabase.exists()) {
+            if (exportedDatabase.delete() == false) {
+                return false;
+
+            }
+
+        }
+
 		
 		// Create file
 		OutputStream out = null;
@@ -952,7 +998,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public String getGPA(boolean includeExclusions) {
 		int hours = 0;
 		double points = 0.00;
-		int courseHours = 0;
+		int courseHours;
 		List<Course> courses;
 		
 		if (includeExclusions)
@@ -998,7 +1044,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public String getGPABySemesterPosition(int semesterPosition) {
 		int hours = 0;
 		double points = 0.00;
-		int courseHours = 0;
+		int courseHours;
 		List<Course> courses;
 		
 		int semesterID = getSemesterByPosition(semesterPosition).getID();
@@ -1042,7 +1088,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public String getGPAByGroupPosition(int groupPosition) {
 		int hours = 0;
 		double points = 0.00;
-		int courseHours = 0;
+		int courseHours;
 		List<Course> courses;
 		
 		int semesterID = getGroupByPosition(groupPosition).getID();

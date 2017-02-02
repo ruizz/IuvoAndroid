@@ -3,9 +3,11 @@ package com.helloruiz.iuvo;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
@@ -33,7 +35,8 @@ public class GroupsActivity extends ListActivity {
 	          R.id.group_name_textview, groups);
 	      }
 
-	      public View getView(int position, View convertView, ViewGroup parent) {
+		  @NonNull
+	      public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
 	        
 	        String courseCount = String.valueOf(IuvoApplication.db.getCourseCountByGroupPosition(position));
@@ -50,7 +53,7 @@ public class GroupsActivity extends ListActivity {
             textView.setTypeface(IuvoApplication.typeface);
             
             textView = (TextView) v.findViewById(R.id.group_class_count_textview);
-            textView.setText((CharSequence) (courseCount + groupGPA));
+            textView.setText(courseCount + groupGPA);
 	        
             // Background color would change after messing with semesters. Band-Aid fix.
             v.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
@@ -101,7 +104,11 @@ public class GroupsActivity extends ListActivity {
 		setContentView(R.layout.activity_groups);
 		
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+
+		}
 		
 		// Set up our drag sort ListView
 		DragSortListView dragSortListView = (DragSortListView) getListView();

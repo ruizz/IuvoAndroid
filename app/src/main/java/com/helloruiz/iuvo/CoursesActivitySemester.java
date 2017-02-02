@@ -3,9 +3,11 @@ package com.helloruiz.iuvo;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,15 +35,16 @@ public class CoursesActivitySemester extends ListActivity {
 	    	super(CoursesActivitySemester.this, R.layout.activity_courses_list_item,
 	    			R.id.course_name_textview, courses);
 	    }
-	    
-		public View getView(int position, View convertView, ViewGroup parent) {
+
+		@NonNull
+		public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
 	        
 	        Course course = mCourses.get(position);
 	        
 	        TextView textView = (TextView) v.findViewById(R.id.course_name_textview);
             //textView.setTypeface(typeface);
-            textView.setText((CharSequence) course.getName() + " (" + String.valueOf(course.getHours()) + ")");
+            textView.setText(course.getName() + " (" + String.valueOf(course.getHours()) + ")");
             
             textView = (TextView) v.findViewById(R.id.course_semester_textview);
             
@@ -58,7 +61,7 @@ public class CoursesActivitySemester extends ListActivity {
             if (course.getGrade().equals("None"))
             	textView.setText("");
             else
-            	textView.setText((CharSequence) course.getGrade());
+            	textView.setText(course.getGrade());
             
 	        View dragHandleView = v.findViewById(R.id.drag_handle);
 	        LayoutParams params = (LayoutParams) dragHandleView.getLayoutParams();
@@ -98,14 +101,18 @@ public class CoursesActivitySemester extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_courses_activity_semester);
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+
+		}
 	    
 	    // Set up our drag sort ListView
 	 	DragSortListView dragSortListView = (DragSortListView) getListView();
 	 	dragSortListView.setRemoveListener(onRemove);
 	 		
 	 	Intent intent = getIntent();
-		semesterID = intent.getIntExtra(SemestersActivity.SEMESTERSACTIVITY_SEMESTER_ID, -1);
+		semesterID = intent.getIntExtra(SemestersActivity.SEMESTERS_ACTIVITY_SEMESTER_ID, -1);
 	 	
 	 	refreshListAdapter();
 	 	
@@ -129,7 +136,7 @@ public class CoursesActivitySemester extends ListActivity {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Intent intent = new Intent(getApplicationContext(), CourseActivity.class);
-		intent.putExtra(MainActivity.MAINACTIVITY_COURSE_ID, mCourses.get(position).getID());
+		intent.putExtra(MainActivity.MAIN_ACTIVITY_COURSE_ID, mCourses.get(position).getID());
 		startActivity(intent);
 	}
 	

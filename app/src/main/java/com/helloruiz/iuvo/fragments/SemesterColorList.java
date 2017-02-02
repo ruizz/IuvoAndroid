@@ -37,7 +37,7 @@ public class SemesterColorList extends ListFragment{
 		super.onStart();
 
 		// Keeps the selected item in the list highlighted.
-		// According to the Open Source Project, it's done at onStart() because listview isn't available during onCreate().
+		// According to the Open Source Project, it's done at onStart() because listView isn't available during onCreate().
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		getListView().setVerticalScrollBarEnabled(true);

@@ -3,9 +3,11 @@ package com.helloruiz.iuvo;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,14 +35,15 @@ public class CoursesActivity extends ListActivity {
 	    			R.id.course_name_textview, courses);
 	    }
 	    
-		public View getView(int position, View convertView, ViewGroup parent) {
+		@NonNull
+		public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
 	        
 	        Course course = mCourses.get(position);
 	        
 	        TextView textView = (TextView) v.findViewById(R.id.course_name_textview);
             //textView.setTypeface(typeface);
-	        textView.setText((CharSequence) course.getName() + " (" + String.valueOf(course.getHours()) + ")");
+	        textView.setText(course.getName() + " (" + String.valueOf(course.getHours()) + ")");
 	        
 	        textView = (TextView) v.findViewById(R.id.course_semester_textview);
             
@@ -56,7 +59,7 @@ public class CoursesActivity extends ListActivity {
             if (course.getGrade().equals("None"))
             	textView.setText("");
             else
-            	textView.setText((CharSequence) course.getGrade());
+            	textView.setText(course.getGrade());
             
 	        return v;
 		}
@@ -100,10 +103,14 @@ public class CoursesActivity extends ListActivity {
 		
 		setContentView(R.layout.activity_courses);
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+
+		}
 		
 		Intent intent = getIntent();
-		groupID = intent.getIntExtra(MainActivity.MAINACTIVITY_GROUP_ID, -1);
+		groupID = intent.getIntExtra(MainActivity.MAIN_ACTIVITY_GROUP_ID, -1);
 		
 		if (groupID != -1)
 			setTitle(IuvoApplication.db.getGroup(groupID).getName());
@@ -132,7 +139,7 @@ public class CoursesActivity extends ListActivity {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Intent intent = new Intent(getApplicationContext(), CourseActivity.class);
-		intent.putExtra(MainActivity.MAINACTIVITY_COURSE_ID, mCourses.get(position).getID());
+		intent.putExtra(MainActivity.MAIN_ACTIVITY_COURSE_ID, mCourses.get(position).getID());
 		startActivity(intent);
 	}
 	

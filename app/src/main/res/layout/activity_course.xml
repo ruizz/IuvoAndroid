@@ -47,7 +47,7 @@
 	        
 	        <!-- Used go grab focus after clearing the focus from the
 	        EditText below it. Ignore the useless warning. DON'T LISTEN
-	        TO IT LINEARLAYOUT, YOU'RE SO USEFUL AND SPECIAL. -->
+	        TO IT LINEAR LAYOUT, YOU'RE SO USEFUL AND SPECIAL. -->
 	        <LinearLayout 
 				android:focusable="true"
 				android:focusableInTouchMode="true" 

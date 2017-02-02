@@ -49,16 +49,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 
     // The {@link ViewPager} that will display the three primary sections of the app, one at a time.
-    // If you ever need to switch pages programatically. Could be useful: mViewPager.setCurrentItem(0);
+    // If you ever need to switch pages programmatically. Could be useful: mViewPager.setCurrentItem(0);
     private ViewPager mViewPager;
 
     // For keeping track of the currently selected tab.
     private int currentTabIndex = 0;
 
     // Unique tags for passing an intent to another activity.
-    static final String MAINACTIVITY_COURSE_ID = "com.helloruiz.iuvo.MainActivity.courseID";
-    static final String MAINACTIVITY_GROUP_ID = "com.helloruiz.iuvo.MainActivity.groupID";
-    static final String MAINACTIVITY_EMPTY_GROUP_KEY = "com.helloruiz.iuvo.MainActivity.emptyGroupKey";
+    static final String MAIN_ACTIVITY_COURSE_ID = "com.helloruiz.iuvo.MainActivity.courseID";
+    static final String MAIN_ACTIVITY_GROUP_ID = "com.helloruiz.iuvo.MainActivity.groupID";
+    static final String MAIN_ACTIVITY_EMPTY_GROUP_KEY = "com.helloruiz.iuvo.MainActivity.emptyGroupKey";
 
     /**
      * Overrides
@@ -74,37 +74,38 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            // Specify that the Home/Up button should not be enabled, since there is no hierarchical
+            // parent.
+            actionBar.setHomeButtonEnabled(false);
 
-        // Specify that the Home/Up button should not be enabled, since there is no hierarchical
-        // parent.
-        actionBar.setHomeButtonEnabled(false);
+            // Specify that we will be displaying tabs in the action bar.
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        // Specify that we will be displaying tabs in the action bar.
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            // Set up the ViewPager, attaching the adapter and setting up a listener for when the
+            // user swipes between sections.
+            mViewPager = (ViewPager) findViewById(R.id.pager);
+            mViewPager.setAdapter(mAppSectionsPagerAdapter);
+            mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                @Override
+                public void onPageSelected(int position) {
+                    // When swiping between different app sections, select the corresponding tab.
+                    // We can also use ActionBar.Tab#select() to do this if we have a reference to the
+                    // Tab.
+                    actionBar.setSelectedNavigationItem(position);
+                }
+            });
 
-        // Set up the ViewPager, attaching the adapter and setting up a listener for when the
-        // user swipes between sections.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mAppSectionsPagerAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                // When swiping between different app sections, select the corresponding tab.
-                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-                // Tab.
-                actionBar.setSelectedNavigationItem(position);
+            // For each of the sections in the app, add a tab to the action bar.
+            for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
+                // Create a tab with text corresponding to the page title defined by the adapter.
+                // Also specify this Activity object, which implements the TabListener interface, as the
+                // listener for when this tab is selected.
+                actionBar.addTab(
+                        actionBar.newTab()
+                                .setText(mAppSectionsPagerAdapter.getPageTitle(i))
+                                .setTabListener(this));
             }
-        });
-
-        // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by the adapter.
-            // Also specify this Activity object, which implements the TabListener interface, as the
-            // listener for when this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mAppSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
         }
     }
 
@@ -306,11 +307,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             textView = (TextView) rootView.findViewById(R.id.me_gpa);
             textView.setTypeface(IuvoApplication.typeface);
-            textView.setText((CharSequence) GPA);
+            textView.setText(GPA);
 
             textView = (TextView) rootView.findViewById(R.id.me_gpa_with_exclusions);
             textView.setTypeface(IuvoApplication.typeface);
-            textView.setText((CharSequence) GPAWithExclusions);
+            textView.setText(GPAWithExclusions);
 
             // Progress
             int courseCount = IuvoApplication.db.getCourseCountInDegreePlan();
@@ -342,13 +343,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             if (courseCountCompleted == 0) { // Show 0% completion
 
-                view = (View) rootView.findViewById(R.id.me_progress_completed);
+                view = rootView.findViewById(R.id.me_progress_completed);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 0.0f;
                 view.setLayoutParams(params);
                 view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.theme_teal));
 
-                view = (View) rootView.findViewById(R.id.me_progress_not_completed);
+                view = rootView.findViewById(R.id.me_progress_not_completed);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 1.0f;
                 view.setLayoutParams(params);
@@ -356,13 +357,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             } else { // Show X% completion
 
-                view = (View) rootView.findViewById(R.id.me_progress_completed);
+                view = rootView.findViewById(R.id.me_progress_completed);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = (float) courseCountCompleted;
                 view.setLayoutParams(params);
                 view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.theme_teal));
 
-                view = (View) rootView.findViewById(R.id.me_progress_not_completed);
+                view = rootView.findViewById(R.id.me_progress_not_completed);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = (float) courseCount - (float) courseCountCompleted;
                 view.setLayoutParams(params);
@@ -385,41 +386,41 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             if (courseCountAttempted == 0) { // Show the gray bar only to indicate no grades.
 
-                view = (View) rootView.findViewById(R.id.me_grade_dist_blank);
+                view = rootView.findViewById(R.id.me_grade_dist_blank);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 1.0f;
                 view.setLayoutParams(params);
                 view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.gray));
 
-                view = (View) rootView.findViewById(R.id.me_grade_dist_a);
+                view = rootView.findViewById(R.id.me_grade_dist_a);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 0.0f;
                 textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_a);
                 view.setLayoutParams(params);
                 textView.setText(this.getString(R.string.me_grade_dist_key_a));
 
-                view = (View) rootView.findViewById(R.id.me_grade_dist_b);
+                view = rootView.findViewById(R.id.me_grade_dist_b);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 0.0f;
                 textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_b);
                 view.setLayoutParams(params);
                 textView.setText(this.getString(R.string.me_grade_dist_key_b));
 
-                view = (View) rootView.findViewById(R.id.me_grade_dist_c);
+                view = rootView.findViewById(R.id.me_grade_dist_c);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 0.0f;
                 textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_c);
                 view.setLayoutParams(params);
                 textView.setText(this.getString(R.string.me_grade_dist_key_c));
 
-                view = (View) rootView.findViewById(R.id.me_grade_dist_d);
+                view = rootView.findViewById(R.id.me_grade_dist_d);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 0.0f;
                 textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_d);
                 view.setLayoutParams(params);
                 textView.setText(this.getString(R.string.me_grade_dist_key_d));
 
-                view = (View) rootView.findViewById(R.id.me_grade_dist_f);
+                view = rootView.findViewById(R.id.me_grade_dist_f);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 0.0f;
                 textView = (TextView) rootView.findViewById(R.id.me_grade_dist_key_f);
@@ -428,7 +429,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             } else {
                 // Hide the gray "No grades" bar
-                view = (View) rootView.findViewById(R.id.me_grade_dist_blank);
+                view = rootView.findViewById(R.id.me_grade_dist_blank);
                 params = (LayoutParams) view.getLayoutParams();
                 params.weight = 0.0f;
                 view.setLayoutParams(params);
@@ -485,33 +486,33 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             textView = (TextView) rootView.findViewById(R.id.me_database_semester_count);
             textView.setTypeface(IuvoApplication.typeface);
-            textView.setText((CharSequence) String.valueOf(databaseSemesterCount));
+            textView.setText(String.valueOf(databaseSemesterCount));
 
             textView = (TextView) rootView.findViewById(R.id.me_database_semester_count_desc);
             if (databaseSemesterCount == 1)
-                textView.setText((CharSequence) "Semester");
+                textView.setText("Semester");
             else
-                textView.setText((CharSequence) "Semesters");
+                textView.setText("Semesters");
 
             textView = (TextView) rootView.findViewById(R.id.me_database_group_count);
             textView.setTypeface(IuvoApplication.typeface);
-            textView.setText((CharSequence) String.valueOf(databaseGroupCount));
+            textView.setText(String.valueOf(databaseGroupCount));
 
             textView = (TextView) rootView.findViewById(R.id.me_database_group_count_desc);
             if (databaseGroupCount == 1)
-                textView.setText((CharSequence) "Group");
+                textView.setText("Group");
             else
-                textView.setText((CharSequence) "Groups");
+                textView.setText("Groups");
 
             textView = (TextView) rootView.findViewById(R.id.me_database_course_count);
             textView.setTypeface(IuvoApplication.typeface);
-            textView.setText((CharSequence) String.valueOf(databaseCourseCount));
+            textView.setText(String.valueOf(databaseCourseCount));
 
             textView = (TextView) rootView.findViewById(R.id.me_database_course_count_desc);
             if (databaseCourseCount == 1)
-                textView.setText((CharSequence) "Course");
+                textView.setText("Course");
             else
-                textView.setText((CharSequence) "Courses");
+                textView.setText("Courses");
         }
     }
 
@@ -578,7 +579,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     if (IuvoApplication.db.getCourseCountByGroup(g.getID()) == 0) {
                         groupTitles.add(null);
                         groupIDs.add(null);
-                        courseTitles.add(MAINACTIVITY_EMPTY_GROUP_KEY);
+                        courseTitles.add(MAIN_ACTIVITY_EMPTY_GROUP_KEY);
                         courseSemesters.add(null);
                         courseSemesterColors.add(null);
                         courseGrades.add(null);
@@ -642,33 +643,30 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-
-                View rootView = convertView;
-
-                rootView = LayoutInflater.from(getContext()).inflate(
+                convertView = LayoutInflater.from(getContext()).inflate(
                         R.layout.fragment_plan_list_tutorial, parent, false);
-                rootView.setId(R.id.list_tutorial);
+                convertView.setId(R.id.list_tutorial);
 
-                TextView headerTextView = (TextView) rootView.findViewById(R.id.plan_getting_started_header);
+                TextView headerTextView = (TextView) convertView.findViewById(R.id.plan_getting_started_header);
                 headerTextView.setTypeface(IuvoApplication.typeface);
-                headerTextView = (TextView) rootView.findViewById(R.id.plan_getting_started_semester_title);
+                headerTextView = (TextView) convertView.findViewById(R.id.plan_getting_started_semester_title);
                 headerTextView.setTypeface(IuvoApplication.typeface);
-                headerTextView = (TextView) rootView.findViewById(R.id.plan_getting_started_group_title);
+                headerTextView = (TextView) convertView.findViewById(R.id.plan_getting_started_group_title);
                 headerTextView.setTypeface(IuvoApplication.typeface);
-                headerTextView = (TextView) rootView.findViewById(R.id.plan_getting_started_course_grade0);
+                headerTextView = (TextView) convertView.findViewById(R.id.plan_getting_started_course_grade0);
                 headerTextView.setTypeface(IuvoApplication.typeface);
-                headerTextView = (TextView) rootView.findViewById(R.id.plan_getting_sample_group1);
+                headerTextView = (TextView) convertView.findViewById(R.id.plan_getting_sample_group1);
                 headerTextView.setTypeface(IuvoApplication.typeface);
-                headerTextView = (TextView) rootView.findViewById(R.id.plan_getting_started_course_grade1);
+                headerTextView = (TextView) convertView.findViewById(R.id.plan_getting_started_course_grade1);
                 headerTextView.setTypeface(IuvoApplication.typeface);
-                headerTextView = (TextView) rootView.findViewById(R.id.plan_getting_started_course_grade2);
+                headerTextView = (TextView) convertView.findViewById(R.id.plan_getting_started_course_grade2);
                 headerTextView.setTypeface(IuvoApplication.typeface);
-                headerTextView = (TextView) rootView.findViewById(R.id.plan_getting_sample_group2);
+                headerTextView = (TextView) convertView.findViewById(R.id.plan_getting_sample_group2);
                 headerTextView.setTypeface(IuvoApplication.typeface);
-                headerTextView = (TextView) rootView.findViewById(R.id.plan_getting_started_course_grade3);
+                headerTextView = (TextView) convertView.findViewById(R.id.plan_getting_started_course_grade3);
                 headerTextView.setTypeface(IuvoApplication.typeface);
 
-                return rootView;
+                return convertView;
 
             }
         } // End of getStartedListAdapter
@@ -734,7 +732,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                                 Toast.makeText(getContext(), view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
                             } else {
                                 Intent intent = new Intent(getContext(), CoursesActivity.class);
-                                intent.putExtra(MAINACTIVITY_GROUP_ID, groupID);
+                                intent.putExtra(MAIN_ACTIVITY_GROUP_ID, groupID);
                                 startActivity(intent);
                             }
                         }
@@ -743,7 +741,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
                     return rootView;
 
-                } else if (emptyText != null && emptyText.equals(MAINACTIVITY_EMPTY_GROUP_KEY)) { // Empty group indicator
+                } else if (emptyText != null && emptyText.equals(MAIN_ACTIVITY_EMPTY_GROUP_KEY)) { // Empty group indicator
 
                     if (convertView == null || convertView.getId() == R.id.list_item || convertView.getId() == R.id.list_header) {
                         rootView = LayoutInflater.from(getContext()).inflate(
@@ -783,7 +781,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             int courseID = (Integer) view.getTag();
                             //Toast.makeText(mContext, "Course ID: " + courseID, Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getContext(), CourseActivity.class);
-                            intent.putExtra(MAINACTIVITY_COURSE_ID, courseID);
+                            intent.putExtra(MAIN_ACTIVITY_COURSE_ID, courseID);
                             startActivity(intent);
                         }
 
@@ -907,7 +905,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                                     Toast.makeText(getContext(), view.getResources().getString(R.string.plan_no_courses_found), Toast.LENGTH_LONG).show();
                                 } else {
                                     intent = new Intent(getContext(), CoursesActivity.class);
-                                    intent.putExtra(MAINACTIVITY_GROUP_ID, -1);
+                                    intent.putExtra(MAIN_ACTIVITY_GROUP_ID, -1);
                                     startActivity(intent);
                                 }
                                 break;
@@ -972,7 +970,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     /**
      * Start the preferences editor and commit the new changes.
-     * Called by the 'Save' buton displayed by the 'Edit Profile' dialog.
+     * Called by the 'Save' button displayed by the 'Edit Profile' dialog.
      */
     public void saveProfileChanges(String name, String school, String major, String classification) {
 

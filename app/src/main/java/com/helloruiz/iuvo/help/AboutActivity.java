@@ -2,6 +2,7 @@ package com.helloruiz.iuvo.help;
 
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -31,13 +32,17 @@ public class AboutActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+
+		}
 		
 		// Set the app version number, so that I don't have to every time I update the app. Convenience!
 		try {
 			String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 			TextView textView = (TextView) findViewById(R.id.about_version_textview);
-			textView.setText((CharSequence) textView.getText() + " " + version);
+			textView.setText(textView.getText() + " " + version);
 		} catch (NameNotFoundException e) {
 			Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.toast_error_version), Toast.LENGTH_LONG).show();
 		}

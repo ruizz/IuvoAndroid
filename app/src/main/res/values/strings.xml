@@ -29,7 +29,7 @@
 
     <!-- Me Tab -->
     <string name="dialog_name">Name</string>
-    <string name="me_exludes_hidden_courses_subheader">Excludes Hidden Courses</string>
+    <string name="me_excludes_hidden_courses_subheader">Excludes Hidden Courses</string>
 	<string name="me_gpa_header">My GPA</string>
     <string name="me_gpa">0.00</string>
     <string name="me_gpa_desc">Overall</string>
@@ -139,7 +139,7 @@
     <!-- Get Started Page -->
     <string name="title_activity_start_help">Getting Started</string>
     <string name="plan_getting_started_header">Welcome to your degree plan.</string>
-    <string name="plan_getting_started_note1">Let\'s face it, placing your entire college or university degree plan into an app probably won\'t be the fastest thing you\'ll ever do, but Iuvo\'s simple interface should make it as quick and easy as possible. With a good amount of effort, we should have a beautiful, flexible, and detailed degree plan set up in no time. Iuvo can then give you statistics about your college career and will continue to do so even as you make chagnes later on.</string>
+    <string name="plan_getting_started_note1">Let\'s face it, placing your entire college or university degree plan into an app probably won\'t be the fastest thing you\'ll ever do, but Iuvo\'s simple interface should make it as quick and easy as possible. With a good amount of effort, we should have a beautiful, flexible, and detailed degree plan set up in no time. Iuvo can then give you statistics about your college career and will continue to do so even as you make changes later on.</string>
     <string name="plan_getting_started_note1_1"><i>Tip: You should back up your degree plan in the \'more\' tab afterwards so that you don\'t lose all of your hard earned work.</i></string>
     <string name="plan_getting_started_note2">First, start off by adding semesters. These aren\'t needed to construct your degree plan, but Iuvo uses your semesters to help \'color-code\' your courses, making it easier to recognize when you took them. If you need help while adding or managing your semesters, hit the \'help\' button that displays at the top of the semesters screen.</string>
     <string name="plan_getting_started_note3">Next, we\'ll add groups. Groups are the basic building block of your degree plan in Iuvo and are used to organize your courses the same that way your actual degree plan does. The courses that you create in the next step will appear under these groups. Without groups, none of your courses will be able to appear on your degree plan at all. If still need help with understanding and using groups, hit the \'help\' button that displays at the top of the groups screen. Once you add your first group, this tutorial will disappear and your degree plan will take its place. You can view this tutorial in the \'more\' tab if you need to read it again.</string>
@@ -168,7 +168,7 @@
     <string name="title_activity_about">About Iuvo</string>
     <string name="about_pronounced"><i>(pronounced \"yoo-voh\", Latin for \"help\")</i></string>
     <string name="about_version">Version</string>
-    <string name="about_copyright">© Ruiz Akpan</string>
+    <string name="about_copyright">© Ruiz Joo</string>
     <string name="about_web"><u>helloruiz.com</u></string>
     <string name="about_follow">Follow me on Twitter!</string>
     <string name="about_twitter"><u>@helloruiz</u></string>

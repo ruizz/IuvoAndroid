@@ -61,7 +61,7 @@ public class Dialogs {
 								editTextMajor.getText().toString(), 
 								spinner.getSelectedItem().toString());
 						
-						// Refresh the 'me' fragment. Wasn't easy to figure out because of FragmentPageAdapter, but finally found a solution to acces that fragment.
+						// Refresh the 'me' fragment. Wasn't easy to figure out because of FragmentPageAdapter, but finally found a solution to access that fragment.
 				    	// http://stackoverflow.com/questions/10022179/fragmentpageradapter-with-viewpager-and-two-fragments-go-to-the-first-from-the
 				    	// Remember this tagging convention...
 				    	MeSectionFragment meSectionFragment = (MeSectionFragment) ((MainActivity) activity).getSupportFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":"+0);
@@ -87,7 +87,7 @@ public class Dialogs {
 		
 		final EditText editText = new EditText(activity);
 		editText.setPadding(15, 15, 15, 15);
-		editText.setHint((CharSequence) dialogName);
+		editText.setHint(dialogName);
 		
 		// Listener for the 'Save' button
 		DialogInterface.OnClickListener addClickListener = new DialogInterface.OnClickListener() {
@@ -117,8 +117,8 @@ public class Dialogs {
 		
 		final EditText editText = new EditText(activity);
 		editText.setPadding(15, 15, 15, 15);
-		editText.setHint((CharSequence) dialogName);
-		editText.setText((CharSequence) item.getName());
+		editText.setHint(dialogName);
+		editText.setText(item.getName());
 		
 		// Listener for the 'Save' button
 		DialogInterface.OnClickListener editClickListener = new DialogInterface.OnClickListener() {

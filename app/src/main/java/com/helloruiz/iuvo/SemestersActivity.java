@@ -3,11 +3,13 @@ package com.helloruiz.iuvo;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,8 +35,9 @@ public class SemestersActivity extends ListActivity {
 	    	super(SemestersActivity.this, R.layout.activity_semesters_list_item,
 	    			R.id.semester_name_textview, semesters);
 	    }
-	    
-		public View getView(int position, View convertView, ViewGroup parent) {
+
+		@NonNull
+		public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
 	        
 	        String courseCount = String.valueOf(IuvoApplication.db.getCourseCountBySemesterPosition(position));
@@ -51,7 +54,7 @@ public class SemestersActivity extends ListActivity {
             textView.setTypeface(IuvoApplication.typeface);
             
             textView = (TextView) v.findViewById(R.id.semester_class_count_textview);
-            textView.setText((CharSequence) (courseCount + semesterGPA));
+            textView.setText( (courseCount + semesterGPA));
             
             // Set list item to color of semester
             Semester semester = IuvoApplication.db.getSemesterByPosition(position);
@@ -95,7 +98,7 @@ public class SemestersActivity extends ListActivity {
 	final String MULTIPLE_COURSES = " Courses";
 	
 	// Unique tags for passing an intent to another activity.
-    static final String SEMESTERSACTIVITY_SEMESTER_ID = "com.helloruiz.iuvo.SemestersActivity.semesterID";
+    static final String SEMESTERS_ACTIVITY_SEMESTER_ID = "com.helloruiz.iuvo.SemestersActivity.semesterID";
 		
 	/**
 	 * -- Overrides --
@@ -106,7 +109,11 @@ public class SemestersActivity extends ListActivity {
 		setContentView(R.layout.activity_semesters);
 		
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+
+		}
 		
 		// Set up our drag sort ListView
 		DragSortListView dragSortListView = (DragSortListView) getListView();
@@ -132,8 +139,11 @@ public class SemestersActivity extends ListActivity {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Semester item = semesterAdapter.getItem(position);
-		v.setTag(item.getID());
-		semesterOptionsDialog(v);
+		if (item != null) {
+			v.setTag(item.getID());
+			semesterOptionsDialog(v);
+		}
+
 	}
 	
 	@Override
@@ -166,11 +176,11 @@ public class SemestersActivity extends ListActivity {
 	            	   int semesterID = (Integer) view.getTag();
 		            	if (which == 0) {
 		            	   intent = new Intent(getApplicationContext(), CoursesActivitySemester.class);
-		            	   intent.putExtra(SEMESTERSACTIVITY_SEMESTER_ID, semesterID);
+		            	   intent.putExtra(SEMESTERS_ACTIVITY_SEMESTER_ID, semesterID);
 		            	   startActivity(intent); 
 		                } else {
 		            	   intent = new Intent(getApplicationContext(), SemesterActivity.class);
-		            	   intent.putExtra(SEMESTERSACTIVITY_SEMESTER_ID, semesterID);
+		            	   intent.putExtra(SEMESTERS_ACTIVITY_SEMESTER_ID, semesterID);
 		            	   startActivity(intent); 
 		               }
 	           }

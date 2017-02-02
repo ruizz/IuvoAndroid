@@ -64,18 +64,18 @@ public class PointsActivity extends Activity {
 		dEditText.setTypeface(IuvoApplication.typeface);
 		dMinusEditText.setTypeface(IuvoApplication.typeface);
 
-		aPlusEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsAPlus));
-		aEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsA));
-		aMinusEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsAMinus));
-		bPlusEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsBPlus));
-		bEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsB));
-		bMinusEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsBMinus));
-		cPlusEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsCPlus));
-		cEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsC));
-		cMinusEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsCMinus));
-		dPlusEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsDPlus));
-		dEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsD));
-		dMinusEditText.setText((CharSequence) String.valueOf(IuvoApplication.pointsDMinus));
+		aPlusEditText.setText(String.valueOf(IuvoApplication.pointsAPlus));
+		aEditText.setText(String.valueOf(IuvoApplication.pointsA));
+		aMinusEditText.setText(String.valueOf(IuvoApplication.pointsAMinus));
+		bPlusEditText.setText(String.valueOf(IuvoApplication.pointsBPlus));
+		bEditText.setText(String.valueOf(IuvoApplication.pointsB));
+		bMinusEditText.setText(String.valueOf(IuvoApplication.pointsBMinus));
+		cPlusEditText.setText(String.valueOf(IuvoApplication.pointsCPlus));
+		cEditText.setText(String.valueOf(IuvoApplication.pointsC));
+		cMinusEditText.setText(String.valueOf(IuvoApplication.pointsCMinus));
+		dPlusEditText.setText(String.valueOf(IuvoApplication.pointsDPlus));
+		dEditText.setText(String.valueOf(IuvoApplication.pointsD));
+		dMinusEditText.setText(String.valueOf(IuvoApplication.pointsDMinus));
 		
 		// Prevent the blocks from inexplicably changing colors
 		findViewById(R.id.points_aplus_linearlayout).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
