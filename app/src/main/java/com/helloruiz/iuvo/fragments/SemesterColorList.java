@@ -26,7 +26,7 @@ public class SemesterColorList extends ListFragment{
 
 		String[] colorArray = getResources().getStringArray(R.array.color_array); 
 		
-		setListAdapter(new ArrayAdapter<String>(getActivity(), layout, colorArray));
+		setListAdapter(new ArrayAdapter<>(getActivity(), layout, colorArray));
 	}
 	
 	/**

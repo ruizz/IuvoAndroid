@@ -42,12 +42,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     /**
      * Variables
      */
-    //The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
-    //three primary sections of the app. We use a {@link android.support.v4.app.FragmentPagerAdapter}
-    //derivative, which will keep every loaded fragment in memory. If this becomes too memory
-    //intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
-    private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
-
     // The {@link ViewPager} that will display the three primary sections of the app, one at a time.
     // If you ever need to switch pages programmatically. Could be useful: mViewPager.setCurrentItem(0);
     private ViewPager mViewPager;
@@ -68,9 +62,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
+        //three primary sections of the app. We use a {@link android.support.v4.app.FragmentPagerAdapter}
+        //derivative, which will keep every loaded fragment in memory. If this becomes too memory
+        //intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
+
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
-        mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+        AppSectionsPagerAdapter mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -484,35 +483,30 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             int databaseGroupCount = IuvoApplication.db.getGroupCount();
             int databaseCourseCount = IuvoApplication.db.getCourseCount();
 
+            // Semester
             textView = (TextView) rootView.findViewById(R.id.me_database_semester_count);
             textView.setTypeface(IuvoApplication.typeface);
             textView.setText(String.valueOf(databaseSemesterCount));
 
             textView = (TextView) rootView.findViewById(R.id.me_database_semester_count_desc);
-            if (databaseSemesterCount == 1)
-                textView.setText("Semester");
-            else
-                textView.setText("Semesters");
+            textView.setText(getResources().getQuantityText(R.plurals.semester, databaseSemesterCount));
 
+            // Group
             textView = (TextView) rootView.findViewById(R.id.me_database_group_count);
             textView.setTypeface(IuvoApplication.typeface);
             textView.setText(String.valueOf(databaseGroupCount));
 
             textView = (TextView) rootView.findViewById(R.id.me_database_group_count_desc);
-            if (databaseGroupCount == 1)
-                textView.setText("Group");
-            else
-                textView.setText("Groups");
+            textView.setText(getResources().getQuantityText(R.plurals.group, databaseGroupCount));
 
+            // Course
             textView = (TextView) rootView.findViewById(R.id.me_database_course_count);
             textView.setTypeface(IuvoApplication.typeface);
             textView.setText(String.valueOf(databaseCourseCount));
 
             textView = (TextView) rootView.findViewById(R.id.me_database_course_count_desc);
-            if (databaseCourseCount == 1)
-                textView.setText("Course");
-            else
-                textView.setText("Courses");
+            textView.setText(getResources().getQuantityText(R.plurals.course, databaseCourseCount));
+
         }
     }
 
@@ -523,13 +517,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 
         // Static variables.
-        static final List<String> groupTitles = new ArrayList<String>();
-        static final List<Integer> groupIDs = new ArrayList<Integer>();
-        static final List<String> courseTitles = new ArrayList<String>();
-        static final List<String> courseSemesters = new ArrayList<String>();
-        static final List<String> courseSemesterColors = new ArrayList<String>();
-        static final List<String> courseGrades = new ArrayList<String>();
-        static final List<Integer> courseIDs = new ArrayList<Integer>();
+        static final List<String> groupTitles = new ArrayList<>();
+        static final List<Integer> groupIDs = new ArrayList<>();
+        static final List<String> courseTitles = new ArrayList<>();
+        static final List<String> courseSemesters = new ArrayList<>();
+        static final List<String> courseSemesterColors = new ArrayList<>();
+        static final List<String> courseGrades = new ArrayList<>();
+        static final List<Integer> courseIDs = new ArrayList<>();
 
         private ListView listView;
 
@@ -800,8 +794,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         private ListView listView;
 
-        public static final List<String> moreTitles = new ArrayList<String>();
-        public static final List<String> moreSubtitles = new ArrayList<String>();
+        public static final List<String> moreTitles = new ArrayList<>();
+        public static final List<String> moreSubtitles = new ArrayList<>();
 
         private static final String LIST_TITLE = "LIST_TITLE";
 

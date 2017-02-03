@@ -1,5 +1,13 @@
 package com.helloruiz.iuvo.database;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
+import android.util.Log;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,16 +18,6 @@ import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
-import android.util.Log;
-
-import static com.helloruiz.iuvo.R.menu.course;
 
 /**
  * Database Handler for all group, semester, and class databases. Based on:
@@ -204,7 +202,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get all groups. Ordered by position.
     public List<Group> getAllGroups() {
-        List<Group> groupList = new ArrayList<Group>();
+        List<Group> groupList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_GROUP + " ORDER BY " + KEY_POSITION;
      
@@ -234,7 +232,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      
         // updating row
         db.update(TABLE_GROUP, values, KEY_ID + " = ?", new String[] { String.valueOf(group.getID()) });
-        ;
+
     }
     
     // Delete single group 
@@ -403,7 +401,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get all semesters. Ordered by position.
     public List<Semester> getAllSemesters() {
-        List<Semester> semesterList = new ArrayList<Semester>();
+        List<Semester> semesterList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_SEMESTER + " ORDER BY " + KEY_POSITION;
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -622,7 +620,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get all courses. Ordered by ID.
     public List<Course> getAllCourses() {
-        List<Course> courseList = new ArrayList<Course>();
+        List<Course> courseList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_COURSE + " ORDER BY " + KEY_ID;
      
@@ -651,7 +649,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get all courses. Ordered by ID.
     public List<Course> getAllCoursesNotExcludedFromGPA() {
-        List<Course> courseList = new ArrayList<Course>();
+        List<Course> courseList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_COURSE + " WHERE " + KEY_EXCLUDED_FROM_GPA + "=0" + " ORDER BY " + KEY_ID;
      
@@ -680,7 +678,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get all courses by group. Ordered by position.
     public List<Course> getAllCoursesByGroup(int groupID) {
-        List<Course> courseList = new ArrayList<Course>();
+        List<Course> courseList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_GROUP_ID + "=" + String.valueOf(groupID) + " ORDER BY " + KEY_POSITION;
      
@@ -709,7 +707,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     // Get all courses by semester. Ordered by position.
     public List<Course> getAllCoursesBySemester(int semesterID) {
-        List<Course> courseList = new ArrayList<Course>();
+        List<Course> courseList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_COURSE + " WHERE " + KEY_SEMESTER_ID + "=" + String.valueOf(semesterID) + " ORDER BY " + KEY_GROUP_ID;
      
@@ -987,7 +985,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				}
 			}
 		}
-		
+
 		// Write the app's database to the exported file.
 	    FileCopier.copyFile(new FileInputStream(appDatabase), new FileOutputStream(exportedDatabase));
 	    
@@ -1269,32 +1267,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Get the number of points out of a course.
 	public double gradeToPoints(String grade, int hours) {
-		// Can't use switch on strings. Shame.
-		if (grade.equals("A+")) {
-			return IuvoApplication.pointsAPlus * hours;
-		} else if (grade.equals("A ")) {
-			return IuvoApplication.pointsA * hours;
-		} else if (grade.equals("A-")) {
-			return IuvoApplication.pointsAMinus * hours;
-		} else if (grade.equals("B+")) {
-			return IuvoApplication.pointsBPlus * hours;
-		} else if (grade.equals("B ")) {
-			return IuvoApplication.pointsB * hours;
-		} else if (grade.equals("B-")) {
-			return IuvoApplication.pointsBMinus * hours;
-		} else if (grade.equals("C+")) {
-			return IuvoApplication.pointsCPlus * hours;
-		} else if (grade.equals("C ")) {
-			return IuvoApplication.pointsC * hours;
-		} else if (grade.equals("C-")) {
-			return IuvoApplication.pointsCMinus * hours;
-		} else if (grade.equals("D+")) {
-			return IuvoApplication.pointsDPlus * hours;
-		} else if (grade.equals("D ")) {
-			return IuvoApplication.pointsD * hours;
-		} else if (grade.equals("D-")) {
-			return IuvoApplication.pointsDMinus * hours;
-		} else
-			return 0.00;
+        switch(grade) {
+            case "A+":
+                return IuvoApplication.pointsAPlus * hours;
+            case "A ":
+                return IuvoApplication.pointsA * hours;
+            case "A-":
+                return IuvoApplication.pointsAMinus * hours;
+            case "B+":
+                return IuvoApplication.pointsBPlus * hours;
+            case "B ":
+                return IuvoApplication.pointsB * hours;
+            case "B-":
+                return IuvoApplication.pointsBMinus * hours;
+            case "C+":
+                return IuvoApplication.pointsCPlus * hours;
+            case "C ":
+                return IuvoApplication.pointsC * hours;
+            case "C-":
+                return IuvoApplication.pointsCMinus * hours;
+            case "D+":
+                return IuvoApplication.pointsDPlus * hours;
+            case "D ":
+                return IuvoApplication.pointsD * hours;
+            case "D-":
+                return IuvoApplication.pointsDMinus * hours;
+            default:
+                return 0.00;
+
+        }
+
 	}
+
 }

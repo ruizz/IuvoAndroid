@@ -37,38 +37,31 @@ public class GroupsActivity extends ListActivity {
 
 		  @NonNull
 	      public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-	        View v = super.getView(position, convertView, parent);
-	        
-	        String courseCount = String.valueOf(IuvoApplication.db.getCourseCountByGroupPosition(position));
-	        
-	        if (courseCount.equals("1"))
-	        	courseCount = courseCount + SINGLE_COURSE;
-	        else
-	        	courseCount = courseCount + MULTIPLE_COURSES;
-	        
-	        String groupGPA = String.valueOf(IuvoApplication.db.getGPAByGroupPosition(position));
-	        groupGPA = ", " + groupGPA + " GPA";
+			  View v = super.getView(position, convertView, parent);
 
-	        TextView textView = (TextView) v.findViewById(R.id.group_name_textview);
-            textView.setTypeface(IuvoApplication.typeface);
-            
-            textView = (TextView) v.findViewById(R.id.group_class_count_textview);
-            textView.setText(courseCount + groupGPA);
-	        
-            // Background color would change after messing with semesters. Band-Aid fix.
-            v.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
-            
-	        return v;
+              // Group title
+			  TextView textView = (TextView) v.findViewById(R.id.group_name_textview);
+			  textView.setTypeface(IuvoApplication.typeface);
+
+              // Group subtitle
+              int courseCount = IuvoApplication.db.getCourseCountByGroupPosition(position);
+              String groupGPAString = String.valueOf(IuvoApplication.db.getGPAByGroupPosition(position));
+              String subtitleString = getResources().getQuantityString(R.plurals.course_count_and_gpa, courseCount, courseCount, groupGPAString);
+			  textView = (TextView) v.findViewById(R.id.group_class_count_textview);
+			  textView.setText(subtitleString);
+
+			  // Background color would change after messing with semesters. Band-Aid fix.
+			  v.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.theme_blue));
+
+			  return v;
 	      }
-	    }
+    }
 	
 	/**
 	 * -- Variables --
 	 */
 	private GroupAdapter groupAdapter;
 
-    private ArrayList<Group> mGroups;
-    
     private final DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
                 
     	@Override
@@ -90,10 +83,6 @@ public class GroupsActivity extends ListActivity {
 			deleteGroupConfirm(which);			
 		}
 	};
-	
-	// Strings defined globally here since they'll be used in a loop.
-	final String SINGLE_COURSE = " Course";
-	final String MULTIPLE_COURSES = " Courses";
 	
 	/**
 	 * -- Overrides --
@@ -195,7 +184,7 @@ public class GroupsActivity extends ListActivity {
 		List<Group> groupsInDatabase = IuvoApplication.db.getAllGroups();
 		
 		Log.d("Group: ", "Updating ListAdapter...");
-		mGroups = new ArrayList<Group>();
+        ArrayList<Group> mGroups = new ArrayList<>();
 		for (Group g : groupsInDatabase) {
 			Log.d("Group: ", "Position: " + g.getPosition() + ", ID: " + g.getID() + ", Name: " + g.getName());
 			mGroups.add(g);

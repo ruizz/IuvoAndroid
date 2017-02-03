@@ -71,10 +71,8 @@ public class CoursesActivity extends ListActivity {
 
 	// For determining what group we're loading a list of courses from.
 	private int groupID = -1;
-	
-	private CourseAdapter courseAdapter;
 
-    private ArrayList<Course> mCourses;
+	private ArrayList<Course> mCourses;
     
     // Listener for whenever a user drops a course in a new location
     private final DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
@@ -187,13 +185,13 @@ public class CoursesActivity extends ListActivity {
 		List<Course> coursesInDatabase = IuvoApplication.db.getAllCoursesByGroup(groupID);
 		
 		Log.d("Course: ", "Updating ListAdapter...");
-		mCourses = new ArrayList<Course>();
+		mCourses = new ArrayList<>();
 		for (Course c : coursesInDatabase) {
 			Log.d("All Courses Group", "Position: " + c.getPosition() + ", ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
 			mCourses.add(c);
 		}
-		
-		courseAdapter = new CourseAdapter(mCourses);
+
+		CourseAdapter courseAdapter = new CourseAdapter(mCourses);
 		setListAdapter(courseAdapter);
 	}
 }

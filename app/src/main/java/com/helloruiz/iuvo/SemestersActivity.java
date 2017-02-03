@@ -39,22 +39,17 @@ public class SemestersActivity extends ListActivity {
 		@NonNull
 		public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 	        View v = super.getView(position, convertView, parent);
-	        
-	        String courseCount = String.valueOf(IuvoApplication.db.getCourseCountBySemesterPosition(position));
-	        
-	        if (courseCount.equals("1"))
-	        	courseCount = courseCount + SINGLE_COURSE;
-	        else
-	        	courseCount = courseCount + MULTIPLE_COURSES;
-	        
-	        String semesterGPA = String.valueOf(IuvoApplication.db.getGPABySemesterPosition(position));
-	        semesterGPA = ", " + semesterGPA + " GPA";
 
+			// Semester title
 	        TextView textView = (TextView) v.findViewById(R.id.semester_name_textview);
             textView.setTypeface(IuvoApplication.typeface);
-            
-            textView = (TextView) v.findViewById(R.id.semester_class_count_textview);
-            textView.setText( (courseCount + semesterGPA));
+
+			// Semester subtitle
+			int courseCount = IuvoApplication.db.getCourseCountBySemesterPosition(position);
+			String semesterGPAString = String.valueOf(IuvoApplication.db.getGPABySemesterPosition(position));
+			String subtitleString = getResources().getQuantityString(R.plurals.course_count_and_gpa, courseCount, courseCount, semesterGPAString);
+			textView = (TextView) v.findViewById(R.id.semester_class_count_textview);
+            textView.setText(subtitleString);
             
             // Set list item to color of semester
             Semester semester = IuvoApplication.db.getSemesterByPosition(position);
@@ -70,9 +65,7 @@ public class SemestersActivity extends ListActivity {
 	
 	private SemesterAdapter semesterAdapter;
 
-    private ArrayList<Semester> mSemesters;
-    
-    private final DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
+	private final DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
                 
     	@Override
     	public void drop(int from, int to) {
@@ -92,10 +85,6 @@ public class SemestersActivity extends ListActivity {
 			deleteSemesterConfirm(which);			
 		}
 	};
-
-	// Strings defined globally here since they'll be used in a loop.
-	final String SINGLE_COURSE = " Course";
-	final String MULTIPLE_COURSES = " Courses";
 	
 	// Unique tags for passing an intent to another activity.
     static final String SEMESTERS_ACTIVITY_SEMESTER_ID = "com.helloruiz.iuvo.SemestersActivity.semesterID";
@@ -241,7 +230,7 @@ public class SemestersActivity extends ListActivity {
 		List<Semester> semestersInDatabase = IuvoApplication.db.getAllSemesters();
 		
 		Log.d("Semester: ", "Updating ListAdapter...");
-		mSemesters = new ArrayList<Semester>();
+		ArrayList<Semester> mSemesters = new ArrayList<>();
 		for (Semester g : semestersInDatabase) {
 			Log.d("Semester: ", "Position: " + g.getPosition() + ", ID: " + g.getID() + ", Name: " + g.getName() + ", Color: " + g.getColor());
 			mSemesters.add(g);

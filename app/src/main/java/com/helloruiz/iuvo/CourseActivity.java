@@ -374,8 +374,8 @@ public class CourseActivity extends Activity {
 		String dialogTitle = getString(R.string.dialog_group);
 		
 		List<Group> groupsInDatabase = IuvoApplication.db.getAllGroups();
-		List<String> groupNames = new ArrayList<String>();
-		List<String> groupIDs = new ArrayList<String>();
+		List<String> groupNames = new ArrayList<>();
+		List<String> groupIDs = new ArrayList<>();
 		
 		groupNames.add("None");
 		groupIDs.add("-1");
@@ -428,8 +428,8 @@ public class CourseActivity extends Activity {
 		String dialogTitle = getString(R.string.dialog_semester);
 		
 		List<Semester> semestersInDatabase = IuvoApplication.db.getAllSemesters();
-		List<String> semesterNames = new ArrayList<String>();
-		List<String> semesterIDs = new ArrayList<String>();
+		List<String> semesterNames = new ArrayList<>();
+		List<String> semesterIDs = new ArrayList<>();
 		
 		semesterNames.add("None");
 		semesterIDs.add("-1");

@@ -9,6 +9,24 @@
     <string name="action_settings">Settings</string>
     <string name="dialog_none">None</string>
 
+    <!-- Plurals -->
+    <plurals name="course_count_and_gpa">
+        <item quantity="one">%1$d Course, %2$s GPA</item>
+        <item quantity="other">%1$d Courses, %2$s GPA</item>
+    </plurals>
+    <plurals name="semester">
+        <item quantity="one">Semester</item>
+        <item quantity="other">Semesters</item>
+    </plurals>
+    <plurals name="group">
+        <item quantity="one">Group</item>
+        <item quantity="other">Groups</item>
+    </plurals>
+    <plurals name="course">
+        <item quantity="one">Course</item>
+        <item quantity="other">Courses</item>
+    </plurals>
+
     <!-- Image accessibility -->
     <string name="image_drag_handle">Drag handle.</string>
 

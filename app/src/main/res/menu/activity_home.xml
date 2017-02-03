@@ -3,19 +3,19 @@
     <item
         android:id="@+id/menu_manage_semesters"
         android:orderInCategory="40"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_manage_semesters"/>
     
     <item
         android:id="@+id/menu_manage_groups"
         android:orderInCategory="41"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_manage_groups"/>
 
     <item
         android:id="@+id/menu_add_course"
         android:orderInCategory="42"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_add_course"/>
     
 </menu>

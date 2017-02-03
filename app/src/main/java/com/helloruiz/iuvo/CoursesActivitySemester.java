@@ -81,9 +81,7 @@ public class CoursesActivitySemester extends ListActivity {
 	private int semesterID;
 	
 	private ArrayList<Course> mCourses;
-	
-	private CoursesAdapter coursesAdapter;
-	
+
 	// Whenever a user swipes an course item left or right to delete.
     private final DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener() {
 		
@@ -185,13 +183,13 @@ public class CoursesActivitySemester extends ListActivity {
 		List<Course> coursesInSemester = IuvoApplication.db.getAllCoursesBySemester(semesterID);
 		
 		Log.d("Semester: ", "Updating ListAdapter...");
-		mCourses = new ArrayList<Course>();
+		mCourses = new ArrayList<>();
 		for (Course c : coursesInSemester) {
 			Log.d("All Courses Semester", "Position: " + c.getPosition() + ", ID: " + c.getID() + ", gID: "+ c.getGroupID() + ", sID: " + c.getSemesterID() + ", Name: " + c.getName());
 			mCourses.add(c);
 		}
-		
-		coursesAdapter = new CoursesAdapter(mCourses);
+
+		CoursesAdapter coursesAdapter = new CoursesAdapter(mCourses);
 		setListAdapter(coursesAdapter);
 	}
 }
